@@ -102,7 +102,8 @@ namespace Clustering.SolutionModel
         {
             var declaredSymbol = model.GetDeclaredSymbol(c);
             var subnodes = c.DescendantNodes().ToList();
-            var symbols = subnodes.Select(node => model.GetSymbolInfo(node).Symbol);
+            var symbols = subnodes.Select(node => model.GetSymbolInfo(node).Symbol)
+                .Except(declaredSymbol).Distinct();
 
             var dependencies = symbols.OfType<INamedTypeSymbol>();
             var nrOfMethods = subnodes.OfType<MethodDeclarationSyntax>().Count();

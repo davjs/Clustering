@@ -100,6 +100,7 @@
     <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombined.cs" />
     <Compile Include="SolutionModel\DependencyResolver.cs" />
+    <Compile Include="SolutionModel\NodeExtensions.cs" />
     <Compile Include="SolutionModel\Nodes\ISolutionItem.cs" />
     <Compile Include="SolutionModel\Nodes\ISymbolNode.cs" />
     <Compile Include="SolutionModel\Nodes\NameSpaceNode.cs" />
