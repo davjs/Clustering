@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,5 +17,13 @@ namespace Clustering.SolutionModel
 
         public static T WithName<T>(this IEnumerable<T> nodeList, string name) where T : Nodes.Node =>
             nodeList.FirstOrDefault(x => x.Name == name);
+    }
+
+    public static class Extensions
+    {
+        public static ISet<T> ToSet<T>(this IEnumerable<T> enumerable) =>
+            enumerable.ToImmutableHashSet();
+        public static ISet<T> ToMutableSet<T>(this IEnumerable<T> enumerable) =>
+            new HashSet<T>(enumerable);
     }
 }

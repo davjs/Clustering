@@ -17,20 +17,21 @@ namespace Tests.Building
         [TestMethod]
         public void TestClustering()
         {
-            var solutionModel = SolutionModelBuilder.FromPath(TestExtensions.SolutionPaths.ThisSolution);
-            var testNamespace = solutionModel.Projects().WithName("Tests")
-                .Children.WithName("Tests")
-                .Children.WithName("TestNamespace");
+            var model = ClusterTestSetup.Setup(
+                @"
+                C ->
+                A -> C
+                B -> C");
 
-            var classesInNamespace = testNamespace.Children.Cast<ClassNode>().ToList();
-            var dependencies = DependencyResolver.ResolveDependencies(classesInNamespace).ToList();
-            var newTree = new SiblingLinkWeightedCombined().Cluster(classesInNamespace, dependencies);
+            // Act
+            var newTree = new SiblingLinkWeightedCombined()
+                .Cluster(model.Nodes, model.DependencyLinks);
 
-
-            //Assert
+            // Assert
             newTree.Should().Contain(x => x.Name == "C");
             newTree.Should().Contain(x => x is ClusterNode)
-                .Which.Children.Should().Contain(x => x.Name == "A")
+                .Which.Children.Should()
+                .Contain(x => x.Name == "A")
                 .And.Contain(x => x.Name == "B");
         }
     }

@@ -22,7 +22,7 @@ namespace Clustering.SolutionModel
 
     public static class DependencyResolver
     {
-        public static IEnumerable<DependencyLink> ResolveDependencies(IEnumerable<ClassNode> allClasses)
+        public static IEnumerable<DependencyLink> GetDependencies(IEnumerable<ClassNode> allClasses)
         {
             var allClassesBySymbol = allClasses.ToDictionary(x => x.Symbol, x => x);
             foreach (var dependor in allClassesBySymbol.Values)

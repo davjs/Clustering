@@ -14,7 +14,7 @@ namespace Tests.Building
         {
             var solutionModel = SolutionModelBuilder.FromPath(TestExtensions.SolutionPaths.ThisSolution);
             var allClasses = solutionModel.Projects().SelectMany(x => x.Classes()).ToList();
-            var dependencies = DependencyResolver.ResolveDependencies(allClasses).ToList();
+            var dependencies = DependencyResolver.GetDependencies(allClasses).ToList();
 
             //Assert
             dependencies.Should().Contain(x => x.Dependor.Name == "Dependencies"

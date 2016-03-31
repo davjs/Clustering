@@ -3,7 +3,7 @@ using System.Linq;
 using Clustering.SolutionModel;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Tests.TestExtensions;
+using static Tests.Building.TestExtensions;
 
 namespace Tests
 {
