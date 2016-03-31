@@ -6,6 +6,6 @@ namespace Clustering.Hierarchichal
 {
     public interface IClusteringAlgorithm
     {
-        IEnumerable<Node> Cluster(IEnumerable<Node> Nodes);
+        IEnumerable<Node> Cluster(IEnumerable<Node> nodes, IEnumerable<DependencyLink> edges);
     }
 }

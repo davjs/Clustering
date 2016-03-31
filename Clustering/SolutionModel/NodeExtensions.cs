@@ -10,5 +10,11 @@ namespace Clustering.SolutionModel
     {
         public static IEnumerable<T> Except<T>(this IEnumerable<T> list,T item) =>
             list.Except(new HashSet<T>{item});
+        
+        public static IEnumerable<T> Union<T>(this IEnumerable<T> list, T item) =>
+            list.Union(new HashSet<T> { item });
+
+        public static T WithName<T>(this IEnumerable<T> nodeList, string name) where T : Nodes.Node =>
+            nodeList.FirstOrDefault(x => x.Name == name);
     }
 }

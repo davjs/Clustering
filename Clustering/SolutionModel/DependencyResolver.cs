@@ -10,10 +10,10 @@ namespace Clustering.SolutionModel
 {
     public class DependencyLink
     {
-        public readonly ClassNode Dependor;
-        public readonly ClassNode Dependency;
+        public readonly Node Dependor;
+        public readonly Node Dependency;
 
-        public DependencyLink(ClassNode dependor, ClassNode dependency)
+        public DependencyLink(Node dependor, Node dependency)
         {
             Dependor = dependor;
             Dependency = dependency;
