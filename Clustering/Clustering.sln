@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clustering", "Clustering\Clustering.csproj", "{403DEAE6-489A-41EE-A05F-C088ECBA361D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{E83C9965-DD67-49EC-B135-84C8CF1B405D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{403DEAE6-489A-41EE-A05F-C088ECBA361D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403DEAE6-489A-41EE-A05F-C088ECBA361D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403DEAE6-489A-41EE-A05F-C088ECBA361D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403DEAE6-489A-41EE-A05F-C088ECBA361D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E83C9965-DD67-49EC-B135-84C8CF1B405D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E83C9965-DD67-49EC-B135-84C8CF1B405D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E83C9965-DD67-49EC-B135-84C8CF1B405D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E83C9965-DD67-49EC-B135-84C8CF1B405D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
