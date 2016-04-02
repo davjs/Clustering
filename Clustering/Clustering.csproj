@@ -97,6 +97,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClusterBenchmarker.cs" />
     <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombined.cs" />
     <Compile Include="SolutionModel\DependencyResolver.cs" />

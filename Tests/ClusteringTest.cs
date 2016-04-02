@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Clustering.Hierarchichal;
-using Clustering.SolutionModel;
+﻿using Clustering.Hierarchichal;
 using Clustering.SolutionModel.Nodes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tests.Building;
 
-namespace Tests.Building
+namespace Tests
 {
     [TestClass]
     public class ClusteringTest
     {
         [TestMethod]
-        public void TestClustering()
+        public void CreatesPairForSimilarFeature()
         {
             var model = ClusterTestSetup.Setup(
                 @"

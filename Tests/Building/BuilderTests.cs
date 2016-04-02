@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Clustering.SolutionModel;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Tests.Building.TestExtensions;
 
-namespace Tests
+namespace Tests.Building
 {
     [TestClass]
     public class BuilderTests
@@ -13,7 +11,7 @@ namespace Tests
         [TestMethod]
         public void FindsClasses()
         {
-            var solutionModel = SolutionModelBuilder.FromPath(SolutionPaths.ThisSolution);
+            var solutionModel = SolutionModelBuilder.FromPath(TestExtensions.SolutionPaths.ThisSolution);
 
             var projects = solutionModel.Projects().ToList();
             
