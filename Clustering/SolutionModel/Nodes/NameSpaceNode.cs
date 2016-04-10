@@ -38,21 +38,4 @@ namespace Clustering.SolutionModel.Nodes
             }
         }
     }
-
-    public class ClusterNode : Node
-    {
-        public ClusterNode(IEnumerable<Node> children = null, Node parent = null) : base("$", children, parent)
-        {
-        }
-
-        public override Node WithChildren(IEnumerable<Node> children)
-        {
-            return new ClusterNode(children,Parent);
-        }
-
-        public override Node WithParent(Node parent)
-        {
-            return new ClusterNode(Children, parent);
-        }
-    }
 }

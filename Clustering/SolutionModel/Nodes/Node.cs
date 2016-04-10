@@ -29,5 +29,4 @@ namespace Clustering.SolutionModel.Nodes
         public abstract Node WithChildren(IEnumerable<Node> children);
         public abstract Node WithParent(Node parent);
     }
-
 }
