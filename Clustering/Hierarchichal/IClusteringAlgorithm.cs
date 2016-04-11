@@ -6,11 +6,12 @@ namespace Clustering.Hierarchichal
 {
     public abstract class ClusteringAlgorithm
     {
-        private readonly ISet<Node> _nodes;
+        protected readonly ISet<Node> _nodes;
         private readonly ISet<DependencyLink> _edges;
-        public abstract ISimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes, ISet<DependencyLink> edges);
+        private ISimilarityMatrix _matrix;
+        public abstract SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes);
 
-        ClusteringAlgorithm(ISet<Node> nodes, ISet<DependencyLink> edges)
+        public ClusteringAlgorithm(ISet<Node> nodes, ISet<DependencyLink> edges)
         {
             _nodes = nodes;
             _edges = edges;
@@ -18,11 +19,11 @@ namespace Clustering.Hierarchichal
 
         public ISet<Node> Cluster()
         {
-            var matrix = CreateSimilarityMatrix(_nodes, _edges);
+            _matrix = CreateSimilarityMatrix(_nodes);
 
             while (_nodes.Count > 2)
             {
-                var closest = matrix.GetMostSimilar();
+                var closest = _matrix.GetMostSimilar();
                 CreateCluster(closest.Item1, closest.Item2);
             }
             return _nodes;
@@ -32,10 +33,18 @@ namespace Clustering.Hierarchichal
         {
             _nodes.Remove(item1);
             _nodes.Remove(item2);
-
             var clusterNode = new ClusterNode(item1, item2);
+
+
+            UpdateSimilarityMatrix(item1,item2,clusterNode,_matrix);
+
             _nodes.Add(clusterNode);
         }
+
+        protected abstract void UpdateSimilarityMatrix(Node item1, Node item2,
+            ClusterNode clusterNode, SimilarityMatrix matrix);
+
+        //public abstract void UpdateSimilarityMatrix();
 
         public abstract double Similarity(FeatureVector a, FeatureVector b);
     }

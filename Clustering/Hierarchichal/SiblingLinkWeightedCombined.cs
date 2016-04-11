@@ -10,9 +10,7 @@ namespace Clustering.Hierarchichal
 {
     public class UnorderedMultiKeyDict<TKey, TValue> : Dictionary<Tuple<TKey, TKey>, TValue>
     {
-        //protected Dictionary<Tuple<TKey, TKey>, TValue> _dict;
-
-        private Tuple<TKey, TKey> GetOrderedTuple(TKey key1, TKey key2) =>
+        private static Tuple<TKey, TKey> GetOrderedTuple(TKey key1, TKey key2) =>
             key1.GetHashCode() > key2.GetHashCode() ? 
             Tuple.Create(key1,key2) : 
             Tuple.Create(key2, key1);
@@ -35,11 +33,10 @@ namespace Clustering.Hierarchichal
 
     public class SiblingLinkWeightedCombined : ClusteringAlgorithm
     {
-        public override ISimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes, ISet<DependencyLink> edges)
-        {
-            var featureVectors = edges.GroupBy(x => x.Dependor)
-                .ToDictionary(deps => deps.Key, deps => new FeatureVector(deps.Select(x => x.Dependency)));
+        private readonly Dictionary<Node, FeatureVector> _featureVectors;
 
+        public override SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)
+        {
             var simMatrix = new SimilarityMatrix();
 
             var pairs = (from x in nodes
@@ -49,10 +46,23 @@ namespace Clustering.Hierarchichal
 
             foreach (var pair in pairs)
             {
-                simMatrix.Add(pair.x,pair.y,Similarity(featureVectors[pair.x],featureVectors[pair.y]));
+                simMatrix.Add(pair.x,pair.y,Similarity(_featureVectors[pair.x],_featureVectors[pair.y]));
             }
 
             return simMatrix;
+        }
+
+
+        protected override void UpdateSimilarityMatrix(Node item1, Node item2, ClusterNode clusterNode, SimilarityMatrix matrix)
+        {
+            _featureVectors.Remove(item1);
+            _featureVectors.Remove(item2);
+
+            foreach (var node in _nodes)
+            {
+                matrix.Add(node, item1, Similarity(_featureVectors[node], _featureVectors[item1]));
+                matrix.Add(node, item1, Similarity(_featureVectors[node], _featureVectors[item2]));
+            }
         }
 
         public override double Similarity(FeatureVector a, FeatureVector b)
@@ -68,6 +78,13 @@ namespace Clustering.Hierarchichal
             var Mc = onlyB.Sum(x => b[x]) / b.Total;
 
             return MaHalf/(MaHalf + Mb + Mc);
+        }
+
+        public SiblingLinkWeightedCombined(ISet<Node> nodes, ISet<DependencyLink> edges) 
+            : base(nodes, edges)
+        {
+            _featureVectors = edges.GroupBy(x => x.Dependor)
+                .ToDictionary(deps => deps.Key, deps => new FeatureVector(deps.Select(x => x.Dependency)));
         }
     }
 }
