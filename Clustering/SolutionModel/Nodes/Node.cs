@@ -7,7 +7,7 @@ namespace Clustering.SolutionModel.Nodes
     public abstract class Node
     {   
         public string Name { get; }
-        public IEnumerable<Node> Children { get; }
+        public ISet<Node> Children { get; }
         public Node Parent { get; }
 
         protected Node(string name, IEnumerable<Node> children, Node parent)
@@ -16,7 +16,7 @@ namespace Clustering.SolutionModel.Nodes
             Parent = parent;
             if (children != null)
             {
-                Children = children.Select(x => x.WithParent(this));
+                Children = children.Select(x => x.WithParent(this)).ToSet();
             }
         }
 

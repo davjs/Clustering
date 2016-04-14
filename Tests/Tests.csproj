@@ -111,6 +111,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Building\BuilderTests.cs" />
+    <Compile Include="Building\Rasterizing.cs" />
     <Compile Include="ClusteringTest.cs" />
     <Compile Include="Building\Dependencies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

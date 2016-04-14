@@ -23,7 +23,7 @@ namespace Clustering.SolutionModel
     {
         public static ISet<T> ToSet<T>(this IEnumerable<T> enumerable) =>
             enumerable.ToImmutableHashSet();
-        public static ISet<T> ToMutableSet<T>(this IEnumerable<T> enumerable) =>
+        public static HashSet<T> ToMutableSet<T>(this IEnumerable<T> enumerable) =>
             new HashSet<T>(enumerable);
 
         public static TValue GetValueOrDefault<TKey, TValue>

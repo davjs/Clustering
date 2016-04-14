@@ -102,9 +102,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusterBenchmarker.cs" />
+    <Compile Include="Hierarchichal\FeatureVector.cs" />
     <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />
     <Compile Include="Hierarchichal\ISimilarityMatrix.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombined.cs" />
+    <Compile Include="Hierarchichal\SimilarityMatrix.cs" />
+    <Compile Include="Hierarchichal\UnorderedMultiKeyDict.cs" />
     <Compile Include="SolutionModel\DependencyResolver.cs" />
     <Compile Include="SolutionModel\NodeExtensions.cs" />
     <Compile Include="Hierarchichal\ClusterNode.cs" />
@@ -120,6 +123,10 @@
     <Compile Include="SolutionModel\Nodes\Node.cs" />
     <Compile Include="SolutionModel\Integration\ProjectWrapper.cs" />
     <Compile Include="SolutionModel\Nodes\SolutionNode.cs" />
+    <Compile Include="SolutionModel\Serializing\FlatEntry.cs" />
+    <Compile Include="SolutionModel\Serializing\FlatListSerializer.cs" />
+    <Compile Include="SolutionModel\Serializing\GraphEncoder.cs" />
+    <Compile Include="SolutionModel\Serializing\TreeEncoder.cs" />
     <Compile Include="SolutionModel\SolutionModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

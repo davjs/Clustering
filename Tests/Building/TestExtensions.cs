@@ -35,7 +35,7 @@ namespace Tests.Building
         public class TestModel
         {
             public ISet<Node> Nodes;
-            public ISet<DependencyLink> DependencyLinks;
+            public ILookup<Node,Node> Dependencies;
         }
 
         public static TestModel Setup(string nodeCreationQuery)
@@ -71,7 +71,8 @@ namespace Tests.Building
             }
 
             return new TestModel
-            { DependencyLinks = totalDependencies, Nodes = nodes.Cast<Node>().ToSet() };
+            { Dependencies = totalDependencies.ToLookup(x => x.Dependor,x => x.Dependency),
+              Nodes = nodes.Cast<Node>().ToSet() };
         }
     }
 

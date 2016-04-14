@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
 
@@ -6,15 +7,13 @@ namespace Clustering.Hierarchichal
 {
     public abstract class ClusteringAlgorithm
     {
-        protected readonly ISet<Node> _nodes;
-        private readonly ISet<DependencyLink> _edges;
-        private ISimilarityMatrix _matrix;
+        protected readonly HashSet<Node> _nodes;
+        private SimilarityMatrix _matrix;
         public abstract SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes);
 
-        public ClusteringAlgorithm(ISet<Node> nodes, ISet<DependencyLink> edges)
+        public ClusteringAlgorithm(ISet<Node> nodes, ILookup<Node, Node> edges)
         {
-            _nodes = nodes;
-            _edges = edges;
+            _nodes = nodes.ToMutableSet();
         }
 
         public ISet<Node> Cluster()
@@ -34,10 +33,7 @@ namespace Clustering.Hierarchichal
             _nodes.Remove(item1);
             _nodes.Remove(item2);
             var clusterNode = new ClusterNode(item1, item2);
-
-
             UpdateSimilarityMatrix(item1,item2,clusterNode,_matrix);
-
             _nodes.Add(clusterNode);
         }
 
