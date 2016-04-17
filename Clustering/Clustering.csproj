@@ -113,6 +113,7 @@
     <Compile Include="Hierarchichal\ClusterNode.cs" />
     <Compile Include="SolutionModel\Nodes\ISolutionItem.cs" />
     <Compile Include="SolutionModel\Nodes\ISymbolNode.cs" />
+    <Compile Include="SolutionModel\Nodes\NamedNode.cs" />
     <Compile Include="SolutionModel\Nodes\NameSpaceNode.cs" />
     <Compile Include="SolutionModel\Nodes\ProjectNode.cs" />
     <Compile Include="SolutionModel\Nodes\SolutionFolderNode.cs" />
@@ -125,8 +126,9 @@
     <Compile Include="SolutionModel\Nodes\SolutionNode.cs" />
     <Compile Include="SolutionModel\Serializing\FlatEntry.cs" />
     <Compile Include="SolutionModel\Serializing\FlatListSerializer.cs" />
+    <Compile Include="SolutionModel\Serializing\GraphDecoder.cs" />
     <Compile Include="SolutionModel\Serializing\GraphEncoder.cs" />
-    <Compile Include="SolutionModel\Serializing\TreeEncoder.cs" />
+    <Compile Include="SolutionModel\Serializing\SolutionModelRasterizer.cs" />
     <Compile Include="SolutionModel\SolutionModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

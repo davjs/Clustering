@@ -1,9 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
 using Clustering.SolutionModel.Serializing;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.Building
@@ -15,23 +16,108 @@ namespace Tests.Building
         public void Write()
         {
             var solutionModel = SolutionModelBuilder.FromPath(TestExtensions.SolutionPaths.ThisSolution);
-            Resterizer.Write(solutionModel);
+            SolutionModelRasterizer.Write(solutionModel, AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Rasterized\\");
+        }
+
+
+        [TestMethod]
+        public void Read()
+        {
+            var text = @"
+                @Clustering:
+                @Clustering\ClusterBenchmarker:
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\Hierarchichal:
+                @Clustering\Hierarchichal\ClusteringAlgorithm:
+                Clustering\Hierarchichal\ClusterNode
+                Clustering\Hierarchichal\FeatureVector
+                Clustering\Hierarchichal\SimilarityMatrix
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\Hierarchichal\ClusterNode:
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\Hierarchichal\FeatureVector:
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\Hierarchichal\SiblingLinkWeightedCombined:
+                Clustering\Hierarchichal\ClusteringAlgorithm
+                Clustering\Hierarchichal\ClusterNode
+                Clustering\Hierarchichal\FeatureVector
+                Clustering\Hierarchichal\SimilarityMatrix
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\Hierarchichal\SimilarityMatrix:
+                Clustering\Hierarchichal\UnorderedMultiKeyDict
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\Hierarchichal\UnorderedMultiKeyDict:
+                @Clustering\SolutionModel:
+                @Clustering\SolutionModel\DependencyLink:
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\SolutionModel\DependencyResolver:
+                Clustering\SolutionModel\DependencyLink
+                Clustering\SolutionModel\Nodes\ClassNode
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\SolutionModel\Extensions:
+                @Clustering\SolutionModel\Integration:
+                @Clustering\SolutionModel\Integration\ProjectWrapper:
+                @Clustering\SolutionModel\NodeExtensions:
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\SolutionModel\Nodes:
+                @Clustering\SolutionModel\Nodes\ClassInfo:
+                @Clustering\SolutionModel\Nodes\ClassNode:
+                Clustering\SolutionModel\Nodes\ClassInfo
+                Clustering\SolutionModel\Nodes\Node
+                Clustering\SolutionModel\Nodes\SymbolNode
+                @Clustering\SolutionModel\Nodes\NameSpaceNode:
+                Clustering\SolutionModel\Nodes\ClassNode
+                Clustering\SolutionModel\Nodes\Node
+                Clustering\SolutionModel\Nodes\SymbolNode
+                @Clustering\SolutionModel\Nodes\Node:
+                @Clustering\SolutionModel\Nodes\ProjectNode:
+                Clustering\SolutionModel\Integration\ProjectWrapper
+                Clustering\SolutionModel\Nodes\ClassNode
+                Clustering\SolutionModel\Nodes\NameSpaceNode
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\SolutionModel\Nodes\SolutionFolderNode:
+                Clustering\SolutionModel\Nodes\Node
+                Clustering\SolutionModel\Nodes\SolutionItemContainer
+                @Clustering\SolutionModel\Nodes\SolutionItemContainer:
+                Clustering\SolutionModel\Nodes\Node
+                Clustering\SolutionModel\Nodes\ProjectNode
+                Clustering\SolutionModel\Nodes\SolutionFolderNode
+                @Clustering\SolutionModel\Nodes\SolutionNode:
+                Clustering\SolutionModel\Nodes\Node
+                Clustering\SolutionModel\Nodes\SolutionItemContainer
+                @Clustering\SolutionModel\Nodes\SymbolNode:
+                Clustering\SolutionModel\Nodes\Node
+                @Clustering\SolutionModel\ProjectExtensions:
+                @Clustering\SolutionModel\SemanticModelWalker:
+                Clustering\SolutionModel\Nodes\ClassInfo
+                Clustering\SolutionModel\Nodes\ClassNode
+                Clustering\SolutionModel\Nodes\NameSpaceNode
+                Clustering\SolutionModel\Nodes\SymbolNode
+                @Clustering\SolutionModel\SemanticModelWalker\SymbolLocation:
+                @Clustering\SolutionModel\Serializing:
+                @Clustering\SolutionModel\Serializing\FlatEntry:
+                @Clustering\SolutionModel\Serializing\FlatListSerializer:
+                Clustering\SolutionModel\Serializing\FlatEntry
+                @Clustering\SolutionModel\Serializing\GraphEncoder:
+                Clustering\SolutionModel\Serializing\FlatEntry
+                Clustering\SolutionModel\Serializing\FlatListSerializer
+                @Clustering\SolutionModel\Serializing\TreeEncoder:
+                Clustering\SolutionModel\Serializing\FlatEntry
+                Clustering\SolutionModel\Serializing\FlatListSerializer
+                @Clustering\SolutionModel\SolutionModelBuilder:
+                Clustering\SolutionModel\Nodes\Node
+                Clustering\SolutionModel\Nodes\ProjectNode
+                Clustering\SolutionModel\Nodes\SolutionFolderNode
+                Clustering\SolutionModel\Nodes\SolutionNode
+                Clustering\SolutionModel\SemanticModelWalker";
+            var projectModel = GraphDecoder.Decode(text);
+
+
+            var clustering = projectModel.Nodes.First();
+
+            clustering.Name.Should().Be("Clustering");
+            clustering.Children.Should().Contain(x => x.Name == "ClusterBenchmarker");
         }
     }
 
-    public class Resterizer
-    {
-        public static void Write(SolutionNode solutionModel)
-        {
-            foreach (var projectNode in solutionModel.Projects())
-            {
-                var dependencies = DependencyResolver.GetDependencies(projectNode.Classes());
-                var encodedString = projectNode.Children.EncodeGraph(
-                    n => n.Children,
-                    n => n.Name, 
-                    n => dependencies[n]);
-                File.WriteAllText(projectNode.Name,encodedString);
-            }
-        }
-    }
 }

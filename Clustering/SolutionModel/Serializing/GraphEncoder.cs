@@ -45,7 +45,7 @@ namespace Clustering.SolutionModel.Serializing
                 var children = dataAccessor(node).Select(n => namesDict[n]).ToList();
                 entries.Add(new FlatEntry
                 {
-                    name = name,
+                    path = name,
                     childData = children
                 });
                 entries.AddRange(childAccecor(node).FlattenGraph(childAccecor, nameAccessor, dataAccessor, namesDict));

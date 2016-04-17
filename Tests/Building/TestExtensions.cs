@@ -16,20 +16,6 @@ namespace Tests.Building
         }
     }
 
-    public class FakeNode : Node
-    {
-        public FakeNode(string name, IEnumerable<Node> children = null, Node parent = null)
-            : base(name, children, parent)
-        {
-        }
-
-        public override Node WithChildren(IEnumerable<Node> children) =>
-            new FakeNode(Name, children, Parent);
-
-        public override Node WithParent(Node parent) =>
-            new FakeNode(Name, Children, parent);
-    }
-
     public static class ClusterTestSetup
     {
         public class TestModel
@@ -46,7 +32,7 @@ namespace Tests.Building
             var splitEntries =
                 entries.Select(x => x.Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries)).ToList();
 
-            var nodes = splitEntries.Select(x => new FakeNode(x[0])).ToList();
+            var nodes = splitEntries.Select(x => new NamedNode(x[0])).ToList();
             var totalDependencies = new HashSet<DependencyLink>();
 
             var i = 0;
