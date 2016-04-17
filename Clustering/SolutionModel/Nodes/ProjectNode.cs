@@ -23,11 +23,13 @@ namespace Clustering.SolutionModel.Nodes
         public override Node WithChildren(IEnumerable<Node> children)
             => new ProjectNode(ProjectProperties, children);
         
-
         public override Node WithParent(Node parent) 
             => new ProjectNode(ProjectProperties, Children, parent);
 
         public IEnumerable<ClassNode> Classes()
             => Children.Cast<NameSpaceNode>().SelectMany(x => x.Classes());
+
+        public IEnumerable<NameSpaceNode> LeafNamespaces()
+            => Children.Cast<NameSpaceNode>().SelectMany(x => x.Leafnamespaces());
     }
 }

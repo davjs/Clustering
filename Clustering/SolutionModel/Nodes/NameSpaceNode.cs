@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Clustering.SolutionModel.Nodes
@@ -37,5 +38,20 @@ namespace Clustering.SolutionModel.Nodes
                 }
             }
         }
+
+        public IEnumerable<NameSpaceNode> Leafnamespaces()
+        {
+            if (IsLeafNamespace())
+                yield return this;
+            else
+            {
+                foreach (var nSpace in Children.OfType<NameSpaceNode>().SelectMany(x => x.Leafnamespaces()))
+                    yield return nSpace;
+            }
+        }
+
+        private bool IsLeafNamespace()
+            => Children.All(x => x is ClassNode);
+        
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Clustering.SolutionModel;
-using Clustering.SolutionModel.Nodes;
 using Clustering.SolutionModel.Serializing;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
