@@ -110,9 +110,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Benchmark.cs" />
     <Compile Include="Building\BuilderTests.cs" />
+    <Compile Include="Building\Rasterizing.cs" />
     <Compile Include="ClusteringTest.cs" />
     <Compile Include="Building\Dependencies.cs" />
+    <Compile Include="Expirement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Building\TestExtensions.cs" />
     <Compile Include="TestNamespace\TestClasses.cs" />

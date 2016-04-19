@@ -59,6 +59,10 @@
       <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.1.1\lib\net45\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.1.37\lib\dotnet\System.Collections.Immutable.dll</HintPath>
@@ -98,12 +102,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusterBenchmarker.cs" />
+    <Compile Include="Hierarchichal\FeatureVector.cs" />
     <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />
+    <Compile Include="Hierarchichal\ISimilarityMatrix.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombined.cs" />
+    <Compile Include="Hierarchichal\SimilarityMatrix.cs" />
+    <Compile Include="Hierarchichal\UnorderedMultiKeyDict.cs" />
     <Compile Include="SolutionModel\DependencyResolver.cs" />
     <Compile Include="SolutionModel\NodeExtensions.cs" />
+    <Compile Include="Hierarchichal\ClusterNode.cs" />
     <Compile Include="SolutionModel\Nodes\ISolutionItem.cs" />
     <Compile Include="SolutionModel\Nodes\ISymbolNode.cs" />
+    <Compile Include="SolutionModel\Nodes\NamedNode.cs" />
     <Compile Include="SolutionModel\Nodes\NameSpaceNode.cs" />
     <Compile Include="SolutionModel\Nodes\ProjectNode.cs" />
     <Compile Include="SolutionModel\Nodes\SolutionFolderNode.cs" />
@@ -114,6 +124,11 @@
     <Compile Include="SolutionModel\Nodes\Node.cs" />
     <Compile Include="SolutionModel\Integration\ProjectWrapper.cs" />
     <Compile Include="SolutionModel\Nodes\SolutionNode.cs" />
+    <Compile Include="SolutionModel\Serializing\FlatEntry.cs" />
+    <Compile Include="SolutionModel\Serializing\FlatListSerializer.cs" />
+    <Compile Include="SolutionModel\Serializing\GraphDecoder.cs" />
+    <Compile Include="SolutionModel\Serializing\GraphEncoder.cs" />
+    <Compile Include="SolutionModel\Serializing\SolutionModelRasterizer.cs" />
     <Compile Include="SolutionModel\SolutionModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

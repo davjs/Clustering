@@ -20,7 +20,7 @@ namespace Tests
 
             // Act
             var newTree = new SiblingLinkWeightedCombined()
-                .Cluster(model.Nodes, model.DependencyLinks);
+                .Cluster(model.Nodes,model.Edges);
 
             // Assert
             newTree.Should().Contain(x => x.Name == "C");

@@ -51,7 +51,7 @@ namespace Clustering.SolutionModel.Nodes
             }
         }
 
-        public ClassContainer(string name, IEnumerable<Node> children, Node parent) : base(name, children, parent)
+        public ClassContainer(string path, IEnumerable<Node> children, Node parent) : base(path, children, parent)
         {
         }
     }*/

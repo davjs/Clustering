@@ -1,46 +1,78 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
+using MoreLinq;
 
 namespace Clustering.Hierarchichal
 {
-    public class SiblingLinkWeightedCombined : IClusteringAlgorithm
+    public class SimilarityMatrix : UnorderedMultiKeyDict<Node, double>, ISimilarityMatrix
     {
-        public ISet<Node> Cluster(ISet<Node> nodes, ISet<DependencyLink> edges)
+        public Tuple<Node, Node> GetMostSimilar() => this.MaxBy(x => x.Value).Key;
+    }
+
+    public class SiblingLinkWeightedCombined : ClusteringAlgorithm
+    {
+        private Dictionary<Node, FeatureVector> _featureVectors;
+
+        protected override void Setup(ISet<Node> nodes, ILookup<Node, Node> edges)
         {
-            // Set to return
-            var toReturn = nodes.ToMutableSet();
-            while(true)
+            _featureVectors = nodes.ToDictionary(
+                dependor => dependor,
+                dependor => new FeatureVector(edges[dependor]));
+        }
+
+        protected override SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)
+        {
+            var simMatrix = new SimilarityMatrix();
+
+            var pairs = (
+                from left in nodes
+                from right in nodes
+                where left.GetHashCode() < right.GetHashCode()
+                select new {left, right}
+                );
+
+            foreach (var pair in pairs)
+                simMatrix.Add(pair.left, pair.right, Similarity(_featureVectors[pair.left], _featureVectors[pair.right]));
+
+            return simMatrix;
+        }
+
+
+        protected override void UpdateSimilarityMatrix(Node item1, Node item2, ClusterNode clusterNode,
+            SimilarityMatrix matrix)
+        {
+            _featureVectors.Add(clusterNode, _featureVectors[item1]
+                .Merge(_featureVectors[item2]));
+
+            foreach (var node in _nodes.Where(node => node != item1 && node != item2))
             {
-                // ---- FIND CLUSTER PAIR
-
-                var allGroups = edges.GroupBy(x => x.Dependency);
-                // We only care about dependency pattern with more 1 dependor
-                var groups = allGroups.Where(x => x.Count() > 1);
-                
-                // Take the first possible pattern
-                var first = groups.FirstOrDefault();
-                if (first == null)
-                    break;
-                // Get the children nodes that should be in the new cluster
-                var children = first
-                    .Select(dependencyLink => dependencyLink.Dependor).ToSet();
-
-                // ---- CLUSTER CREATION
-
-                // Create a new cluster, adding the childs
-                var cluster = new ClusterNode().WithChildren(children);
-                // Add the new cluster to our set
-                toReturn.Add(cluster);
-                // Remove the previous nodes that are now inside the cluster node
-                toReturn.ExceptWith(children);
-                // Recreate the dependency links as one from cluster -> dependency
-                var newLink = new DependencyLink(cluster, first.Key);
-                // Remove the old dependency links as they are now represented by the cluster link
-                edges = edges.Except(first).Union(newLink).ToSet();
+                matrix.Add(node, clusterNode, Similarity(_featureVectors[node],
+                    _featureVectors[clusterNode]));
+                matrix.Remove(node, item1);
+                matrix.Remove(node, item2);
             }
-            return toReturn;
+
+            _featureVectors.Remove(item1);
+            _featureVectors.Remove(item2);
+        }
+
+        public override double Similarity(FeatureVector a, FeatureVector b)
+        {
+            var both = a.Intersect(b);
+            var onlyA = a.Except(b);
+            var onlyB = b.Except(a);
+
+            var MaHalf = both.Sum(x => a[x]/a.Total
+                                       + b[x]/b.Total)*0.5;
+
+            var Mb = onlyA.Sum(x => a[x])/a.Total;
+            var Mc = onlyB.Sum(x => b[x])/b.Total;
+
+            return MaHalf/(MaHalf + Mb + Mc);
         }
     }
 }

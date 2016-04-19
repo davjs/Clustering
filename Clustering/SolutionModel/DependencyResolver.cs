@@ -22,7 +22,7 @@ namespace Clustering.SolutionModel
 
     public static class DependencyResolver
     {
-        public static IEnumerable<DependencyLink> GetDependencies(IEnumerable<ClassNode> allClasses)
+        public static IEnumerable<DependencyLink> GetDependencyList(IEnumerable<ClassNode> allClasses)
         {
             var allClassesBySymbol = allClasses.ToDictionary(x => x.Symbol, x => x);
             foreach (var dependor in allClassesBySymbol.Values)
@@ -42,6 +42,12 @@ namespace Clustering.SolutionModel
                 }
             }
         }
+
+        public static ILookup<Node, Node> GetDependencies(IEnumerable<ClassNode> allClasses)
+            => GetDependencyList(allClasses)
+                .ToLookup(x => x.Dependor,x => x.Dependency);
+        
+
         private static bool SymbolsMatch(ISymbol symbol, ISymbol dependency)
         {
             return Equals(symbol, dependency) ||
