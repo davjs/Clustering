@@ -15,9 +15,16 @@ namespace Clustering.Hierarchichal
 
     public class SiblingLinkWeightedCombined : ClusteringAlgorithm
     {
-        private readonly Dictionary<Node, FeatureVector> _featureVectors;
+        private Dictionary<Node, FeatureVector> _featureVectors;
 
-        public override SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)
+        protected override void Setup(ISet<Node> nodes, ILookup<Node, Node> edges)
+        {
+            _featureVectors = nodes.ToDictionary(
+                dependor => dependor,
+                dependor => new FeatureVector(edges[dependor]));
+        }
+
+        protected override SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)
         {
             var simMatrix = new SimilarityMatrix();
 
@@ -29,9 +36,7 @@ namespace Clustering.Hierarchichal
                 );
 
             foreach (var pair in pairs)
-            {
                 simMatrix.Add(pair.left, pair.right, Similarity(_featureVectors[pair.left], _featureVectors[pair.right]));
-            }
 
             return simMatrix;
         }
@@ -41,20 +46,18 @@ namespace Clustering.Hierarchichal
             SimilarityMatrix matrix)
         {
             _featureVectors.Add(clusterNode, _featureVectors[item1]
-                                      .Merge(_featureVectors[item2]));
+                .Merge(_featureVectors[item2]));
 
             foreach (var node in _nodes.Where(node => node != item1 && node != item2))
             {
-                matrix.Add(node, clusterNode, Similarity(_featureVectors[node], 
-                                                         _featureVectors[clusterNode]));
+                matrix.Add(node, clusterNode, Similarity(_featureVectors[node],
+                    _featureVectors[clusterNode]));
                 matrix.Remove(node, item1);
                 matrix.Remove(node, item2);
             }
 
-
             _featureVectors.Remove(item1);
             _featureVectors.Remove(item2);
-
         }
 
         public override double Similarity(FeatureVector a, FeatureVector b)
@@ -70,14 +73,6 @@ namespace Clustering.Hierarchichal
             var Mc = onlyB.Sum(x => b[x])/b.Total;
 
             return MaHalf/(MaHalf + Mb + Mc);
-        }
-
-        public SiblingLinkWeightedCombined(ISet<Node> nodes, ILookup<Node, Node> edges)
-            : base(nodes, edges)
-        {
-            _featureVectors = nodes.ToDictionary(
-                dependor => dependor, 
-                dependor => new FeatureVector(edges[dependor]));
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
+using Clustering.SolutionModel.Serializing;
 
 namespace Tests.Building
 {
@@ -18,19 +19,13 @@ namespace Tests.Building
 
     public static class ClusterTestSetup
     {
-        public class TestModel
-        {
-            public ISet<Node> Nodes;
-            public ILookup<Node,Node> Dependencies;
-        }
-
-        public static TestModel Setup(string nodeCreationQuery)
+        public static ProjectTreeWithDependencies Setup(string nodeCreationQuery)
         {
             nodeCreationQuery = nodeCreationQuery.Trim();
             nodeCreationQuery = Regex.Replace(nodeCreationQuery, @"[ \r]", "");
             var entries = nodeCreationQuery.Split('\n').ToList();
             var splitEntries =
-                entries.Select(x => x.Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries)).ToList();
+                entries.Select(x => x.Split(new[] {"->"}, StringSplitOptions.RemoveEmptyEntries)).ToList();
 
             var nodes = splitEntries.Select(x => new NamedNode(x[0])).ToList();
             var totalDependencies = new HashSet<DependencyLink>();
@@ -56,9 +51,9 @@ namespace Tests.Building
                 i++;
             }
 
-            return new TestModel
-            { Dependencies = totalDependencies.ToLookup(x => x.Dependor,x => x.Dependency),
-              Nodes = nodes.Cast<Node>().ToSet() };
+            return new ProjectTreeWithDependencies
+                ( nodes.Cast<Node>().ToSet()
+                , totalDependencies.ToLookup(x => x.Dependor, x => x.Dependency));
         }
     }
 
