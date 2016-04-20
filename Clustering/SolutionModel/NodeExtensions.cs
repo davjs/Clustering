@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Clustering.SolutionModel.Nodes;
 
 namespace Clustering.SolutionModel
 {
@@ -17,6 +18,20 @@ namespace Clustering.SolutionModel
 
         public static T WithName<T>(this IEnumerable<T> nodeList, string name) where T : Nodes.Node =>
             nodeList.FirstOrDefault(x => x.Name == name);
+
+        public static IEnumerable<Node> Decendants(this Node me)
+        {
+            foreach (var node in me.Children)
+            {
+                if (!node.Children.Any())
+                    yield return node;
+                else
+                {
+                    foreach (var classNode in node.Decendants())
+                        yield return classNode;
+                }
+            }
+        }
     }
 
     public static class Extensions
