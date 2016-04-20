@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="ClusterBenchmarker.cs" />
     <Compile Include="Cutting\CuttingAlgorithm.cs" />
+    <Compile Include="Cutting\CutTreeInMidle.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\SimilarityThreshold.cs" />
     <Compile Include="Hierarchichal\FeatureVector.cs" />
     <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />

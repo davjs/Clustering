@@ -19,18 +19,41 @@ namespace Clustering.SolutionModel
         public static T WithName<T>(this IEnumerable<T> nodeList, string name) where T : Nodes.Node =>
             nodeList.FirstOrDefault(x => x.Name == name);
 
-        public static IEnumerable<Node> Decendants(this Node me)
+        public static IEnumerable<Node> LeafNodes(this Node me)
         {
-            foreach (var node in me.Children)
+            foreach (var child in me.Children)
             {
-                if (!node.Children.Any())
-                    yield return node;
+                if (child.IsLeafNode())
+                    yield return child;
                 else
                 {
-                    foreach (var classNode in node.Decendants())
+                    foreach (var classNode in child.LeafNodes())
                         yield return classNode;
                 }
             }
+        }
+        
+        public static IEnumerable<Node> LeafClusters(this IEnumerable<Node> nodes)
+        {
+            var clusters = nodes.Where(x => x.Children.Any());
+            var isLeaf = clusters.ToLookup(x => x.IsLeafCluster());
+            return isLeaf[true]
+                .Union(
+                    isLeaf[false].SelectMany(x => x.Children.LeafClusters())
+                );
+        }
+
+        private static bool IsLeafCluster(this Node node) 
+            => node.Children.All(x => x.IsLeafNode());
+
+        private static bool IsLeafNode(this Node node)
+            => !node.Children.Any();
+
+        public static int Height(this ISet<Node> nodes)
+        {
+            if (!nodes.Any())
+                return 0;
+            return nodes.Max(x => Height(x.Children)) + 1;
         }
     }
 

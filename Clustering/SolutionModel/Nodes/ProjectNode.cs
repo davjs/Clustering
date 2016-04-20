@@ -28,8 +28,5 @@ namespace Clustering.SolutionModel.Nodes
 
         public IEnumerable<ClassNode> Classes()
             => Children.Cast<NameSpaceNode>().SelectMany(x => x.Classes());
-
-        public IEnumerable<NameSpaceNode> LeafNamespaces()
-            => Children.Cast<NameSpaceNode>().SelectMany(x => x.Leafnamespaces());
     }
 }
