@@ -10,15 +10,17 @@ namespace Clustering.Hierarchichal
 {
     public class ClusterNode : Node
     {
+        public readonly double _similarity;
         private readonly int _total = 0;
 
         public ClusterNode(IEnumerable<Node> children = null, Node parent = null) : base("$", children, parent)
         {
-            
+
         }
 
-        public ClusterNode(Node a, Node b) : base("$", new List<Node> {a, b}, null)
+        public ClusterNode(double similarity, Node a, Node b) : base($"$({similarity})", new List<Node> {a, b}, null)
         {
+            _similarity = similarity;
         }
 
         public override Node WithChildren(IEnumerable<Node> children)

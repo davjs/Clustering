@@ -27,16 +27,18 @@ namespace Clustering.Hierarchichal
             while (_nodes.Count > 2)
             {
                 var closest = _matrix.GetMostSimilar();
-                CreateCluster(closest.Item1, closest.Item2);
+                var pair = closest.Key;
+                var similarity = closest.Value;
+                CreateCluster(pair.Item1, pair.Item2,similarity);
             }
             return _nodes;
         }
 
-        private void CreateCluster(Node item1, Node item2)
+        private void CreateCluster(Node item1, Node item2, double similarity)
         {
             _nodes.Remove(item1);
             _nodes.Remove(item2);
-            var clusterNode = new ClusterNode(item1, item2);
+            var clusterNode = new ClusterNode(similarity,item1, item2);
             UpdateSimilarityMatrix(item1,item2,clusterNode,_matrix);
             _nodes.Add(clusterNode);
         }
