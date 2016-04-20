@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Clustering.Hierarchichal.CuttingAlgorithms
 {
+    //TODO:
     /*class SimilarityThreshold : IcuttingAlgorithm
     {
         public IEnumerable<ClusterNode> Cut(ISet<ClusterNode> tree,double threshhold)
