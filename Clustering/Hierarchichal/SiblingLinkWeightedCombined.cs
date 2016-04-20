@@ -10,7 +10,7 @@ namespace Clustering.Hierarchichal
 {
     public class SimilarityMatrix : UnorderedMultiKeyDict<Node, double>, ISimilarityMatrix
     {
-        public Tuple<Node, Node> GetMostSimilar() => this.MaxBy(x => x.Value).Key;
+        public KeyValuePair<Tuple<Node, Node>, double> GetMostSimilar() => this.MaxBy(x => x.Value);
     }
 
     public class SiblingLinkWeightedCombined : ClusteringAlgorithm

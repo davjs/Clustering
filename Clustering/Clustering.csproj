@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusterBenchmarker.cs" />
+    <Compile Include="Hierarchichal\CuttingAlgorithms\SimilarityThreshold.cs" />
     <Compile Include="Hierarchichal\FeatureVector.cs" />
     <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />
     <Compile Include="Hierarchichal\ISimilarityMatrix.cs" />
