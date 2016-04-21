@@ -3,28 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Clustering.Cutting;
+using Clustering.SolutionModel;
+using Clustering.SolutionModel.Nodes;
 
 namespace Clustering.Hierarchichal.CuttingAlgorithms
 {
-    //TODO:
-    /*class SimilarityThreshold : IcuttingAlgorithm
+    class SimilarityThreshold : ICuttingAlgorithm
     {
-        public IEnumerable<ClusterNode> Cut(ISet<ClusterNode> tree,double threshhold)
+        private readonly double _threshhold;
+
+        public SimilarityThreshold(double threshhold)
         {
-            foreach (var clusterNode in tree)
-            {
-                if (clusterNode._similarity >= threshhold)
-                    yield return clusterNode;
-                else
-                {
-                    foreach (var x in Cut(clusterNode.Children,threshhold))
-                        yield return x;
-                }
-            }
+            _threshhold = threshhold;
+        }
+
+        public IEnumerable<Node> Cut(ISet<Node> tree)
+        {
+            var clusterNodes = tree.OfType<ClusterNode>();
+            var isAboveThreshold = clusterNodes.ToLookup(x => x._similarity >= _threshhold);
+            return isAboveThreshold[true].Select(x => new NamedNode("$", x.LeafNodes()))
+                .Union(isAboveThreshold[false].SelectMany(x => Cut(x.Children)));
         } 
     }
-
-    internal interface IcuttingAlgorithm
-    {
-    }*/
 }

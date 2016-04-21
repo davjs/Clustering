@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Clustering.SolutionModel.Nodes;
 
@@ -41,7 +42,7 @@ namespace Clustering.SolutionModel.Serializing
         private static string GetNameFromPath(string path)
         {
             var splits = path.Split('\\');
-            splits.Take(splits.Length - 1);
+            //splits.Take(splits.Length - 1);
             return splits.Last();
         }
 
@@ -62,9 +63,7 @@ namespace Clustering.SolutionModel.Serializing
                 nodesByPath.Add(path, withChildren);
                 yield return withChildren;
             }
-            // Should never happen, lets keep this for assurance a while
-            if (notDirectChildren.Any())
-                throw new NotImplementedException();
+            Debug.Assert(notDirectChildren.Count == 0);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Clustering.Cutting
         public IEnumerable<Node> Cut(ISet<Node> tree)
             => CutTreeAtDepth(tree, tree.Height() / 2);
         
-        public static IEnumerable<Node> CutTreeAtDepth(IEnumerable<Node> nodes, int depth)
+        public static IEnumerable<NamedNode> CutTreeAtDepth(IEnumerable<Node> nodes, int depth)
         {
             if (depth == 0)
                 return nodes.Select(x => new NamedNode("$", x.LeafNodes()));
