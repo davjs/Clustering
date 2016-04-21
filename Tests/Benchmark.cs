@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Clustering.Cutting;
 using Clustering.Hierarchichal;
 using Clustering.SolutionModel;
@@ -34,9 +35,10 @@ namespace Tests
 
     class BenchMark
     {
-        public static void Prepare(string solutionDir,string outputDir)
+        public static void Prepare(string solution,string outputDir)
         {
-            
+            var solutionModel = SolutionModelBuilder.FromPath(solution);
+            SolutionModelRasterizer.Write(solutionModel, outputDir);
         }
     }
 
