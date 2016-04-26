@@ -120,6 +120,7 @@
     <Compile Include="Building\TestExtensions.cs" />
     <Compile Include="TestNamespace\TestClasses.cs" />
     <Compile Include="CuttingTest.cs" />
+    <Compile Include="MojoFMTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Clustering\Clustering.csproj">

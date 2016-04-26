@@ -110,6 +110,7 @@
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombined.cs" />
     <Compile Include="Hierarchichal\SimilarityMatrix.cs" />
     <Compile Include="Hierarchichal\UnorderedMultiKeyDict.cs" />
+    <Compile Include="MojoFM\BipartiteGraph.cs" />
     <Compile Include="MojoFM\MojoFM.cs" />
     <Compile Include="SolutionModel\DependencyResolver.cs" />
     <Compile Include="SolutionModel\NodeExtensions.cs" />
