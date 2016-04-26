@@ -1,5 +1,5 @@
 ﻿using System;
-using Clustering.Cutting;
+using Clustering.Hierarchichal.CuttingAlgorithms;
 using Clustering.MojoFM;
 using Clustering.SolutionModel.Serializing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -48,10 +48,10 @@ namespace Tests
                 @A\C\CB\CBB:
             ");
 
-            var cutTreeA = CuttingAlgorithm.GetNodes(treeA.Nodes, 2);
-            var cutTreeB = CuttingAlgorithm.GetNodes(treeB.Nodes, 2);
+            var cutTreeA = CutTreeInMidle.CutTreeAtDepth(treeA.Nodes, 2);
+            var cutTreeB = CutTreeInMidle.CutTreeAtDepth(treeB.Nodes, 2);
 
-            var result = MojoFM.Calc(cutTreeA, cutTreeA);
+            var result = MojoFM.Calc(cutTreeA, cutTreeB);
             ;
         }
     }

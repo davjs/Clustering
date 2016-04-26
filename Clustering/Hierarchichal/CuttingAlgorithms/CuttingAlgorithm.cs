@@ -8,7 +8,7 @@ using Clustering.Hierarchichal;
 using Clustering.SolutionModel.Nodes;
 using MoreLinq;
 
-namespace Clustering.Cutting
+namespace Clustering.Hierarchichal.CuttingAlgorithms
 {
     public interface ICuttingAlgorithm
     {

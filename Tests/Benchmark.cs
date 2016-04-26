@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Clustering.Cutting;
 using Clustering.Hierarchichal;
+using Clustering.Hierarchichal.CuttingAlgorithms;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
 using Clustering.SolutionModel.Serializing;

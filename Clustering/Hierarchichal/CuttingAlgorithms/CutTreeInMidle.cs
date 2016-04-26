@@ -3,7 +3,7 @@ using System.Linq;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
 
-namespace Clustering.Cutting
+namespace Clustering.Hierarchichal.CuttingAlgorithms
 {
     public class CutTreeInMidle : ICuttingAlgorithm
     {

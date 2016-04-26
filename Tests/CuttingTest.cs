@@ -1,5 +1,5 @@
 ﻿using System;
-using Clustering.Cutting;
+using Clustering.Hierarchichal.CuttingAlgorithms;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Serializing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
