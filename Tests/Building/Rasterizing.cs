@@ -4,6 +4,7 @@ using Clustering.SolutionModel;
 using Clustering.SolutionModel.Serializing;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tests.Building.TestExtensions;
 
 namespace Tests.Building
 {
@@ -13,10 +14,23 @@ namespace Tests.Building
         [TestMethod]
         public void Write()
         {
-            var solutionModel = SolutionModelBuilder.FromPath(TestExtensions.SolutionPaths.ThisSolution);
+            var solutionModel = SolutionModelBuilder.FromPath(SolutionPaths.ThisSolution);
             SolutionModelRasterizer.Write(solutionModel, AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Rasterized\\");
         }
 
+        [TestMethod]
+        public void WriteAndRead()
+        {
+            var solutionModel = SolutionModelBuilder.FromPath(SolutionPaths.ThisSolution);
+            var proj1 = solutionModel.Projects().Last();
+            var dependencies = DependencyResolver.GetDependencies(proj1.Classes());
+            var encodedString = Flat.Encode.HierarchicalGraph(proj1.Children,
+            n => n.Children,
+            n => n.Name,
+            n => dependencies[n]);
+            var decodedProj = GraphDecoder.Decode(encodedString);
+            TreeAssert.TreeEquals(proj1.Children, decodedProj.Nodes);
+        }
 
         [TestMethod]
         public void Read()

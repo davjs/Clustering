@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Clustering</RootNamespace>
     <AssemblyName>Clustering</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,8 +29,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Clustering.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Flat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Flat.1.0.0-Prerelease\lib\net461\Flat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Build, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CodeAnalysis, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.1.1\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
@@ -128,10 +134,7 @@
     <Compile Include="SolutionModel\Nodes\Node.cs" />
     <Compile Include="SolutionModel\Integration\ProjectWrapper.cs" />
     <Compile Include="SolutionModel\Nodes\SolutionNode.cs" />
-    <Compile Include="SolutionModel\Serializing\FlatEntry.cs" />
-    <Compile Include="SolutionModel\Serializing\FlatListSerializer.cs" />
-    <Compile Include="SolutionModel\Serializing\GraphDecoder.cs" />
-    <Compile Include="SolutionModel\Serializing\GraphEncoder.cs" />
+    <Compile Include="SolutionModel\Serializing\SHA1Util.cs" />
     <Compile Include="SolutionModel\Serializing\SolutionModelRasterizer.cs" />
     <Compile Include="SolutionModel\SolutionModelBuilder.cs" />
   </ItemGroup>

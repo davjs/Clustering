@@ -1,22 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
 using Clustering.SolutionModel.Serializing;
+using Flat;
+using Extensions = Clustering.SolutionModel.Extensions;
 
-namespace Tests.Building
+namespace Tests.Building.TestExtensions
 {
-    public static class TestExtensions
-    {
-        public static class SolutionPaths
-        {
-            public static readonly string ThisSolution = AppDomain.CurrentDomain.BaseDirectory +
-                                                         "\\..\\..\\..\\Clustering.sln";
-        }
-    }
-
     public static class ClusterTestSetup
     {
         public static ProjectTreeWithDependencies Setup(string nodeCreationQuery)
@@ -52,10 +45,11 @@ namespace Tests.Building
             }
 
             return new ProjectTreeWithDependencies
-                ( nodes.Cast<Node>().ToSet()
-                , totalDependencies.ToLookup(x => x.Dependor, x => x.Dependency));
+                (new TreeWithDependencies<Node>(Extensions.ToSet(nodes.Cast<Node>())
+                    , totalDependencies.ToLookup(x => x.Dependor, x => x.Dependency)));
         }
     }
+
 
     internal class NodeNotFoundInListException : Exception
     {
