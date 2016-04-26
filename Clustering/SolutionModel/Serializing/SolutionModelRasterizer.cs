@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Clustering.SolutionModel.Nodes;
+using Flat;
 
 namespace Clustering.SolutionModel.Serializing
 {
@@ -16,7 +16,7 @@ namespace Clustering.SolutionModel.Serializing
             foreach (var projectNode in solutionModel.Projects())
             {
                 var dependencies = DependencyResolver.GetDependencies(projectNode.Classes());
-                var encodedString = projectNode.Children.EncodeGraph(
+                var encodedString = Encode.HierarchicalGraph(projectNode.Children,
                     n => n.Children,
                     n => n.Name,
                     n => dependencies[n]);
@@ -26,31 +26,28 @@ namespace Clustering.SolutionModel.Serializing
             }
         }
     }
-    
-    public static class SHA1Util
+
+    public class ProjectTreeWithDependencies
     {
-        /// <summary>
-        /// Compute hash for string encoded as UTF8
-        /// </summary>
-        /// <param name="s">String to be hashed</param>
-        /// <returns>40-character hex string</returns>
-        public static string SHA1HashStringForUTF8String(string s)
+        private readonly TreeWithDependencies<Node> _treeWithDependencies;
+        public ISet<Node> Nodes => _treeWithDependencies.Tree;
+        public ILookup<Node, Node> Edges => _treeWithDependencies.Dependencies;
+        public ProjectTreeWithDependencies(TreeWithDependencies<Node> treeWithDependencies)
         {
-            var bytes = Encoding.UTF8.GetBytes(s);
-            using (var sha1 = SHA1.Create())
-            {
-                var hashBytes = sha1.ComputeHash(bytes);
-                return HexStringFromBytes(hashBytes);
-            }
+            _treeWithDependencies = treeWithDependencies;
         }
+    }
 
-        /// <summary>
-        /// Convert an array of bytes to a string of hex digits
-        /// </summary>
-        /// <param name="bytes">array of bytes</param>
-        /// <returns>String of hex digits</returns>
-        private static string HexStringFromBytes(IEnumerable<byte> bytes) =>
-            string.Concat(bytes.Select(b => b.ToString("x2")));
-
+    public static class GraphDecoder
+    {
+        [SuppressMessage("ReSharper", "RedundantArgumentName", Justification = "Explicitness")]
+        public static ProjectTreeWithDependencies Decode(string text)
+        {
+            return
+                new ProjectTreeWithDependencies(
+                    Flat.Decode.HierarchicalGraph<Node>(text,
+                createNodeWithName: name => new NamedNode(name),
+                addChildrenToNode: (previous, childrenToAdd) => previous.WithChildren(childrenToAdd)));
+        }
     }
 }

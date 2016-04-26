@@ -27,12 +27,17 @@ namespace Clustering.SolutionModel
                             possibleParent => Equals(possibleChild.Symbol.ContainingSymbol, possibleParent.Symbol)));
 
             var curLevel = hasParents[false].ToList();
-            var nextLevel = hasParents[true].Union(curLevel.SelectMany(x => x.GetChildSymbols()));
+            var nextLevel = hasParents[true].Union(curLevel.SelectMany(x => x.GetChildSymbols())).ToSet();
 
-            var children =
-                GetNodesForNextLevel(curLevel.Select(x => x.Symbol).ToImmutableHashSet(),
-                    nextLevel);
-            
+
+
+            IEnumerable<SymbolNode> children = new List<SymbolNode>();
+            if(nextLevel.Any())
+            {
+                children = GetNodesForNextLevel(curLevel.Select(x => x.Symbol).ToImmutableHashSet(),
+                nextLevel);
+            }
+
             var firstLocationPerSymbol = curLevel.GroupBy(x => x.Symbol).Select(x => x.First());
 
             return firstLocationPerSymbol.Select(location =>
@@ -46,7 +51,7 @@ namespace Clustering.SolutionModel
             if (!previousLevel.Any())
                 throw new NotImplementedException();
             var isCurrentLevel =
-                possiblyNextLevel.ToLookup(x => previousLevel.Contains(x.Symbol.ContainingSymbol));
+                possiblyNextLevel.ToLookup(x => x.Symbol.isChildOfAnyIn(previousLevel));
             //.Any(y => Equals(y, x.Symbol.ContainingSymbol)));
             var currentLevel = isCurrentLevel[true].ToList();
             // These might be subjects to deeper levels
@@ -65,6 +70,27 @@ namespace Clustering.SolutionModel
             return firstLocationPerSymbol.Select(location => NodeFromLocation(location)
                     .WithChildren(children.Where(x => Equals(x.Symbol.ContainingSymbol, location.Symbol)))
                     as SymbolNode);
+        }
+
+        private static bool isChildOfAnyIn(this ISymbol child, ISet<INamespaceOrTypeSymbol> possibleParents)
+            => possibleParents.Any(x => Equals2(x,child.ContainingSymbol));
+        
+
+        public static bool Equals2(ISymbol symbol,ISymbol symbol2)
+        {
+            var asnSpace = symbol as INamespaceSymbol;
+            var asnSpace2 = symbol2 as INamespaceSymbol;
+            //  None is namespace
+            if (asnSpace == null && asnSpace2 == null)
+                return Equals(symbol, symbol2);
+            // Left is namespace
+            if (asnSpace != null && asnSpace2 == null)
+                return asnSpace.ConstituentNamespaces.Contains(symbol2);
+            // Right is namespace
+            if (asnSpace == null)
+                return asnSpace2.ConstituentNamespaces.Contains(symbol);
+            // Both namespaces
+            return asnSpace.ConstituentNamespaces.Intersect(asnSpace2.ConstituentNamespaces).Any();
         }
 
         public class SymbolLocation

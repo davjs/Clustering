@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Flat">
+      <HintPath>..\packages\Flat.1.0.0-Prerelease\lib\net461\Flat.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions, Version=4.2.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.4.2.2\lib\net45\FluentAssertions.dll</HintPath>
       <Private>True</Private>
@@ -113,12 +116,13 @@
     <Compile Include="Benchmark.cs" />
     <Compile Include="Building\BuilderTests.cs" />
     <Compile Include="Building\Rasterizing.cs" />
+    <Compile Include="Building\TestExtensions\ClusterTestSetup.cs" />
+    <Compile Include="Building\TestExtensions\TreeAssert.cs" />
     <Compile Include="ClusteringTest.cs" />
     <Compile Include="Building\Dependencies.cs" />
     <Compile Include="Expirement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Building\TestExtensions.cs" />
-    <Compile Include="TestNamespace\TestClasses.cs" />
+    <Compile Include="Building\TestExtensions\SolutionPaths.cs" />
     <Compile Include="CuttingTest.cs" />
     <Compile Include="MojoFMTest.cs" />
   </ItemGroup>

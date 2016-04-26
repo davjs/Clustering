@@ -64,7 +64,9 @@ namespace Clustering.SolutionModel
             if (projectNode.ProjectProperties.Id == null)
                 return new List<Node>();
             //var id = ProjectId.CreateFromSerialized(projectNode.ProjectProperties.Id.Value);
-            var proj = _solution.Projects.First(x => x.FilePath == projectNode.ProjectProperties.Path);
+            var proj = _solution.Projects.FirstOrDefault(x => x.FilePath == projectNode.ProjectProperties.Path);
+            if(proj == null)
+                return new List<Node>();
             var semanticModels = proj.Documents.Select(d => d.GetSemanticModelAsync().Result).ToList();
             return SemanticModelWalker.GetClassTree(semanticModels).ToList();
         }

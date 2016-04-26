@@ -3,6 +3,7 @@ using Clustering.SolutionModel.Nodes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tests.Building;
+using Tests.Building.TestExtensions;
 
 namespace Tests
 {
