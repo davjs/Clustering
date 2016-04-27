@@ -47,7 +47,7 @@ namespace Clustering.SolutionModel
             => node.Children.All(x => x.IsLeafNode());
 
         private static bool IsLeafNode(this Node node)
-            => !node.Children.Any();
+            => node.Children.Count == 0;
 
         public static int Height(this ISet<Node> nodes)
         {

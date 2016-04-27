@@ -28,4 +28,12 @@ namespace Clustering.Hierarchichal
             return new ClusterNode(children);
         }
     }
+
+    public class SingletonCluster : ClusterNode
+    {
+        public SingletonCluster(Node child) : base(new List<Node> {child})
+        {
+
+        }
+    }
 }
