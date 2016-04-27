@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Clustering.Hierarchichal;
+using Clustering.Hierarchichal.CuttingAlgorithms;
+using Clustering.SimilarityMetrics.MojoFM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -20,5 +23,14 @@ namespace Tests
                 "F:\\Experiments\\Output\\");
         }
     */
+
+        [TestMethod]
+        public void RunBenchmark()
+        {
+            var bm = new Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>();
+            var results = bm.Run(@"C:\Users\Galdiuz\git\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Tests.Common");
+            ;
+        }
     }
+
 }

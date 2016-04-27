@@ -1,7 +1,8 @@
 ﻿using System;
 using Clustering.Hierarchichal.CuttingAlgorithms;
-using Clustering.MojoFM;
+using Clustering.SimilarityMetrics.MojoFM;
 using Clustering.SolutionModel.Serializing;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -51,8 +52,9 @@ namespace Tests
             var cutTreeA = CutTreeInMidle.CutTreeAtDepth(treeA.Nodes, 2);
             var cutTreeB = CutTreeInMidle.CutTreeAtDepth(treeB.Nodes, 2);
 
-            var result = MojoFM.Calc(cutTreeA, cutTreeB);
-            ;
+            var result = new MojoFM().Calc(cutTreeA, cutTreeB);
+
+            result.Should().Be(40);
         }
     }
 }

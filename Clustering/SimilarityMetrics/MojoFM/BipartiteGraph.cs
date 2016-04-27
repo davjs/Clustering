@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Clustering.MojoFM
+namespace Clustering.SimilarityMetrics.MojoFM
 {
     public class Vertex
     {
@@ -121,16 +117,9 @@ namespace Clustering.MojoFM
             return false;
         }
 
-        private bool IsLeft(int point)
-        {
-            if (point < left) return true;
-            return false;
-        }
+        private bool IsLeft(int point) => point < left;
 
-        private bool IsRight(int point)
-        {
-            if (point > left - 1) return true;
-            return false;
-        }
+        private bool IsRight(int point) => point > left - 1;
+        
     }
 }

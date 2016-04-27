@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
-using System.Threading.Tasks;
 using Clustering.SolutionModel.Nodes;
 using MoreLinq;
 
-namespace Clustering.MojoFM
+namespace Clustering.SimilarityMetrics.MojoFM
 {
-    public class MojoFM
+    public class MojoFM : ISimilarityMectric
     {
-        public static double Calc(IEnumerable<Node> inA, IEnumerable<Node> inB)
+        public double Calc(IEnumerable<Node> inA, IEnumerable<Node> inB)
         {
             // Calculating mno(A, B):
             // For each node in A, assign which cluster the node is in in B
