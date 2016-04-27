@@ -7,7 +7,7 @@ namespace Clustering.SolutionModel.Nodes
     {
         public abstract ISymbol Symbol { get;}
 
-        public SymbolNode(string name, IEnumerable<Node> children, Node parent) : base(name, children, parent)
+        public SymbolNode(string name, IEnumerable<Node> children) : base(name, children)
         {
         }
     }

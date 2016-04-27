@@ -13,24 +13,19 @@ namespace Clustering.Hierarchichal
         public readonly double _similarity;
         private readonly int _total = 0;
 
-        public ClusterNode(IEnumerable<Node> children = null, Node parent = null) : base("$", children, parent)
+        public ClusterNode(IEnumerable<Node> children = null) : base("$", children)
         {
 
         }
 
-        public ClusterNode(double similarity, Node a, Node b) : base($"$({similarity})", new List<Node> {a, b}, null)
+        public ClusterNode(double similarity, Node a, Node b) : base($"$({similarity})", new List<Node> {a, b})
         {
             _similarity = similarity;
         }
 
         public override Node WithChildren(IEnumerable<Node> children)
         {
-            return new ClusterNode(children, Parent);
-        }
-
-        public override Node WithParent(Node parent)
-        {
-            return new ClusterNode(Children, parent);
+            return new ClusterNode(children);
         }
     }
 }

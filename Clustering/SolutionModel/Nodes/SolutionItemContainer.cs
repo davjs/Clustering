@@ -24,7 +24,7 @@ namespace Clustering.SolutionModel.Nodes
             }
         }
 
-        public SolutionItemContainer(string name, IEnumerable<Node> children, Node parent) : base(name, children, parent)
+        public SolutionItemContainer(string name, IEnumerable<Node> children) : base(name, children)
         {
         }
     }

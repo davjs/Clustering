@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Clustering.Hierarchichal;
@@ -20,8 +21,15 @@ namespace Tests
             var content = File.ReadAllText(inputFIle);
             var treeWithDeps = GraphDecoder.Decode(content);
             var leafNamespaces = treeWithDeps.Nodes.LeafClusters();
+            var leafNodes = treeWithDeps.Nodes.SelectMany(x => x.LeafNodes()).ToSet();
 
-            var clusteredResults = new TClusterAlg().Cluster(treeWithDeps.Nodes,treeWithDeps.Edges);
+
+            var admin = leafNodes.WithName("AdminAuthHub");
+            var deps = treeWithDeps.Edges[admin];
+            var admin2 = treeWithDeps.Edges.ToList()[0].Key;
+            Debug.Assert(admin == admin2);
+
+            var clusteredResults = new TClusterAlg().Cluster(leafNodes, treeWithDeps.Edges);
             var cutClusters = new TCuttingAlg().Cut(clusteredResults);
             return new TMetric().Calc(leafNamespaces,cutClusters);
         }

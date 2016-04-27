@@ -9,7 +9,7 @@ namespace Clustering.SolutionModel.Nodes
     {
         public override ISymbol Symbol { get; }
 
-        public NameSpaceNode(ISymbol symbol, IEnumerable<Node> children = null, Node parent = null) : base(symbol.Name, children, parent)
+        public NameSpaceNode(ISymbol symbol, IEnumerable<Node> children = null) : base(symbol.Name, children)
         {
             Symbol = symbol;
         }
@@ -17,11 +17,6 @@ namespace Clustering.SolutionModel.Nodes
         public override Node WithChildren(IEnumerable<Node> children)
         {
             return new NameSpaceNode(Symbol, children);
-        }
-
-        public override Node WithParent(Node parent)
-        {
-            return new NameSpaceNode(Symbol, Children, parent);
         }
 
         public IEnumerable<ClassNode> Classes()

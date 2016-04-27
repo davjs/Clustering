@@ -12,7 +12,7 @@ namespace Clustering.SolutionModel.Nodes
     {
         public readonly ProjectWrapper ProjectProperties;
 
-        public ProjectNode(ProjectWrapper wrapper,IEnumerable<Node> children = null, Node parent = null) : base(wrapper.Name,children,parent)
+        public ProjectNode(ProjectWrapper wrapper,IEnumerable<Node> children = null) : base(wrapper.Name,children)
         {
             ProjectProperties = wrapper;
         }
@@ -22,9 +22,6 @@ namespace Clustering.SolutionModel.Nodes
 
         public override Node WithChildren(IEnumerable<Node> children)
             => new ProjectNode(ProjectProperties, children);
-        
-        public override Node WithParent(Node parent) 
-            => new ProjectNode(ProjectProperties, Children, parent);
 
         public IEnumerable<ClassNode> Classes()
             => Children.Cast<NameSpaceNode>().SelectMany(x => x.Classes());

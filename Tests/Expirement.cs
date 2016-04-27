@@ -28,7 +28,7 @@ namespace Tests
         public void RunBenchmark()
         {
             var bm = new Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>();
-            var results = bm.Run(@"C:\Users\Galdiuz\git\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Tests.Common");
+            var results = bm.Run(@"C:\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Tests.Common");
             ;
         }
     }

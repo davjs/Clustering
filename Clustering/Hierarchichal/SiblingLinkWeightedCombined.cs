@@ -56,6 +56,8 @@ namespace Clustering.Hierarchichal
                 matrix.Remove(node, item2);
             }
 
+            matrix.Remove(item1, item2);
+
             _featureVectors.Remove(item1);
             _featureVectors.Remove(item2);
         }
@@ -72,7 +74,9 @@ namespace Clustering.Hierarchichal
             var Mb = onlyA.Sum(x => a[x])/a.Total;
             var Mc = onlyB.Sum(x => b[x])/b.Total;
 
-            return MaHalf/(MaHalf + Mb + Mc);
+            if (MaHalf + Mb + Mc <= 0) return 0;
+            // MaHalf + Mb + Mc > 0
+            return MaHalf / (MaHalf + Mb + Mc);
         }
     }
 }

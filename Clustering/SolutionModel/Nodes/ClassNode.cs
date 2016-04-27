@@ -25,7 +25,7 @@ namespace Clustering.SolutionModel.Nodes
         public readonly ClassInfo ClassProperties;
 
         public ClassNode(ClassInfo classInfo
-            ,IEnumerable<Node> children = null, Node parent = null) : base(classInfo.Symbol.Name,children,parent)
+            ,IEnumerable<Node> children = null) : base(classInfo.Symbol.Name,children)
         {
             ClassProperties = classInfo;
         }
@@ -33,11 +33,6 @@ namespace Clustering.SolutionModel.Nodes
         public override Node WithChildren(IEnumerable<Node> children)
         {
             return new ClassNode(ClassProperties, children);
-        }
-
-        public override Node WithParent(Node parent)
-        {
-            return new ClassNode(ClassProperties, Children,parent);
         }
 
         public override ISymbol Symbol => ClassProperties.Symbol;
