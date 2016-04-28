@@ -40,6 +40,12 @@ namespace Tests
             return new TMetric().Calc(cutClusters, leafNamespaces);
         }
 
+        public IEnumerable<BenchMarkResult> RunAllInFolder(string folderName)
+        {
+            var files = Directory.GetFiles(folderName);
+            return files.Select(file => new BenchMarkResult(file,Run(file)));
+        }
+
         private ProjectTreeWithDependencies GetLeafNamespaces(ProjectTreeWithDependencies treeWithDeps)
         {
             var leafNamespaces = treeWithDeps.Nodes.LeafClusters().ToImmutableHashSet();
@@ -51,6 +57,18 @@ namespace Tests
                 .ToLookup(x => x.Key,x => x.node);
 
             return new ProjectTreeWithDependencies(new TreeWithDependencies<Node>(leafNamespaces, newDependencyLookUp));
+        }
+    }
+
+    internal class BenchMarkResult
+    {
+        public string ProjectName;
+        public double Accuracy;
+
+        public BenchMarkResult(string projectName, double accuracy)
+        {
+            Accuracy = accuracy;
+            ProjectName = projectName;
         }
     }
 
