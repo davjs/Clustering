@@ -113,7 +113,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Benchmark.cs" />
     <Compile Include="Building\BuilderTests.cs" />
     <Compile Include="Building\Rasterizing.cs" />
     <Compile Include="Building\TestExtensions\ClusterTestSetup.cs" />

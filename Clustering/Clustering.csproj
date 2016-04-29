@@ -107,7 +107,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClusterBenchmarker.cs" />
+    <Compile Include="Benchmark.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\CuttingAlgorithm.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\CutTreeInMidle.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\SimilarityThreshold.cs" />

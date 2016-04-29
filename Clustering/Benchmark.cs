@@ -10,19 +10,16 @@ using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
 using Clustering.SolutionModel.Serializing;
 using Flat;
-using FluentAssertions;
 
-namespace Tests
+namespace Clustering
 {
-    class Benchmark<TClusterAlg,TCuttingAlg,TMetric> 
+    public class Benchmark<TClusterAlg,TCuttingAlg,TMetric> 
         where TClusterAlg : ClusteringAlgorithm, new()
         where TCuttingAlg : ICuttingAlgorithm, new()
         where TMetric : ISimilarityMectric, new ()                                     
     {
-        public double Run(string inputFIle)
+        public double Run(ProjectTreeWithDependencies treeWithDeps)
         {
-            var content = File.ReadAllText(inputFIle);
-            var treeWithDeps = GraphDecoder.Decode(content);
             var leafNamespacesWithDependencies = GetLeafNamespaces(treeWithDeps);
             var leafNamespaces = leafNamespacesWithDependencies.Nodes;
 
@@ -43,7 +40,13 @@ namespace Tests
         public IEnumerable<BenchMarkResult> RunAllInFolder(string folderName)
         {
             var files = Directory.GetFiles(folderName);
-            return files.Select(file => new BenchMarkResult(file,Run(file)));
+            var notTests = files.Where(x => x.Contains("test"));
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var file in notTests)
+            {
+                var projectGraph = GraphDecoder.Decode(File.ReadAllText(file));
+                yield return new BenchMarkResult(file, Run(projectGraph));
+            }
         }
 
         private ProjectTreeWithDependencies GetLeafNamespaces(ProjectTreeWithDependencies treeWithDeps)
@@ -60,7 +63,7 @@ namespace Tests
         }
     }
 
-    internal class BenchMarkResult
+    public class BenchMarkResult
     {
         public string ProjectName;
         public double Accuracy;

@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Clustering;
 using Clustering.Hierarchichal;
 using Clustering.Hierarchichal.CuttingAlgorithms;
 using Clustering.SimilarityMetrics.MojoFM;
+using Clustering.SolutionModel.Serializing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
 {
     [TestClass]
-    public class Experiment
+    public class Benchmark
     {
     /*
         -- PREPARE EXPERIMENT EXAMPLE --
@@ -27,9 +30,9 @@ namespace Tests
         [TestMethod]
         public void RunBenchmark()
         {
-            var bm = new Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>();
-            var results = bm.Run(@"C:\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Tests.Common");
-            ;
+            var benchmark = new Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>();
+            var project = GraphDecoder.Decode(File.ReadAllText(@"C:\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Tests.Common"));
+            var results = benchmark.Run(project);
         }
     }
 
