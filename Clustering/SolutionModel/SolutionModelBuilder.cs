@@ -68,7 +68,7 @@ namespace Clustering.SolutionModel
             if(proj == null)
                 return new List<Node>();
             var semanticModels = proj.Documents.Select(d => d.GetSemanticModelAsync().Result).ToList();
-            return SemanticModelWalker.GetClassTree(semanticModels).ToList();
+            return SemanticModelWalker.GetSymbolTreeFromModels(semanticModels).ToList();
         }
     }
     

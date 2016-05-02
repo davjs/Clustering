@@ -116,6 +116,7 @@
     <Compile Include="Building\BuilderTests.cs" />
     <Compile Include="Building\Rasterizing.cs" />
     <Compile Include="Building\TestExtensions\ClusterTestSetup.cs" />
+    <Compile Include="Building\TestExtensions\RoslynFaker.cs" />
     <Compile Include="Building\TestExtensions\TreeAssert.cs" />
     <Compile Include="ClusteringTest.cs" />
     <Compile Include="Building\Dependencies.cs" />

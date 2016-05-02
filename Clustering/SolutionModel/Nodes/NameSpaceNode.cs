@@ -9,14 +9,15 @@ namespace Clustering.SolutionModel.Nodes
     {
         public override ISymbol Symbol { get; }
 
-        public NameSpaceNode(ISymbol symbol, IEnumerable<Node> children = null) : base(symbol.Name, children)
+        // ReSharper disable once SuggestBaseTypeForParameter
+        public NameSpaceNode(INamespaceSymbol symbol, IEnumerable<Node> children = null) : base(symbol.Name, children)
         {
             Symbol = symbol;
         }
 
         public override Node WithChildren(IEnumerable<Node> children)
         {
-            return new NameSpaceNode(Symbol, children);
+            return new NameSpaceNode(Symbol as INamespaceSymbol, children);
         }
 
         public IEnumerable<ClassNode> Classes()

@@ -6,12 +6,13 @@ using System.Linq;
 using Clustering.SolutionModel.Nodes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MoreLinq;
 
 namespace Clustering.SolutionModel
 {
     public static class SemanticModelWalker
     {
-        public static IEnumerable<SymbolNode> GetClassTree(IEnumerable<SemanticModel> semanticModels)
+        public static IEnumerable<SymbolNode> GetSymbolTreeFromModels(IEnumerable<SemanticModel> semanticModels)
         {
             var locations = semanticModels.SelectMany(
                 model =>
@@ -20,30 +21,61 @@ namespace Clustering.SolutionModel
                         .Select(syntaxNode => new SymbolLocation(model, syntaxNode))).ToImmutableHashSet();
 
             // Remove all that have a parent
-            var hasParents = locations
+            var foundMatchingParent = locations
                 .ToLookup(
                     possibleChild =>
                         locations.Any(
                             possibleParent => Equals(possibleChild.Symbol.ContainingSymbol, possibleParent.Symbol)));
 
-            var curLevel = hasParents[false].ToList();
-            var nextLevel = hasParents[true].Union(curLevel.SelectMany(x => x.GetChildSymbols())).ToSet();
+            var unMatchedParents = foundMatchingParent[false].Select(x => x.Symbol as INamespaceSymbol).ToSet();
 
+            var nextLevelTargets =
+                foundMatchingParent[true].Union(foundMatchingParent[false].SelectMany(x => x.GetChildSymbols()))
+                    .ToList();
+            
+            var stillHasParents = foundMatchingParent[false].Where(IsInsideNonGlobalNamespace).ToList();
 
-
-            IEnumerable<SymbolNode> children = new List<SymbolNode>();
-            if(nextLevel.Any())
+            var rootLevelTargets = unMatchedParents
+                .Except(stillHasParents.Symbols().Cast<INamespaceSymbol>()).ToMutableSet();
+            
+            //Unfortunately we need to walk up namespace nodes that doesn't have their own dedicated declaration
+            foreach (var it in stillHasParents.ToList())
             {
-                children = GetNodesForNextLevel(curLevel.Select(x => x.Symbol).ToImmutableHashSet(),
-                nextLevel);
+                var mayHaveParent= it;
+                while (mayHaveParent.ParentNamespace().IsInsideNonGlobalNamespace())
+                {
+                    var didHaveParent = new SymbolWithoutLocation(mayHaveParent.ParentNamespace());
+                    stillHasParents.Add(didHaveParent);
+                    mayHaveParent = didHaveParent;
+                }
+                // Found a namespace root, add it to current level
+                rootLevelTargets.Add(mayHaveParent.ParentNamespace());
             }
 
-            var firstLocationPerSymbol = curLevel.GroupBy(x => x.Symbol).Select(x => x.First());
+            IEnumerable<SymbolNode> nextLevelResults = new List<SymbolNode>();
+            if(nextLevelTargets.Any())
+            {
+                nextLevelResults = GetNodesForNextLevel(rootLevelTargets.Cast<INamespaceOrTypeSymbol>().ToSet()
+                    , nextLevelTargets.Union(stillHasParents));
+            }
 
-            return firstLocationPerSymbol.Select(location =>
-                NodeFromLocation(location)
-                    .WithChildren(children.Where(x => Equals(x.Symbol.ContainingSymbol, location.Symbol))) as SymbolNode);
+            return rootLevelTargets.Select(symbol =>
+                new NameSpaceNode(symbol)
+                    .WithChildren(nextLevelResults.Where(x => x.Symbol.IsChildOf(symbol))) as SymbolNode);
         }
+
+        private static bool IsInsideNonGlobalNamespace(this SymbolLocation x)
+            => x.Symbol.IsInsideNonGlobalNamespace();
+        
+        private static bool IsInsideNonGlobalNamespace(this ISymbol x)
+            => x.ContainingNamespace != null &&
+                   !x.ContainingNamespace.IsGlobalNamespace;
+
+        public static ISet<INamespaceSymbol> ParentNamespaces (this IEnumerable<SymbolLocation> symbols)
+            => symbols.Select(x => x.Symbol.ContainingNamespace).ToSet();
+
+        public static IEnumerable<INamespaceOrTypeSymbol> Symbols(this IEnumerable<SymbolLocation> symbolLocations)
+            => symbolLocations.Select(x => x.Symbol);
 
         private static IEnumerable<SymbolNode> GetNodesForNextLevel(ISet<INamespaceOrTypeSymbol> previousLevel,
             IEnumerable<SymbolLocation> possiblyNextLevel)
@@ -64,7 +96,7 @@ namespace Clustering.SolutionModel
             if (nextLevel.Any())
                 children = GetNodesForNextLevel(symbolsForThisLevel.ToImmutableHashSet(), nextLevel).ToList();
 
-            //Distinct by symbol, TODO: Add morelinq and use DistinctBy(x => x.Symbol)
+            //Distinct by symbol, TODO: Add morelinq and use DistinctBy(x => possibleParent.Symbol)
             var firstLocationPerSymbol = currentLevel.GroupBy(x => x.Symbol).Select(x => x.First());
 
             return firstLocationPerSymbol.Select(location => NodeFromLocation(location)
@@ -73,8 +105,11 @@ namespace Clustering.SolutionModel
         }
 
         private static bool isChildOfAnyIn(this ISymbol child, ISet<INamespaceOrTypeSymbol> possibleParents)
-            => possibleParents.Any(x => Equals2(x,child.ContainingSymbol));
-        
+            => possibleParents.Any(child.IsChildOf);
+
+        private static bool IsChildOf(this ISymbol child, INamespaceOrTypeSymbol possibleParent) 
+            => Equals2(possibleParent,child.ContainingSymbol);
+
 
         public static bool Equals2(ISymbol symbol,ISymbol symbol2)
         {
@@ -93,11 +128,24 @@ namespace Clustering.SolutionModel
             return asnSpace.ConstituentNamespaces.Intersect(asnSpace2.ConstituentNamespaces).Any();
         }
 
+        public class SymbolWithoutLocation : SymbolLocation
+        {
+            public SymbolWithoutLocation(INamespaceOrTypeSymbol symbol)
+            {
+                Symbol = symbol;
+            }
+
+            public override IEnumerable<SymbolLocation> GetChildSymbols()
+                => new List<SymbolLocation>();
+        }
+
         public class SymbolLocation
         {
             public readonly SemanticModel Document;
-            public readonly INamespaceOrTypeSymbol Symbol;
+            public INamespaceOrTypeSymbol Symbol;
             public readonly SyntaxNode SyntaxNode;
+
+            protected SymbolLocation() { }
 
             public SymbolLocation(SemanticModel document, SyntaxNode syntaxNode)
             {
@@ -107,18 +155,24 @@ namespace Clustering.SolutionModel
                 Symbol = Document.GetDeclaredSymbol(syntaxNode) as INamespaceOrTypeSymbol;
             }
 
-            public IEnumerable<SymbolLocation> GetChildSymbols() =>
+            public virtual IEnumerable<SymbolLocation> GetChildSymbols() =>
                 SyntaxNode.ChildNodes().Where(x =>
                     x is ClassDeclarationSyntax ||
                     x is NamespaceDeclarationSyntax)
                     .Select(x =>
                         new SymbolLocation(Document, x));
+
+            public override string ToString()
+                => Symbol + " : " + SyntaxNode.SyntaxTree.FilePath;
+
+            public INamespaceSymbol ParentNamespace()
+                => Symbol.ContainingNamespace;
         }
 
         private static SymbolNode NodeFromLocation(SymbolLocation location)
         {
             if (location.Symbol is INamespaceSymbol)
-                return new NameSpaceNode(location.Symbol);
+                return new NameSpaceNode(location.Symbol as INamespaceSymbol);
             if (location.Symbol is INamedTypeSymbol)
                 return CreateClassNode(location.Document, location.SyntaxNode as ClassDeclarationSyntax);
             throw new NotImplementedException();
