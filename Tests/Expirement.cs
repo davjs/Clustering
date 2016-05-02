@@ -31,8 +31,10 @@ namespace Tests
         public void RunBenchmark()
         {
             var benchmark = new Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>();
-            var project = GraphDecoder.Decode(File.ReadAllText(@"C:\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Tests.Common"));
-            var results = benchmark.Run(project);
+            //var project = GraphDecoder.Decode(File.ReadAllText(@"C:\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Client.Store"));
+            //var results = benchmark.Run(project);
+            var results = benchmark.RunAllInFolder(@"C:\parsed-csharp-repos\SignalR\").ToList();
+            ;
         }
     }
 
