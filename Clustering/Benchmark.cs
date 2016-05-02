@@ -75,7 +75,7 @@ namespace Clustering
         }
     }
 
-    class BenchMark
+    public class BenchMark
     {
         public static void Prepare(string solution,string outputDir)
         {

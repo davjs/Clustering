@@ -22,6 +22,7 @@ namespace Clustering.SolutionModel.Serializing
                     n => dependencies[n]);
                 var sha1 = SHA1Util.SHA1HashStringForUTF8String(encodedString);
                 var finalString = sha1 + "\n" + encodedString;
+                Directory.CreateDirectory(path);
                 File.WriteAllText(path + projectNode.Name + ".flat", finalString);
             }
         }
