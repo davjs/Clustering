@@ -25,7 +25,7 @@ namespace Clustering.SolutionModel
                 .ToLookup(
                     possibleChild =>
                         locations.Any(
-                            possibleParent => Equals2(possibleChild.Symbol.ContainingSymbol, possibleParent.Symbol)));
+                            possibleParent => SymbolEquals(possibleChild.Symbol.ContainingSymbol, possibleParent.Symbol)));
 
             var unMatchedParents = foundMatchingParent[false].Select(x => x.Symbol as INamespaceSymbol).ToSet();
 
@@ -108,10 +108,10 @@ namespace Clustering.SolutionModel
             => possibleParents.Any(child.IsChildOf);
 
         private static bool IsChildOf(this ISymbol child, INamespaceOrTypeSymbol possibleParent) 
-            => Equals2(possibleParent,child.ContainingSymbol);
+            => SymbolEquals(possibleParent,child.ContainingSymbol);
 
 
-        public static bool Equals2(ISymbol symbol,ISymbol symbol2)
+        public static bool SymbolEquals(ISymbol symbol,ISymbol symbol2)
         {
             var asnSpace = symbol as INamespaceSymbol;
             var asnSpace2 = symbol2 as INamespaceSymbol;
