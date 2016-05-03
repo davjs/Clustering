@@ -16,24 +16,39 @@ namespace Tests
     [TestClass]
     public class Benchmark
     {
-    
-        //-- PREPARE EXPERIMENT EXAMPLE --
-
-        [TestMethod]
-        public void Experiment1()
+        private readonly Dictionary<string, string> _solutionPaths =
+        new Dictionary<string, string>
         {
-            BenchMark.Prepare(@"C:\dev\MonoGame\MonoGame.Framework.Windows.sln", @"C:\dev\ParsedC-Repos\MonoGame\");
-        }
-    
+            {"MonoGame","MonoGame.Framework.Windows.sln"}
+        };
+        private static string ParsedRepoLocation(string repoName) =>
+            $@"{LocalPathConfig.ParsedDataLocation}\{repoName}\";
 
-        [TestMethod]
-        public void RunBenchmark()
+        public void PrepareExperiment(string repoName)
+        {
+            BenchMark.Prepare($@"{LocalPathConfig.RepoLocations}\{repoName}\{_solutionPaths[repoName]}", 
+                ParsedRepoLocation(repoName));
+        }
+
+
+        public List<BenchMarkResult> RunBenchMark(string repoName)
         {
             var benchmark = new Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>();
-            //var project = GraphDecoder.Decode(File.ReadAllText(@"C:\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Client.Store"));
-            //var results = benchmark.Run(project);
-            var results = benchmark.RunAllInFolder(@"C:\dev\ParsedC-Repos\MonoGame\").ToList();
-            ;
+            return benchmark.RunAllInFolder(ParsedRepoLocation(repoName)).ToList();
+        }
+
+        // TESTS
+        
+        [TestMethod]
+        public void PrepareMonoData()
+        {
+            PrepareExperiment("MonoGame");
+        }
+
+        [TestMethod]
+        public void RunBenchmarkTest()
+        {
+            var result = RunBenchMark("MonoGame");
         }
     }
 

@@ -43,7 +43,7 @@ namespace Clustering.SimilarityMetrics.MojoFM
             {
                 foreach (var nodeInCluster in clusterInB.Children)
                 {
-                    dictB.Add(nodeInCluster.Name, clusterInB);
+                    dictB.Add((nodeInCluster as PathedNode).Path, clusterInB);
                 }
             }
             
@@ -55,7 +55,7 @@ namespace Clustering.SimilarityMetrics.MojoFM
                 var children = a[i].Children.ToList();
                 foreach (var node in children)
                 {
-                    int indexInB = b.IndexOf(dictB[node.Name]);
+                    int indexInB = b.IndexOf(dictB[(node as PathedNode).Path]);
                     graph.AddEdge(i, l + indexInB);
                 }
             }
@@ -109,7 +109,7 @@ namespace Clustering.SimilarityMetrics.MojoFM
                 groupscount[index]++;
 
                 // Get the count of the most common tag in a
-                int maxCount = a[i].Children.Select(node => b.IndexOf(dictB[node.Name])).GroupBy(x => x).MaxBy(x => x.Count()).Count();
+                int maxCount = a[i].Children.Select(node => b.IndexOf(dictB[(node as PathedNode).Path])).GroupBy(x => x).MaxBy(x => x.Count()).Count();
 
                 moves += a[i].Children.Count - maxCount;
             }

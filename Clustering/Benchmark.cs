@@ -77,6 +77,7 @@ namespace Clustering
 
     public class BenchMark
     {
+
         public static void Prepare(string solution,string outputDir)
         {
             var solutionModel = SolutionModelBuilder.FromPath(solution);
