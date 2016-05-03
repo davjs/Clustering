@@ -69,13 +69,7 @@ namespace Clustering.SimilarityMetrics.MojoFM
             {
                 grouptags.Add(i, null);
             }
-
-            /*for (int i = 0; i < l; i++)
-            {
-                mappings.Add(a[i], 0);
-            }*/
-
-
+            
             for (int i = l; i < l + m; i++)
             {
                 if (graph.Vertices[i].Matched)
@@ -94,7 +88,6 @@ namespace Clustering.SimilarityMetrics.MojoFM
             {
                 int index;
                 if (!mappings.TryGetValue(a[i], out index)) index = -1;
-                //int index = mappings[a[i]];
                 if(index == -1) continue;
                 if (groupscount[index] == 0)
                 {
@@ -127,8 +120,8 @@ namespace Clustering.SimilarityMetrics.MojoFM
                 if (groupnumber < i) groupnumber++;
             }
             long maxDis = objectsInA - groupnumber;
-
-            return Math.Round((1 - (double) totalcost/(double) maxDis)*10000)/100;
+            
+            return totalcost == 0 ? 100 : Math.Round((1 - (double) totalcost/(double) maxDis)*10000)/100;
         }
     }
 }
