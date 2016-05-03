@@ -191,7 +191,8 @@ namespace Clustering.SolutionModel
             IEnumerable<TypeSyntax> basetypes = new List<TypeSyntax>();
             if (c.BaseList != null && c.BaseList.Types.Any())
                 basetypes = c.BaseList.Types.Select(x => x.Type);
-            return new ClassNode(new ClassInfo(basetypes, nrOfMethods, dependencies, declaredSymbol));
+            return new ClassNode(new ClassInfo(basetypes, nrOfMethods, dependencies, declaredSymbol,
+                c.TypeParameterList));
         }
     }
 }
