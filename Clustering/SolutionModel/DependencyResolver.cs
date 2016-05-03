@@ -18,6 +18,20 @@ namespace Clustering.SolutionModel
             Dependor = dependor;
             Dependency = dependency;
         }
+        
+        protected bool Equals(DependencyLink other)
+        {
+            return Equals(Dependor, other.Dependor) && Equals(Dependency, other.Dependency);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Dependor?.GetHashCode() ?? 0)*397) ^ 
+                    (Dependency?.GetHashCode() ?? 0);
+            }
+        }
     }
 
     public static class DependencyResolver
@@ -44,7 +58,7 @@ namespace Clustering.SolutionModel
         }
 
         public static ILookup<Node, Node> GetDependencies(IEnumerable<ClassNode> allClasses)
-            => GetDependencyList(allClasses)
+            => GetDependencyList(allClasses).Distinct()
                 .ToLookup(x => x.Dependor,x => x.Dependency);
         
 

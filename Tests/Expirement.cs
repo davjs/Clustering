@@ -16,16 +16,15 @@ namespace Tests
     [TestClass]
     public class Benchmark
     {
-    /*
-        -- PREPARE EXPERIMENT EXAMPLE --
+    
+        //-- PREPARE EXPERIMENT EXAMPLE --
 
         [TestMethod]
         public void Experiment1()
         {
-            BenchMark.Prepare("F:\\Experiments\\SignalR\\Microsoft.AspNet.SignalR.sln",
-                "F:\\Experiments\\Output\\");
+            BenchMark.Prepare(@"C:\dev\MonoGame\MonoGame.Framework.Windows.sln", @"C:\dev\ParsedC-Repos\MonoGame\");
         }
-    */
+    
 
         [TestMethod]
         public void RunBenchmark()
@@ -33,7 +32,7 @@ namespace Tests
             var benchmark = new Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>();
             //var project = GraphDecoder.Decode(File.ReadAllText(@"C:\parsed-csharp-repos\SignalR\Microsoft.AspNet.SignalR.Client.Store"));
             //var results = benchmark.Run(project);
-            var results = benchmark.RunAllInFolder(@"C:\parsed-csharp-repos\SignalR\").ToList();
+            var results = benchmark.RunAllInFolder(@"C:\dev\ParsedC-Repos\MonoGame\").ToList();
             ;
         }
     }

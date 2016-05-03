@@ -21,7 +21,7 @@ namespace Clustering.Hierarchichal
         {
             _featureVectors = nodes.ToDictionary(
                 dependor => dependor,
-                dependor => new FeatureVector(edges[dependor]));
+                dependor => new FeatureVector(edges[dependor].ToSet()));
         }
 
         protected override SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)

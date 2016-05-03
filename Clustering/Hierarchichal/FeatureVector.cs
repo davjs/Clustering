@@ -16,7 +16,7 @@ namespace Clustering.Hierarchichal
             _dict = dict;
         }
 
-        public FeatureVector(IEnumerable<Node> deps)
+        public FeatureVector(ISet<Node> deps)
         {
             Total = 1;
             _dict = deps.ToDictionary(x => x, x => 1);

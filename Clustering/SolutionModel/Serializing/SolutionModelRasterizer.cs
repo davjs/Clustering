@@ -47,7 +47,7 @@ namespace Clustering.SolutionModel.Serializing
             return
                 new ProjectTreeWithDependencies(
                     Flat.Decode.HierarchicalGraph<Node>(text,
-                createNodeWithName: name => new NamedNode(name),
+                createNodeWithName: (name,path) => new PathedNode(name,path),
                 addChildrenToNode: (previous, childrenToAdd) => previous.WithChildren(childrenToAdd)));
         }
     }
