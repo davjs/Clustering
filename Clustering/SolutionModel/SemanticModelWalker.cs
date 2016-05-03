@@ -25,7 +25,7 @@ namespace Clustering.SolutionModel
                 .ToLookup(
                     possibleChild =>
                         locations.Any(
-                            possibleParent => Equals(possibleChild.Symbol.ContainingSymbol, possibleParent.Symbol)));
+                            possibleParent => Equals2(possibleChild.Symbol.ContainingSymbol, possibleParent.Symbol)));
 
             var unMatchedParents = foundMatchingParent[false].Select(x => x.Symbol as INamespaceSymbol).ToSet();
 
