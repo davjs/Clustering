@@ -31,7 +31,7 @@ namespace Clustering.Hierarchichal
 
     public class SingletonCluster : ClusterNode
     {
-        public SingletonCluster(Node child) : base(new List<Node> {child})
+        public SingletonCluster(Node child) : base(new HashSet<Node> {child})
         {
 
         }

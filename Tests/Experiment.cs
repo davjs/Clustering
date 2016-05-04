@@ -22,10 +22,11 @@ namespace Tests
             new Dictionary<string, Repository>
         {
                 {"MonoGame", new Repository("MonoGame", "Mono", "MonoGame.Framework.Windows.sln") },
-                {"octokit.net", new Repository("octokit.net", "octokit", "Octokit.sln") }
+                {"octokit.net", new Repository("octokit.net", "octokit", "Octokit.sln") },
+                {"DotNetOpenAuth", new Repository("DotNetOpenAuth", "DotNetOpenAuth", "src\\DotNetOpenAuth.sln") }
         };
 
-        private string currentRepoToTest = "octokit.net";
+        private string currentRepoToTest = "DotNetOpenAuth";
 
         // TESTS
         [TestMethod]

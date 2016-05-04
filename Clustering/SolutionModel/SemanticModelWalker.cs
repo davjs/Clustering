@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Clustering.SolutionModel.Nodes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -45,12 +47,15 @@ namespace Clustering.SolutionModel
                 while (mayHaveParent.ParentNamespace().IsInsideNonGlobalNamespace())
                 {
                     var didHaveParent = new SymbolWithoutLocation(mayHaveParent.ParentNamespace());
-                    stillHasParents.Add(didHaveParent);
+                    if(!stillHasParents.Any(x => SymbolEquals(x.Symbol, didHaveParent.Symbol)))
+                        stillHasParents.Add(didHaveParent);
                     mayHaveParent = didHaveParent;
                 }
-                // Found a namespace root, add it to current level
-                rootLevelTargets.Add(mayHaveParent.ParentNamespace());
-            }
+                // Found a new unique namespace root, add it to current level
+                var parentNamespace = mayHaveParent.ParentNamespace();
+                if (!rootLevelTargets.Any(x => SymbolEquals(x, parentNamespace)))
+                    rootLevelTargets.Add(parentNamespace);
+            };
 
             IEnumerable<SymbolNode> nextLevelResults = new List<SymbolNode>();
             if(nextLevelTargets.Any())
@@ -61,7 +66,7 @@ namespace Clustering.SolutionModel
 
             return rootLevelTargets.Select(symbol =>
                 new NameSpaceNode(symbol)
-                    .WithChildren(nextLevelResults.Where(x => x.Symbol.IsChildOf(symbol))) as SymbolNode);
+                    .WithChildren(nextLevelResults.Where(x => x.Symbol.IsChildOf(symbol)).Cast<Node>().ToSet()) as SymbolNode);
         }
 
         private static bool IsInsideNonGlobalNamespace(this SymbolLocation x)
@@ -100,7 +105,7 @@ namespace Clustering.SolutionModel
             var firstLocationPerSymbol = currentLevel.GroupBy(x => x.Symbol).Select(x => x.First());
 
             return firstLocationPerSymbol.Select(location => NodeFromLocation(location)
-                    .WithChildren(children.Where(x => Equals(x.Symbol.ContainingSymbol, location.Symbol)))
+                    .WithChildren(children.Where(x => Equals(x.Symbol.ContainingSymbol, location.Symbol)).Cast<Node>().ToSet())
                     as SymbolNode);
         }
 
@@ -138,7 +143,7 @@ namespace Clustering.SolutionModel
             public override IEnumerable<SymbolLocation> GetChildSymbols()
                 => new List<SymbolLocation>();
         }
-
+        
         public class SymbolLocation
         {
             public readonly SemanticModel Document;
