@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -19,11 +20,12 @@ namespace Clustering
         where TCuttingAlg : ICuttingAlgorithm, new()
         where TMetric : ISimilarityMectric, new ()                       
     {
-        public double Run(ProjectTreeWithDependencies treeWithDeps)
+        private double Run(ProjectTreeWithDependencies treeWithDeps)
         {
             var leafNamespacesWithDependencies = GetLeafNamespaces(treeWithDeps);
             var leafNamespaces = leafNamespacesWithDependencies.Nodes;
-
+            if (leafNamespaces.Count < 2)
+                throw new NotEnoughLeafNamespacesException();
             var leafNodes = leafNamespaces.SelectMany(x => x.Children).ToImmutableHashSet();
 
             var clusteredResults = new TClusterAlg().Cluster(leafNodes, leafNamespacesWithDependencies.Edges);
@@ -48,7 +50,18 @@ namespace Clustering
             {
                 var projectName = Path.GetFileNameWithoutExtension(file);
                 var projectGraph = GraphDecoder.Decode(File.ReadAllText(file));
-                yield return new BenchMarkResult(projectName, Run(projectGraph));
+                BenchMarkResult benchMarkResult;
+                try
+                {
+                    var accuracy = Run(projectGraph);
+                    benchMarkResult = new BenchMarkResult(projectName, accuracy);
+                }
+                // Skip if less than 2 leaf namespaces
+                catch (NotEnoughLeafNamespacesException e)
+                {
+                    benchMarkResult = new BenchMarkResult(projectName,e);
+                }
+                yield return benchMarkResult;
             }
         }
 
@@ -66,21 +79,42 @@ namespace Clustering
         }
     }
 
+    public class NotEnoughLeafNamespacesException : Exception
+    {
+        public NotEnoughLeafNamespacesException() : base("NOT_ENOUGH_LEAF_NAMESPACES")
+        {
+            
+        }
+    }
+
     public class BenchMarkResult
     {
-        public string ProjectName;
-        public double Accuracy;
+        public readonly string ProjectName;
+        private readonly Exception _exception;
+        public readonly double Accuracy;
 
         public BenchMarkResult(string projectName, double accuracy)
         {
             Accuracy = accuracy;
             ProjectName = projectName;
         }
+        
+        public BenchMarkResult(string projectName, Exception exception)
+        {
+            ProjectName = projectName;
+            _exception = exception;
+        }
+
+        public override string ToString()
+        {
+            var rightHandSide = _exception?.Message
+                    ?? Accuracy.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            return $"{ProjectName} : {rightHandSide}";
+        }
     }
 
-    public class BenchMark
+    public static class BenchMark
     {
-
         public static void Prepare(string solution,string outputDir)
         {
             var solutionModel = SolutionModelBuilder.FromPath(solution);

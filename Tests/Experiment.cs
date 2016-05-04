@@ -26,7 +26,7 @@ namespace Tests
                 {"DotNetOpenAuth", new Repository("DotNetOpenAuth", "DotNetOpenAuth", "src\\DotNetOpenAuth.sln") }
         };
 
-        private string currentRepoToTest = "DotNetOpenAuth";
+        private string currentRepoToTest = "MonoGame";
 
         // TESTS
         [TestMethod]

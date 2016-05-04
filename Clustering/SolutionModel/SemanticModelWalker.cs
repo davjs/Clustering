@@ -104,15 +104,15 @@ namespace Clustering.SolutionModel
             //Distinct by symbol, TODO: Add morelinq and use DistinctBy(x => possibleParent.Symbol)
             var firstLocationPerSymbol = currentLevel.GroupBy(x => x.Symbol).Select(x => x.First());
 
-            return firstLocationPerSymbol.Select(location => NodeFromLocation(location)
-                    .WithChildren(children.Where(x => Equals(x.Symbol.ContainingSymbol, location.Symbol)).Cast<Node>().ToSet())
+            return firstLocationPerSymbol.Select(parent => NodeFromLocation(parent)
+                    .WithChildren(children.Where(child => child.Symbol.IsChildOf(parent.Symbol)).Cast<Node>().ToSet())
                     as SymbolNode);
         }
 
         private static bool isChildOfAnyIn(this ISymbol child, ISet<INamespaceOrTypeSymbol> possibleParents)
             => possibleParents.Any(child.IsChildOf);
 
-        private static bool IsChildOf(this ISymbol child, INamespaceOrTypeSymbol possibleParent) 
+        private static bool IsChildOf(this ISymbol child, ISymbol possibleParent) 
             => SymbolEquals(possibleParent,child.ContainingSymbol);
 
 

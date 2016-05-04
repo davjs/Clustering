@@ -27,14 +27,12 @@ namespace Tests
             where TMetric : ISimilarityMectric, new()
         {
             var dataFolder = ParsedRepoLocation(repo);
-            var outputFolder = Paths.SolutionFolder + $@"BenchMarkResults\{repo.Name}\";
+            var outputFolder = Paths.SolutionFolder + @"BenchMarkResults\";
             var outputFile = outputFolder + $"{repo.Name}.Results";
             var benchMarkResults = benchMarkConfig.RunAllInFolder(dataFolder);
 
             Directory.CreateDirectory(outputFolder);
-            File.WriteAllLines(outputFile, benchMarkResults.Select(
-                x => $"{x.ProjectName} : {x.Accuracy}"
-            ));
+            File.WriteAllLines(outputFile, benchMarkResults.Select(x => x.ToString()));
         }
 
         public static void Prepare(Repository repo)
