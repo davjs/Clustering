@@ -94,7 +94,7 @@ namespace Clustering.SimilarityMetrics.MojoFM
                     nonempty++;
                 }
 
-                if (grouptags[index] == null)
+                if (!grouptags.ContainsKey(index))
                 {
                     grouptags[index] = a[i];
                 }
