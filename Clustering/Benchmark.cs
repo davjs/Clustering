@@ -41,7 +41,8 @@ namespace Clustering
         public IEnumerable<BenchMarkResult> RunAllInFolder(string folderName)
         {
             var files = Directory.GetFiles(folderName);
-            var notTests = files.Where(x => !x.ToLower().Contains("test"));
+            var notTests = files.Where(x => !x.ToLower().Contains("test")
+                                        && x.ToLower().EndsWith(".flat"));
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var file in notTests)
             {
