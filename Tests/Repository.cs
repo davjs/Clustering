@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    class Repository
+    public class Repository
     {
-        public string Name { get; set; }
-        public string Owner { get; set; }
-        public string Solution { get; set; }
+        public string Name { get; }
+        public string Owner { get; }
+        public string Solution { get; }
 
         public Repository(string name, string owner, string solution)
         {

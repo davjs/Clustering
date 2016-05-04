@@ -12,7 +12,7 @@ namespace Tests.Building
         [TestMethod]
         public void FindsClasses()
         {
-            var solutionModel = SolutionModelBuilder.FromPath(SolutionPaths.ThisSolution);
+            var solutionModel = SolutionModelBuilder.FromPath(Paths.ThisSolution);
 
             var projects = solutionModel.Projects().ToList();
             

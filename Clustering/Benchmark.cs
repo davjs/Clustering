@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
@@ -13,10 +14,10 @@ using Flat;
 
 namespace Clustering
 {
-    public class Benchmark<TClusterAlg,TCuttingAlg,TMetric> 
+    public class Benchmark<TClusterAlg,TCuttingAlg,TMetric>
         where TClusterAlg : ClusteringAlgorithm, new()
         where TCuttingAlg : ICuttingAlgorithm, new()
-        where TMetric : ISimilarityMectric, new ()                                     
+        where TMetric : ISimilarityMectric, new ()                       
     {
         public double Run(ProjectTreeWithDependencies treeWithDeps)
         {
@@ -44,8 +45,9 @@ namespace Clustering
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var file in notTests)
             {
+                var projectName = Path.GetFileNameWithoutExtension(file);
                 var projectGraph = GraphDecoder.Decode(File.ReadAllText(file));
-                yield return new BenchMarkResult(file, Run(projectGraph));
+                yield return new BenchMarkResult(projectName, Run(projectGraph));
             }
         }
 

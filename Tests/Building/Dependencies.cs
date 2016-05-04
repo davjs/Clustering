@@ -12,7 +12,7 @@ namespace Tests.Building
         [TestMethod]
         public void ResolvesDependencies()
         {
-            var solutionModel = SolutionModelBuilder.FromPath(TestExtensions.SolutionPaths.ThisSolution);
+            var solutionModel = SolutionModelBuilder.FromPath(TestExtensions.Paths.ThisSolution);
             var allClasses = solutionModel.Projects().SelectMany(x => x.Classes()).ToList();
             var dependencies = DependencyResolver.GetDependencyList(allClasses).ToList();
 
