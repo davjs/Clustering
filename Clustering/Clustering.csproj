@@ -107,7 +107,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Benchmark.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\CuttingAlgorithm.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\CutTreeInMidle.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\SimilarityThreshold.cs" />
@@ -139,10 +138,11 @@
     <Compile Include="SolutionModel\Serializing\SHA1Util.cs" />
     <Compile Include="SolutionModel\Serializing\SolutionModelRasterizer.cs" />
     <Compile Include="SolutionModel\SolutionModelBuilder.cs" />
-    <Compile Include="X.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />

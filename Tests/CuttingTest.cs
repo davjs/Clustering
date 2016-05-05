@@ -30,9 +30,7 @@ namespace Tests
                 @A\C\CB\CBA:
                 @A\C\CB\CBB:
             ");
-            var cutTree = CutTreeInMidle.CutTreeAtDepth(tree.Nodes, 1).ToSet();
-
-            ;
+            var cutTree = CutTreeInMidle.CutTreeAtDepth(tree.Nodes, 1).ToSet();;
         }
     }
 }

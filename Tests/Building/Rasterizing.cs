@@ -14,14 +14,14 @@ namespace Tests.Building
         [TestMethod]
         public void Write()
         {
-            var solutionModel = SolutionModelBuilder.FromPath(Paths.ThisSolution);
+            var solutionModel = SolutionModelBuilder.FromPath(Paths.Shared.ThisSolution);
             SolutionModelRasterizer.Write(solutionModel, AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Rasterized\\");
         }
 
         [TestMethod]
         public void WriteAndRead()
         {
-            var solutionModel = SolutionModelBuilder.FromPath(Paths.ThisSolution);
+            var solutionModel = SolutionModelBuilder.FromPath(Paths.Shared.ThisSolution);
             var proj1 = solutionModel.Projects().Last();
             var dependencies = DependencyResolver.GetDependencies(proj1.Classes());
             var encodedString = Flat.Encode.HierarchicalGraph(proj1.Children,

@@ -37,6 +37,11 @@ namespace Clustering.SolutionModel.Serializing
         {
             _treeWithDependencies = treeWithDependencies;
         }
+
+        public ProjectTreeWithDependencies(ISet<Node> tree, ILookup<Node, Node> dependencies)
+        {
+            _treeWithDependencies = new TreeWithDependencies<Node>(tree, dependencies);
+        }
     }
 
     public static class GraphDecoder

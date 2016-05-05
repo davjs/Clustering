@@ -12,14 +12,14 @@ namespace Tests.Building
         [TestMethod]
         public void FindsClasses()
         {
-            var solutionModel = SolutionModelBuilder.FromPath(Paths.ThisSolution);
+            var solutionModel = SolutionModelBuilder.FromPath(Paths.Shared.ThisSolution);
 
             var projects = solutionModel.Projects().ToList();
             
             // Assert that we find ourselves
             projects
                 .Should()
-                .Contain(x => x.Name == "Tests")
+                .Contain(x => x.Name == "ClusteringTests")
                 .Which.Classes()
                 .Should()
                 .Contain(x => x.Name == "BuilderTests");

@@ -24,8 +24,14 @@ namespace Clustering.SolutionModel
         private readonly string _name;
         private readonly string _path;
 
-        private static Solution GetRoslynSolutionFromPath(string path) =>
-            MSBuildWorkspace.Create().OpenSolutionAsync(path).Result;
+        // IF EMPTY: http://stackoverflow.com/questions/25070323/roslyn-workspace-opensolutionasync-projects-always-empty
+        private static Solution GetRoslynSolutionFromPath(string path)
+        {
+            var openSolutionAsync = MSBuildWorkspace.Create().OpenSolutionAsync(path);
+            openSolutionAsync.Wait();
+            var roslynSolutionFromPath = openSolutionAsync.Result;
+            return roslynSolutionFromPath;
+        }
 
         public static SolutionNode FromPath(string path) => 
             new SolutionModelBuilder(path).BuildSolutionModel();
@@ -38,6 +44,9 @@ namespace Clustering.SolutionModel
         private IEnumerable<Node> GetProjectTreeFromPath(string path)
         {
             path = Path.GetFullPath(path);
+            if(!_solution.Projects.Any())
+                throw new Exception("Unable to access projects");
+
             var solFile = SolutionFile.Parse(path);
 
             var projects = solFile.ProjectsInOrder.ToList();
@@ -63,7 +72,6 @@ namespace Clustering.SolutionModel
         {
             if (projectNode.ProjectProperties.Id == null)
                 return new List<Node>();
-            //var id = ProjectId.CreateFromSerialized(projectNode.ProjectProperties.Id.Value);
             var proj = _solution.Projects.FirstOrDefault(x => x.FilePath == projectNode.ProjectProperties.Path);
             if(proj == null)
                 return new List<Node>();
