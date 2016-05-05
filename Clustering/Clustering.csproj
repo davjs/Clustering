@@ -139,7 +139,6 @@
     <Compile Include="SolutionModel\Serializing\SHA1Util.cs" />
     <Compile Include="SolutionModel\Serializing\SolutionModelRasterizer.cs" />
     <Compile Include="SolutionModel\SolutionModelBuilder.cs" />
-    <Compile Include="X.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -23,10 +23,11 @@ namespace Tests
         {
                 {"MonoGame", new Repository("MonoGame", "Mono", "MonoGame.Framework.Windows.sln") },
                 {"octokit.net", new Repository("octokit.net", "octokit", "Octokit.sln") },
-                {"DotNetOpenAuth", new Repository("DotNetOpenAuth", "DotNetOpenAuth", "src\\DotNetOpenAuth.sln") }
+                {"DotNetOpenAuth", new Repository("DotNetOpenAuth", "DotNetOpenAuth", "src\\DotNetOpenAuth.sln") },
+                {"SignalR", new Repository("SignalR", "SignalR", "Microsoft.AspNet.SignalR.sln") }
         };
 
-        private string currentRepoToTest = "MonoGame";
+        private string currentRepoToTest = "SignalR";
 
         // TESTS
         [TestMethod]
@@ -38,7 +39,7 @@ namespace Tests
         [TestMethod]
         public void RunBenchmarkTest()
         {
-            var markConfig = new SolutionBenchmark.WeightedCombinedStatic();
+            var markConfig = new SolutionBenchmark.WeightedCombinedStaticMojoFM();
             SolutionBenchmark.RunAllInFolder(markConfig,_repositories[currentRepoToTest]);
         }
     }

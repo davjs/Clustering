@@ -96,18 +96,30 @@ namespace Clustering.SolutionModel
 
             nextLevel = nextLevel.Union(currentLevel.SelectMany(x => x.GetChildSymbols())).ToList();
 
-            var symbolsForThisLevel = currentLevel.Select(x => x.Symbol).Distinct();
+            var symbolsForThisLevel = DistinctSymbols(currentLevel.Select(x => x.Symbol));
             var children = new List<SymbolNode>();
             if (nextLevel.Any())
-                children = GetNodesForNextLevel(symbolsForThisLevel.ToImmutableHashSet(), nextLevel).ToList();
+                children = GetNodesForNextLevel(symbolsForThisLevel, nextLevel).ToList();
 
-            //Distinct by symbol, TODO: Add morelinq and use DistinctBy(x => possibleParent.Symbol)
-            var firstLocationPerSymbol = currentLevel.GroupBy(x => x.Symbol).Select(x => x.First());
+            var firstLocationPerSymbol = symbolsForThisLevel
+                .Select(x => currentLevel.First(y => SymbolEquals(y.Symbol, x)));
 
             return firstLocationPerSymbol.Select(parent => NodeFromLocation(parent)
                     .WithChildren(children.Where(child => child.Symbol.IsChildOf(parent.Symbol)).Cast<Node>().ToSet())
                     as SymbolNode);
         }
+
+        private static ISet<INamespaceOrTypeSymbol> DistinctSymbols(this IEnumerable<INamespaceOrTypeSymbol> symbols)
+        {
+            var uniqueSymbols = new HashSet<INamespaceOrTypeSymbol>();
+            // ReSharper disable once LoopCanBePartlyConvertedToQuery, IT CANNOT
+            foreach (var symbol in symbols)
+            {
+                if (!uniqueSymbols.Any(x => SymbolEquals(x, symbol)))
+                    uniqueSymbols.Add(symbol);
+            }
+            return uniqueSymbols;
+        } 
 
         private static bool isChildOfAnyIn(this ISymbol child, ISet<INamespaceOrTypeSymbol> possibleParents)
             => possibleParents.Any(child.IsChildOf);
@@ -115,6 +127,18 @@ namespace Clustering.SolutionModel
         private static bool IsChildOf(this ISymbol child, ISymbol possibleParent) 
             => SymbolEquals(possibleParent,child.ContainingSymbol);
 
+        class SymbolEqualityComparer : IEqualityComparer<ISymbol>
+        {
+            public bool Equals(ISymbol x, ISymbol y)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int GetHashCode(ISymbol obj)
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public static bool SymbolEquals(ISymbol symbol,ISymbol symbol2)
         {

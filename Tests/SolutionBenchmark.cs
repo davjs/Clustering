@@ -13,7 +13,7 @@ namespace Tests
 {
     public class SolutionBenchmark
     {
-        public class WeightedCombinedStatic : Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>{}
+        public class WeightedCombinedStaticMojoFM : Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>{}
 
         private static string ParsedRepoLocation(Repository repo) =>
             $@"{LocalPathConfig.ParsedDataLocation}\{repo.Owner}\{repo.Name}\";
