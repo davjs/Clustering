@@ -29,7 +29,7 @@ namespace Tests.Building
             n => n.Name,
             n => dependencies[n]);
             var decodedProj = GraphDecoder.Decode(encodedString);
-            TreeAssert.TreeEquals(proj1.Children, decodedProj.Nodes);
+            TreeAssert.TreeEquals(proj1.Children, decodedProj.Tree);
         }
 
         [TestMethod]
@@ -125,7 +125,7 @@ namespace Tests.Building
             var projectModel = GraphDecoder.Decode(text);
 
 
-            var clustering = projectModel.Nodes.First();
+            var clustering = projectModel.Tree.First();
 
             clustering.Name.Should().Be("Clustering");
             clustering.Children.Should().Contain(x => x.Name == "ClusterBenchmarker");

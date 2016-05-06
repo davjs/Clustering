@@ -28,13 +28,26 @@ namespace Clustering.SolutionModel.Serializing
         }
     }
 
+    public class NonNestedClusterGraph
+    {
+        public readonly ISet<Node> Clusters;
+        public readonly ILookup<Node, Node> Edges;
+        public NonNestedClusterGraph(ISet<Node> clusters, ILookup<Node, Node> edges)
+        {
+            Clusters = clusters;
+            Edges = edges;
+        }
+    }
+
     public class ProjectTreeWithDependencies
     {
+        public readonly string Name;
         private readonly TreeWithDependencies<Node> _treeWithDependencies;
         public ISet<Node> Nodes => _treeWithDependencies.Tree;
         public ILookup<Node, Node> Edges => _treeWithDependencies.Dependencies;
-        public ProjectTreeWithDependencies(TreeWithDependencies<Node> treeWithDependencies)
+        public ProjectTreeWithDependencies(string name,TreeWithDependencies<Node> treeWithDependencies)
         {
+            Name = name;
             _treeWithDependencies = treeWithDependencies;
         }
     }
@@ -42,13 +55,12 @@ namespace Clustering.SolutionModel.Serializing
     public static class GraphDecoder
     {
         [SuppressMessage("ReSharper", "RedundantArgumentName", Justification = "Explicitness")]
-        public static ProjectTreeWithDependencies Decode(string text)
+        public static TreeWithDependencies<Node> Decode(string text)
         {
             return
-                new ProjectTreeWithDependencies(
                     Flat.Decode.HierarchicalGraph<Node>(text,
                 createNodeWithName: (name,path) => new PathedNode(name,path),
-                addChildrenToNode: (previous, childrenToAdd) => previous.WithChildren(childrenToAdd)));
+                addChildrenToNode: (previous, childrenToAdd) => previous.WithChildren(childrenToAdd));
         }
     }
 }

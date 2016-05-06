@@ -45,7 +45,7 @@ namespace Tests.Building.TestExtensions
             }
 
             return new ProjectTreeWithDependencies
-                (new TreeWithDependencies<Node>(Extensions.ToSet(nodes.Cast<Node>())
+                ("unknownName",new TreeWithDependencies<Node>(Extensions.ToSet(nodes.Cast<Node>())
                     , totalDependencies.ToLookup(x => x.Dependor, x => x.Dependency)));
         }
     }

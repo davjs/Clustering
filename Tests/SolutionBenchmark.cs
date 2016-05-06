@@ -3,36 +3,47 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Clustering;
+using Clustering.Benchmarking;
 using Clustering.Hierarchichal;
 using Clustering.Hierarchichal.CuttingAlgorithms;
-using Clustering.SimilarityMetrics;
 using Clustering.SimilarityMetrics.MojoFM;
+using Clustering.SolutionModel.Serializing;
 using Tests.Building.TestExtensions;
 
 namespace Tests
 {
     public class SolutionBenchmark
     {
-        public class WeightedCombinedStaticMojoFM : Benchmark<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>{}
+        public class WeightedCombinedStaticMojoFM : BenchmarkConfig<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>{
+            public WeightedCombinedStaticMojoFM() : base("WCA-Halfcut-MojoFM")
+            {
+            }
+        }
 
         private static string ParsedRepoLocation(Repository repo) =>
             $@"{LocalPathConfig.ParsedDataLocation}\{repo.Owner}\{repo.Name}\";
         private static string RepositoryLocation(Repository repo) =>
             $@"{LocalPathConfig.RepoLocations}\{repo.Name}\{repo.Solution}";
 
-        public static void RunAllInFolder<TClusterAlg, TCuttingAlg, TMetric>
-            (Benchmark<TClusterAlg, TCuttingAlg, TMetric> benchMarkConfig,Repository repo)
-            where TClusterAlg : ClusteringAlgorithm, new()
-            where TCuttingAlg : ICuttingAlgorithm, new()
-            where TMetric : ISimilarityMectric, new()
+        public static void RunAllInFolder(IEnumerable<IBenchmarkConfig> benchMarkConfigs,Repository repo)
         {
             var dataFolder = ParsedRepoLocation(repo);
             var outputFolder = Paths.SolutionFolder + @"BenchMarkResults\";
             var outputFile = outputFolder + $"{repo.Name}.Results";
-            var benchMarkResults = benchMarkConfig.RunAllInFolder(dataFolder);
+            var projectGraphsInFolder = BenchMark.GetProjectGraphsInFolder(dataFolder);
 
+            var text = new List<string>();
+
+            foreach (var benchMarkConfig in benchMarkConfigs)
+            {
+                var benchMarkResults = BenchMark.RunAllInFolder(benchMarkConfig, projectGraphsInFolder);
+                var thisConfigResults = benchMarkResults.Select(x => x.ToString());
+                text.Add($"  -- {benchMarkConfig.Name} -- :");
+                text.AddRange(thisConfigResults);
+            }
+            
             Directory.CreateDirectory(outputFolder);
-            File.WriteAllLines(outputFile, benchMarkResults.Select(x => x.ToString()));
+            File.WriteAllLines(outputFile, text);
         }
 
         public static void Prepare(Repository repo)

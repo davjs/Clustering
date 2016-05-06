@@ -107,7 +107,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Benchmark.cs" />
+    <Compile Include="Benchmarking\BenchMark.cs" />
+    <Compile Include="Benchmarking\BenchmarkConfig.cs" />
+    <Compile Include="Benchmarking\BenchMarkResult.cs" />
+    <Compile Include="Benchmarking\BenchMarkResultsEntry.cs" />
+    <Compile Include="Benchmarking\IBenchmarkConfig.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\CuttingAlgorithm.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\CutTreeInMidle.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\SimilarityThreshold.cs" />

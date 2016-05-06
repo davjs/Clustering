@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Clustering;
+using Clustering.Benchmarking;
 using Clustering.Hierarchichal;
 using Clustering.Hierarchichal.CuttingAlgorithms;
 using Clustering.SimilarityMetrics.MojoFM;
@@ -27,7 +28,13 @@ namespace Tests
                 {"SignalR", new Repository("SignalR", "SignalR", "Microsoft.AspNet.SignalR.sln") }
         };
 
-        private string currentRepoToTest = "SignalR";
+        private string currentRepoToTest = "Fail";
+
+        // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
+        private readonly IEnumerable<string> _availibleParsedData = new List<string>()
+        {
+            "MonoGame","DotNetOpenAuth","SignalR"
+        };
 
         // TESTS
         [TestMethod]
@@ -37,10 +44,22 @@ namespace Tests
         }
 
         [TestMethod]
-        public void RunBenchmarkTest()
+        public void RunSpecificBenchmark()
         {
             var markConfig = new SolutionBenchmark.WeightedCombinedStaticMojoFM();
-            SolutionBenchmark.RunAllInFolder(markConfig,_repositories[currentRepoToTest]);
+            SolutionBenchmark.RunAllInFolder(new List<IBenchmarkConfig> {markConfig}, _repositories[currentRepoToTest]);
+        }
+
+        [TestMethod]
+        public void BenchAllAvailibleData()
+        {
+            var markConfig = new SolutionBenchmark.WeightedCombinedStaticMojoFM();
+            foreach (var repo in _availibleParsedData)
+            {
+                SolutionBenchmark.RunAllInFolder(
+                    new List<IBenchmarkConfig> { markConfig },
+                    _repositories[repo]);
+            }
         }
     }
 

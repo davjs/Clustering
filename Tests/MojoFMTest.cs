@@ -31,12 +31,12 @@ namespace Tests
                 @CB\CBB:
             ");
 
-            var leafNodes = treeA.Nodes.SelectMany(x => x.Children);
+            var leafNodes = treeA.Tree.SelectMany(x => x.Children);
 
             var treeBNodes = leafNodes.Reverse().ChunkBy(2)
                 .Select(x => new ClusterNode().WithChildren(x));
 
-            var result = new MojoFM().Calc(treeA.Nodes, treeBNodes);
+            var result = new MojoFM().Calc(treeA.Tree, treeBNodes);
 
             result.Should().Be(100);
         }
