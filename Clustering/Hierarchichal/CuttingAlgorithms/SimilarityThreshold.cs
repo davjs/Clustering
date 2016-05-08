@@ -8,21 +8,25 @@ using Clustering.SolutionModel.Nodes;
 
 namespace Clustering.Hierarchichal.CuttingAlgorithms
 {
-    class SimilarityThreshold : ICuttingAlgorithm
+    public class SimilarityThreshold : ICuttingAlgorithm
     {
-        private readonly double _threshhold;
+        public double Threshhold;
 
-        public SimilarityThreshold(double threshhold)
+        public SimilarityThreshold()
         {
-            _threshhold = threshhold;
+            Threshhold = 0.05;
         }
 
-        public IEnumerable<Node> Cut(ISet<Node> tree)
+        public IEnumerable<Node> Cut(ISet<Node> nodes)
         {
-            var clusterNodes = tree.OfType<ClusterNode>();
-            var isAboveThreshold = clusterNodes.ToLookup(x => x._similarity >= _threshhold);
+            var isLeaf = nodes.ToLookup(x => !(x is ClusterNode));
+            var leafNodes = isLeaf[true].Select(x => new SingletonCluster(x) as Node);
+            
+            var isAboveThreshold = isLeaf[false].Cast<ClusterNode>()
+                .ToLookup(x => x._similarity >= Threshhold);
+
             return isAboveThreshold[true].Select(x => new NamedNode("$", x.LeafNodes()))
-                .Union(isAboveThreshold[false].SelectMany(x => Cut(x.Children)));
+                .Union(isAboveThreshold[false].SelectMany(x => Cut(x.Children))).Union(leafNodes);
         } 
     }
 }

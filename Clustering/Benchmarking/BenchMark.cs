@@ -5,12 +5,13 @@ using System.IO;
 using System.Linq;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Serializing;
+using MoreLinq;
 
 namespace Clustering.Benchmarking
 {
     public static class BenchMark
     {
-        private static BenchMarkResult Run(IBenchmarkConfig config,NonNestedClusterGraph leafNamespacesWithDependencies)
+        public static BenchMarkResult Run(IBenchmarkConfig config,NonNestedClusterGraph leafNamespacesWithDependencies)
         {
             var leafNamespaces = leafNamespacesWithDependencies.Clusters;
             if (leafNamespaces.Count < 2)
@@ -31,16 +32,6 @@ namespace Clustering.Benchmarking
             return new BenchMarkResult(accuracy);
         }
 
-        public static IEnumerable<BenchMarkResultsEntry> RunAllInFolder(IBenchmarkConfig config,IEnumerable<ProjectTreeWithDependencies> folderName)
-        {
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var file in folderName)
-            {
-                var leafNamespacesWithDependencies = GetLeafNamespaces(file);
-                yield return new BenchMarkResultsEntry(file.Name,Run(config,leafNamespacesWithDependencies));
-            }
-        }
-
         public static void Prepare(string solution,string outputDir)
         {
             var solutionModel = SolutionModelBuilder.FromPath(solution);
@@ -59,7 +50,7 @@ namespace Clustering.Benchmarking
 
         public static NonNestedClusterGraph GetLeafNamespaces(ProjectTreeWithDependencies treeWithDeps)
         {
-            var leafNamespaces = treeWithDeps.Nodes.LeafClusters().ToImmutableHashSet();
+            var leafNamespaces = treeWithDeps.Nodes.LeafClusters().ToHashSet();
             var leafNodes = leafNamespaces.SelectMany(x => x.Children);
             var leafNodeDeps = treeWithDeps.Edges.Where(x => leafNodes.Contains(x.Key));
 

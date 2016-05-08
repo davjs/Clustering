@@ -127,8 +127,8 @@
     <Compile Include="Building\TestExtensions\Paths.cs" />
     <Compile Include="CuttingTest.cs" />
     <Compile Include="MojoFMTest.cs" />
-    <Compile Include="Repository.cs" />
     <Compile Include="SolutionBenchmark.cs" />
+    <Compile Include="Configs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Clustering\Clustering.csproj">

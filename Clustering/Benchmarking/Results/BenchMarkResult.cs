@@ -2,8 +2,9 @@ namespace Clustering.Benchmarking
 {
     public class BenchMarkResult
     {
-        private readonly string _errorMessage;
-        private readonly double _accuracy;
+        public readonly string _errorMessage;
+        public readonly double _accuracy;
+        public bool Succeeded => _errorMessage == null;
 
         public BenchMarkResult(double accuracy)
         {
@@ -12,7 +13,7 @@ namespace Clustering.Benchmarking
 
         public BenchMarkResult(string errorMessage)
         {
-            this._errorMessage = errorMessage;
+            _errorMessage = errorMessage;
         }
 
         public override string ToString()

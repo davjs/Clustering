@@ -9,7 +9,7 @@ namespace Clustering.Benchmarking
         where TCuttingAlg : ICuttingAlgorithm, new()
         where TMetric : ISimilarityMectric, new()
     {
-        public BenchmarkConfig(string name) {Name = name;}
+        protected BenchmarkConfig(string name) {Name = name;}
         public ISimilarityMectric SimilarityMectric { get; } = new TMetric();
         public ICuttingAlgorithm CuttingAlgorithm { get; } = new TCuttingAlg();
         public ClusteringAlgorithm ClusteringAlgorithm { get; } = new TClusterAlg();

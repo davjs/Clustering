@@ -1,0 +1,20 @@
+  -- MonoGame -- :
+WCA-Halfcut-MojoFM : 44.7450666666667
+WCA-SimCut-MojoFM(0.02) : 47.2248666666667
+WCA-SimCut-MojoFM(0.03) : 47.3717666666667
+WCA-SimCut-MojoFM(0.04) : 47.1958
+  -- DotNetOpenAuth -- :
+WCA-Halfcut-MojoFM : 46.76675
+WCA-SimCut-MojoFM(0.02) : 50.9385
+WCA-SimCut-MojoFM(0.03) : 51.1306
+WCA-SimCut-MojoFM(0.04) : 51.13165
+  -- SignalR -- :
+WCA-Halfcut-MojoFM : 40.2121157894737
+WCA-SimCut-MojoFM(0.02) : 35.9798
+WCA-SimCut-MojoFM(0.03) : 36.0285052631579
+WCA-SimCut-MojoFM(0.04) : 35.8548631578947
+  -- Total averages -- :
+WCA-Halfcut-MojoFM : 43.0730162162162
+WCA-SimCut-MojoFM(0.02) : 42.6547945945946
+WCA-SimCut-MojoFM(0.03) : 42.7659297297297
+WCA-SimCut-MojoFM(0.04) : 42.6485675675676
