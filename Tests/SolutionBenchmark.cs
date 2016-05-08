@@ -39,7 +39,7 @@ namespace Tests
                     
                     foreach (var config in benchMarkConfigs)
                     {
-                        var results = Enumerable.Range(0, 50).Select(x => BenchMark.Run(config, leafNamespaces)).ToList();
+                        var results = Enumerable.Range(0, 10).Select(x => BenchMark.Run(config, leafNamespaces)).ToList();
                         var benchMarkResult = new BenchMarkResultsEntry(project.Name, results.Average());
 
                         if(!configEntries.ContainsKey(config))

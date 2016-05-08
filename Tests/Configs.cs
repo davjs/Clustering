@@ -6,16 +6,28 @@ using Clustering.SimilarityMetrics.MojoFM;
 namespace Tests
 {
     public class WeightedCombinedStaticMojoFm : BenchmarkConfig<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>{
-        public WeightedCombinedStaticMojoFm() : base("WCA-Halfcut-MojoFM")
+        public WeightedCombinedStaticMojoFm() : base("WCA-Halfcut-MFM")
         {
         }
     }
 
-    public class WeightedCombinedStaticSimThreshMojoFm : BenchmarkConfig<SiblingLinkWeightedCombined, SimilarityThreshold, MojoFM>
+    public class WeightedCombinedSymmetricHalfMojoFm : BenchmarkConfig<SiblingLinkWeightedCombinedSymetric, CutTreeInMidle, MojoFM>
     {
-        public WeightedCombinedStaticSimThreshMojoFm(double thresh) : base($"WCA-SimCut-MojoFM({thresh})")
+        public WeightedCombinedSymmetricHalfMojoFm() : base("WCAS-Halfcut-MFM")
         {
-            ((SimilarityThreshold) CuttingAlgorithm).Threshhold = thresh;
+        }
+    }
+    public class WeightedCombinedSepUsage : BenchmarkConfig<SiblingLinkWeightedCombinedSepUsage, CutTreeInMidle, MojoFM>
+    {
+        public WeightedCombinedSepUsage() : base("WCAUS-Halfcut-MFM")
+        {
+        }
+    }
+
+    public class WeightedCombinedSymmetricThreshMojoFm : BenchmarkConfig<SiblingLinkWeightedCombinedSymetric, CutTreeInMidle, MojoFM>
+    {
+        public WeightedCombinedSymmetricThreshMojoFm(double thresh) : base($"WCAS-SimCut-MFM({thresh})")
+        {
         }
     }
 }

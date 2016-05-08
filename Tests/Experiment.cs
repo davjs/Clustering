@@ -18,14 +18,16 @@ namespace Tests
     [TestClass]
     public class Benchmark
     {
-        private readonly Dictionary<string, Repository> _repositories =
-            new Dictionary<string, Repository>
+        private readonly Dictionary<string, Repository> _repositories = 
+            new List<Repository>
             {
-                {"MonoGame", new Repository("MonoGame", "Mono", "MonoGame.Framework.Windows.sln")},
-                {"octokit.net", new Repository("octokit.net", "octokit", "Octokit.sln")},
-                {"DotNetOpenAuth", new Repository("DotNetOpenAuth", "DotNetOpenAuth", "src\\DotNetOpenAuth.sln")},
-                {"SignalR", new Repository("SignalR", "SignalR", "Microsoft.AspNet.SignalR.sln")}
-            };
+                new Repository("MonoGame", "Mono", "MonoGame.Framework.Windows.sln"),
+                new Repository("octokit.net", "octokit", "Octokit.sln"), // ---- CURRENTLY MISSING FROM AVAILIBLE PARSED DATA
+                new Repository("DotNetOpenAuth", "DotNetOpenAuth", "src\\DotNetOpenAuth.sln"),
+                new Repository("fluentmigrator", "schambers", "---- !!! FILL THIS IN ANDREAS  !!! ----"),
+                new Repository("shadowsocks-windows", "shadowsocks", "---- !!! FILL THIS IN ANDREAS !!! ----"),
+                new Repository("SignalR", "SignalR", "Microsoft.AspNet.SignalR.sln")
+            }.ToDictionary(x => x.Name, x => x);
 
         private string currentRepoToTest = "Fail";
 
@@ -34,7 +36,9 @@ namespace Tests
         {
             "MonoGame",
             "DotNetOpenAuth",
-            "SignalR"
+            "SignalR",
+            "fluentmigrator",
+            "shadowsocks-windows"
         };
 
         // TESTS
@@ -59,9 +63,8 @@ namespace Tests
                 new List<IBenchmarkConfig>
                 {
                     new WeightedCombinedStaticMojoFm(),
-                    new WeightedCombinedStaticSimThreshMojoFm(0.02),
-                    new WeightedCombinedStaticSimThreshMojoFm(0.03),
-                    new WeightedCombinedStaticSimThreshMojoFm(0.04)
+                    new WeightedCombinedSymmetricHalfMojoFm(),
+                    new WeightedCombinedSepUsage()
                 },
                 _availibleParsedData.Select(x => _repositories[x]).ToList())
                 .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\");

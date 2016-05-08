@@ -122,6 +122,8 @@
     <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />
     <Compile Include="Hierarchichal\ISimilarityMatrix.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombined.cs" />
+    <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedSymetric.cs" />
+    <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedSepUsage.cs" />
     <Compile Include="Hierarchichal\SimilarityMatrix.cs" />
     <Compile Include="Hierarchichal\UnorderedMultiKeyDict.cs" />
     <Compile Include="SimilarityMetrics\ISimilarityMectric.cs" />

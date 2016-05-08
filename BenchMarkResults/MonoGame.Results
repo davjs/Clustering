@@ -1,32 +1,24 @@
-  -- WCA-Halfcut-MojoFM -- :
-2MGFX.Windows : 31.543
+  -- WCA-Halfcut-MFM -- :
+2MGFX.Windows : 22.73
 Lidgren.Network.Windows : NOT_ENOUGH_LEAF_NAMESPACES
 MGCB.Windows : 50
-MonoGame.Framework.Content.Pipeline.Windows : 65.2914
-MonoGame.Framework.Net.Windows : 60.7536
-MonoGame.Framework.Windows : 30.1124
+MonoGame.Framework.Content.Pipeline.Windows : 57.342
+MonoGame.Framework.Net.Windows : 55.471
+MonoGame.Framework.Windows : 41.295
 Pipeline.Windows : 30.77
-  -- WCA-SimCut-MojoFM(0.02) -- :
-2MGFX.Windows : 36.36
+  -- WCAS-Halfcut-MFM -- :
+2MGFX.Windows : 19.093
 Lidgren.Network.Windows : NOT_ENOUGH_LEAF_NAMESPACES
 MGCB.Windows : 50
-MonoGame.Framework.Content.Pipeline.Windows : 83.4652
-MonoGame.Framework.Net.Windows : 43.699
-MonoGame.Framework.Windows : 54.445
-Pipeline.Windows : 15.38
-  -- WCA-SimCut-MojoFM(0.03) -- :
-2MGFX.Windows : 36.36
+MonoGame.Framework.Content.Pipeline.Windows : 53.544
+MonoGame.Framework.Net.Windows : 46.604
+MonoGame.Framework.Windows : 56.665
+Pipeline.Windows : 30.77
+  -- WCAUS-Halfcut-MFM -- :
+2MGFX.Windows : 23.637
 Lidgren.Network.Windows : NOT_ENOUGH_LEAF_NAMESPACES
 MGCB.Windows : 50
-MonoGame.Framework.Content.Pipeline.Windows : 83.339
-MonoGame.Framework.Net.Windows : 44.0768
-MonoGame.Framework.Windows : 55.0748
-Pipeline.Windows : 15.38
-  -- WCA-SimCut-MojoFM(0.04) -- :
-2MGFX.Windows : 36.36
-Lidgren.Network.Windows : NOT_ENOUGH_LEAF_NAMESPACES
-MGCB.Windows : 50
-MonoGame.Framework.Content.Pipeline.Windows : 83.49
-MonoGame.Framework.Net.Windows : 42.944
-MonoGame.Framework.Windows : 55.0008
-Pipeline.Windows : 15.38
+MonoGame.Framework.Content.Pipeline.Windows : 58.481
+MonoGame.Framework.Net.Windows : 30.565
+MonoGame.Framework.Windows : 45.184
+Pipeline.Windows : 29.232
