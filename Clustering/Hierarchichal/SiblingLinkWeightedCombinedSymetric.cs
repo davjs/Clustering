@@ -8,20 +8,31 @@ using MoreLinq;
 
 namespace Clustering.Hierarchichal
 {
-    public class SimilarityMatrix : UnorderedMultiKeyDict<Node, double>, ISimilarityMatrix
-    {
-        public KeyValuePair<Tuple<Node, Node>, double> GetMostSimilar() => this.MaxBy(x => x.Value);
-    }
-
-    public class SiblingLinkWeightedCombined : ClusteringAlgorithm
+    public class SiblingLinkWeightedCombinedSymetric : ClusteringAlgorithm
     {
         private Dictionary<Node, FeatureVector> _featureVectors;
 
-        protected override void Setup(ISet<Node> nodes, ILookup<Node, Node> edges)
+        protected override void Setup(ISet<Node> nodes, ILookup<Node, Node> dependencies)
         {
+            var usages = nodes.ToDictionary(
+                dependency => dependency,
+                dependency => new List<Node>());
+
+            foreach (var edge in dependencies)
+            {
+                var dependent = edge.Key;
+                foreach (var dependency in edge)
+                {
+                    // TODO: Is this check really needed ?
+                    if(!usages.ContainsKey(dependency))
+                        usages[dependency] = new List<Node>();
+                    usages[dependency].Add(dependent);
+                }
+            }
+
             _featureVectors = nodes.ToDictionary(
-                dependor => dependor,
-                dependor => new FeatureVector(edges[dependor].ToSet()));
+                node => node,
+                node => new FeatureVector(dependencies[node].Union(usages[node]).ToSet()));
         }
 
         protected override SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)

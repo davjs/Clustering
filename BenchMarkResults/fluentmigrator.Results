@@ -1,0 +1,24 @@
+  -- WCA-Halfcut-MFM -- :
+FluentMigrator.Console : 9.999
+FluentMigrator : 63.636
+FluentMigrator.MSBuild : NOT_ENOUGH_LEAF_NAMESPACES
+FluentMigrator.NAnt : NOT_ENOUGH_LEAF_NAMESPACES
+FluentMigrator.Runner : 26.722
+FluentMigrator.SchemaDump : 0
+Solution Items : NOT_ENOUGH_LEAF_NAMESPACES
+  -- WCAS-Halfcut-MFM -- :
+FluentMigrator.Console : 9.999
+FluentMigrator : 54.395
+FluentMigrator.MSBuild : NOT_ENOUGH_LEAF_NAMESPACES
+FluentMigrator.NAnt : NOT_ENOUGH_LEAF_NAMESPACES
+FluentMigrator.Runner : 23.782
+FluentMigrator.SchemaDump : 0
+Solution Items : NOT_ENOUGH_LEAF_NAMESPACES
+  -- WCAUS-Halfcut-MFM -- :
+FluentMigrator.Console : 6.666
+FluentMigrator : 64.092
+FluentMigrator.MSBuild : NOT_ENOUGH_LEAF_NAMESPACES
+FluentMigrator.NAnt : NOT_ENOUGH_LEAF_NAMESPACES
+FluentMigrator.Runner : 36.386
+FluentMigrator.SchemaDump : 0
+Solution Items : NOT_ENOUGH_LEAF_NAMESPACES

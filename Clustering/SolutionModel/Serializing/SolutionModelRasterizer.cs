@@ -54,13 +54,13 @@ namespace Clustering.SolutionModel.Serializing
     public class ProjectTreeWithDependencies
     {
         public readonly string Name;
-        private readonly TreeWithDependencies<Node> _treeWithDependencies;
-        public ISet<Node> Nodes => _treeWithDependencies.Tree;
-        public ILookup<Node, Node> Edges => _treeWithDependencies.Dependencies;
+        public readonly ISet<Node> Nodes;
+        public readonly ILookup<Node, Node> Edges;
         public ProjectTreeWithDependencies(string name,TreeWithDependencies<Node> treeWithDependencies)
         {
             Name = name;
-            _treeWithDependencies = treeWithDependencies;
+            Nodes = treeWithDependencies.Tree.ToSet();
+            Edges = treeWithDependencies.Dependencies;
         }
     }
 
