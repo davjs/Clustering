@@ -1,24 +1,10 @@
-  -- MonoGame -- :
-WCA-Halfcut-MFM : 42.9346666666667
-WCAS-Halfcut-MFM : 42.7793333333333
-WCAUS-Halfcut-MFM : 39.5165
-  -- DotNetOpenAuth -- :
-WCA-Halfcut-MFM : 48.76825
-WCAS-Halfcut-MFM : 46.7850833333333
-WCAUS-Halfcut-MFM : 48.91875
-  -- SignalR -- :
-WCA-Halfcut-MFM : 44.6834736842105
-WCAS-Halfcut-MFM : 46.6121578947368
-WCAUS-Halfcut-MFM : 44.858
-  -- fluentmigrator -- :
-WCA-Halfcut-MFM : 25.08925
-WCAS-Halfcut-MFM : 22.044
-WCAUS-Halfcut-MFM : 26.786
-  -- shadowsocks-windows -- :
-WCA-Halfcut-MFM : 21.366
-WCAS-Halfcut-MFM : 26.136
-WCAUS-Halfcut-MFM : 24.999
+  -- Wox -- :
+WCA-Halfcut-MFM : 14.353
+WCAS-SimCut-MFM(0,1) : 17.795
+WCAS-Halfcut-MFM : 18.311
+WCAUS-Halfcut-MFM : 17.012
   -- Total averages -- :
-WCA-Halfcut-MFM : 43.1794285714286
-WCAS-Halfcut-MFM : 43.2866666666667
-WCAUS-Halfcut-MFM : 43.0611666666667
+WCA-Halfcut-MFM : 14.353
+WCAS-SimCut-MFM(0,1) : 17.795
+WCAS-Halfcut-MFM : 18.311
+WCAUS-Halfcut-MFM : 17.012

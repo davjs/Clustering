@@ -26,10 +26,12 @@ namespace Tests
                 new Repository("DotNetOpenAuth", "DotNetOpenAuth", "src\\DotNetOpenAuth.sln"),
                 new Repository("fluentmigrator", "schambers", "---- !!! FILL THIS IN ANDREAS  !!! ----"),
                 new Repository("shadowsocks-windows", "shadowsocks", "---- !!! FILL THIS IN ANDREAS !!! ----"),
-                new Repository("SignalR", "SignalR", "Microsoft.AspNet.SignalR.sln")
+                new Repository("SignalR", "SignalR", "Microsoft.AspNet.SignalR.sln"),
+                new Repository("Wox", "Wox-launcher", "Wox.sln")
+
             }.ToDictionary(x => x.Name, x => x);
 
-        private string currentRepoToTest = "Fail";
+        private string currentRepoToTest = "Wox";
 
         // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
         private readonly IEnumerable<string> _availibleParsedData = new List<string>()
@@ -38,7 +40,8 @@ namespace Tests
             "DotNetOpenAuth",
             "SignalR",
             "fluentmigrator",
-            "shadowsocks-windows"
+            "shadowsocks-windows",
+//            "Wox"
         };
 
         // TESTS
@@ -51,9 +54,15 @@ namespace Tests
         [TestMethod]
         public void RunSpecificBenchmark()
         {
-            var markConfig = new WeightedCombinedStaticMojoFm();
-            SolutionBenchmark.RunAllInFolder(new List<IBenchmarkConfig> {markConfig},
-                new List<Repository> {_repositories[currentRepoToTest]});
+            SolutionBenchmark.RunAllInFolder(new List<IBenchmarkConfig>
+            {
+                new WeightedCombinedStaticMojoFm(),
+                new WeightedCombinedSymmetricThreshMojoFm(0.1),
+                new WeightedCombinedSymmetricHalfMojoFm(),
+                new WeightedCombinedSepUsage()
+            },
+                new List<Repository> {_repositories[currentRepoToTest]})
+                .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\"); ;
         }
 
         [TestMethod]

@@ -42,12 +42,30 @@ namespace Clustering.Benchmarking
             var files = Directory.GetFiles(folderName);
             var notTests = files.Where(x => !x.ToLower().Contains("test")
                                             && x.ToLower().EndsWith(".flat"));
-            return from file in notTests
-                let fileContents = File.ReadAllText(file)
+
+            var comlete = notTests.Where(x => Path.GetFileNameWithoutExtension(x) == "complete");
+
+            return from file in comlete
+                   let fileContents = File.ReadAllText(file)
                 let projectName = Path.GetFileNameWithoutExtension(file)
                 select new ProjectTreeWithDependencies(projectName, GraphDecoder.Decode(fileContents));
         }
 
+        public static NonNestedClusterGraph RootNamespaces(ProjectTreeWithDependencies treeWithDependencies)
+        {
+            var roots = treeWithDependencies.Nodes.Where(x => x.Children.Any());
+            var unnestedRoots = roots.Select(x => x.WithChildren(x.LeafNodes())).ToHashSet();
+            var leafNodeDeps = treeWithDependencies
+                .Edges.Where(x => unnestedRoots.Any(r => r.Children.Contains(x.Key)));
+
+
+            var newDependencyLookUp = leafNodeDeps.SelectMany(group => @group,
+                (group, node) => new { @group.Key, node })
+                .ToLookup(x => x.Key, x => x.node);
+
+            return new NonNestedClusterGraph(unnestedRoots, newDependencyLookUp);
+        }
+        
         public static NonNestedClusterGraph GetLeafNamespaces(ProjectTreeWithDependencies treeWithDeps)
         {
             var leafNamespaces = treeWithDeps.Nodes.LeafClusters().ToHashSet();

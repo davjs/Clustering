@@ -35,7 +35,7 @@ namespace Tests
                 var configEntries = new Dictionary<IBenchmarkConfig,List<BenchMarkResultsEntry>>();
                 foreach (var project in projectGraphsInFolder)
                 {
-                    var leafNamespaces = BenchMark.GetLeafNamespaces(project);
+                    var leafNamespaces = BenchMark.RootNamespaces(project);
                     
                     foreach (var config in benchMarkConfigs)
                     {

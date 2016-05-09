@@ -48,10 +48,8 @@ namespace Clustering.SolutionModel
                     else
                     {
                         var matchingSymbols = allClassesBySymbol.Keys.Where(x => SymbolsMatch(x, dependency)).ToList();
-                        if (matchingSymbols.Count == 1)
+                        if (matchingSymbols.Count >= 1)
                             yield return new DependencyLink(dependor, allClassesBySymbol[matchingSymbols.First()]);
-                        if (matchingSymbols.Count > 1)
-                            throw new NotImplementedException();
                     }
                 }
             }
