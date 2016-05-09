@@ -13,18 +13,30 @@ namespace Clustering.SolutionModel.Serializing
     {
         public static void Write(SolutionNode solutionModel, string path)
         {
-            foreach (var projectNode in solutionModel.Projects())
+            var projectNodes = solutionModel.Projects().ToList();
+            foreach (var projectNode in projectNodes)
             {
                 var dependencies = DependencyResolver.GetDependencies(projectNode.Classes());
-                var encodedString = Encode.HierarchicalGraph(projectNode.Children,
-                    n => n.Children,
-                    n => n.Name,
-                    n => dependencies[n]);
-                var sha1 = SHA1Util.SHA1HashStringForUTF8String(encodedString);
-                var finalString = sha1 + "\n" + encodedString;
-                Directory.CreateDirectory(path);
-                File.WriteAllText(path + projectNode.Name + ".flat", finalString);
+                EncodeTreeToFlat(path, projectNode.Children, dependencies,projectNode.Name);
             }
+
+            // Write complete solution file
+            var allClasses = projectNodes.SelectMany(x => x.Classes());
+            var dependenciesAll = DependencyResolver.GetDependencies(allClasses);
+            EncodeTreeToFlat(path, projectNodes, dependenciesAll, "complete");
+
+        }
+
+        private static void EncodeTreeToFlat(string path, IEnumerable<Node> nodes, ILookup<Node, Node> dependencies,string fname)
+        {
+            var encodedString = Encode.HierarchicalGraph(nodes,
+                n => n.Children,
+                n => n.Name,
+                n => dependencies[n]);
+            var sha1 = SHA1Util.SHA1HashStringForUTF8String(encodedString);
+            var finalString = sha1 + "\n" + encodedString;
+            Directory.CreateDirectory(path);
+            File.WriteAllText(path + fname + ".flat", finalString);
         }
     }
 
