@@ -20,7 +20,7 @@ namespace Tests
                 B -> C");
 
             // Act
-            var newTree = new SiblingLinkWeightedCombined()
+            var newTree = new SiblingLinkWeightedCombinedDepOnlyDirectLink()
                 .Cluster(model.Nodes,model.Edges);
 
             // Assert

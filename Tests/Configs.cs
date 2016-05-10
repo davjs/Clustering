@@ -5,28 +5,44 @@ using Clustering.SimilarityMetrics.MojoFM;
 
 namespace Tests
 {
-    public class WeightedCombinedStaticMojoFm : BenchmarkConfig<SiblingLinkWeightedCombined, CutTreeInMidle, MojoFM>{
-        public WeightedCombinedStaticMojoFm() : base("WCA-Halfcut-MFM")
+    public class WeightedCombinedDepOnly : BenchmarkConfig<SiblingLinkWeightedCombinedDepOnlyDirectLink, CutTreeInMidle, MojoFM>{
+        public WeightedCombinedDepOnly() : base("WCAD-Halfcut")
         {
         }
     }
 
     public class WeightedCombinedSymmetricHalfMojoFm : BenchmarkConfig<SiblingLinkWeightedCombinedSymetric, CutTreeInMidle, MojoFM>
     {
-        public WeightedCombinedSymmetricHalfMojoFm() : base("WCAS-Halfcut-MFM")
+        public WeightedCombinedSymmetricHalfMojoFm() : base("WCAS-Halfcut")
         {
         }
     }
     public class WeightedCombinedSepUsage : BenchmarkConfig<SiblingLinkWeightedCombinedSepUsage, CutTreeInMidle, MojoFM>
     {
-        public WeightedCombinedSepUsage() : base("WCAUS-Halfcut-MFM")
+        public WeightedCombinedSepUsage() : base("WCASU-Halfcut")
         {
         }
     }
 
+
     public class WeightedCombinedSymmetricThreshMojoFm : BenchmarkConfig<SiblingLinkWeightedCombinedSymetric, CutTreeInMidle, MojoFM>
     {
-        public WeightedCombinedSymmetricThreshMojoFm(double thresh) : base($"WCAS-SimCut-MFM({thresh})")
+        public WeightedCombinedSymmetricThreshMojoFm(double thresh) : base($"WCAS-SimCut({thresh})")
+        {
+        }
+    }
+
+    public class WeightedCombinedDepOnlyWithDirectLink :
+        BenchmarkConfig<SiblingLinkWeightedCombinedDepOnlyDirectLink, CutTreeInMidle, MojoFM>
+    {
+        public WeightedCombinedDepOnlyWithDirectLink() : base("WCAD.DL-Halfcut")
+        {
+        }
+    }
+
+    public class WeightedCombinedSepusageDirectLink : BenchmarkConfig<SiblingLinkWeightedCombinedSepUsageDirectLink, CutTreeInMidle, MojoFM>
+    {
+        public WeightedCombinedSepusageDirectLink() : base("WCASU.DL-halfcut")
         {
         }
     }

@@ -8,12 +8,8 @@ using MoreLinq;
 
 namespace Clustering.Hierarchichal
 {
-    public class SimilarityMatrix : UnorderedMultiKeyDict<Node, double>, ISimilarityMatrix
-    {
-        public KeyValuePair<Tuple<Node, Node>, double> GetMostSimilar() => this.MaxBy(x => x.Value);
-    }
 
-    public class SiblingLinkWeightedCombined : ClusteringAlgorithm
+    public class SiblingLinkWeightedCombinedDepOnly : ClusteringAlgorithm
     {
         private Dictionary<Node, FeatureVector> _featureVectors;
 

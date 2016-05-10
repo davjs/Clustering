@@ -21,27 +21,42 @@ namespace Tests
         private readonly Dictionary<string, Repository> _repositories = 
             new List<Repository>
             {
-                new Repository("MonoGame", "Mono", "MonoGame.Framework.Windows.sln"),
-                new Repository("octokit.net", "octokit", "Octokit.sln"), // ---- CURRENTLY MISSING FROM AVAILIBLE PARSED DATA
-                new Repository("DotNetOpenAuth", "DotNetOpenAuth", "src\\DotNetOpenAuth.sln"),
-                new Repository("fluentmigrator", "schambers", "---- !!! FILL THIS IN ANDREAS  !!! ----"),
-                new Repository("shadowsocks-windows", "shadowsocks", "---- !!! FILL THIS IN ANDREAS !!! ----"),
+                new Repository("MonoGame", "mono", "MonoGame.Framework.Windows.sln"),
+                new Repository("octokit.net", "octokit", "Octokit.sln"),
+                new Repository("DotNetOpenAuth", "DotNetOpenAuth", @"src\DotNetOpenAuth.sln"),
+                new Repository("fluentmigrator", "schambers", "FluentMigrator.sln"),
+                new Repository("shadowsocks-windows", "shadowsocks", "shadowsocks-windows.sln"),
                 new Repository("SignalR", "SignalR", "Microsoft.AspNet.SignalR.sln"),
+                new Repository("FluentValidation", "JeremySkinner", "FluentValidation.sln"),
+                new Repository("dotnet", "MiniProfiler", "MiniProfiler.sln"),
+                new Repository("SparkleShare", "hbons", @"SparkleShare\Windows\SparkleShare.sln"),
+                new Repository("ShareX", "ShareX", "ShareX.sln"),
+                new Repository("Nancy", "NancyFX", "Nancy.sln"),
+                new Repository("AutoMapper", "AutoMapper", @"src\AutoMapper.sln"),
+                new Repository("EntityFramework", "aspnet", "EntityFramework.sln"),
+                new Repository("OpenRA", "OpenRA", "OpenRA.sln"),
                 new Repository("Wox", "Wox-launcher", "Wox.sln")
 
             }.ToDictionary(x => x.Name, x => x);
 
-        private string currentRepoToTest = "Wox";
+        private string currentRepoToTest = "Clustering";
 
         // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
-        private readonly IEnumerable<string> _availibleParsedData = new List<string>()
+        private readonly IEnumerable<string> _availibleParsedData = new List<string>
         {
             "MonoGame",
-            "DotNetOpenAuth",
             "SignalR",
             "fluentmigrator",
             "shadowsocks-windows",
-//            "Wox"
+            "FluentValidation",
+            "dotnet",
+            "SparkleShare",
+            "ShareX",
+            "Nancy",
+            "AutoMapper",
+            "EntityFramework",
+            "DotNetOpenAuth",
+            "Wox"
         };
 
         // TESTS
@@ -56,26 +71,28 @@ namespace Tests
         {
             SolutionBenchmark.RunAllInFolder(new List<IBenchmarkConfig>
             {
-                new WeightedCombinedStaticMojoFm(),
+                new WeightedCombinedDepOnly(),
                 new WeightedCombinedSymmetricThreshMojoFm(0.1),
                 new WeightedCombinedSymmetricHalfMojoFm(),
                 new WeightedCombinedSepUsage()
             },
-                new List<Repository> {_repositories[currentRepoToTest]})
+                new List<Repository> {_repositories[currentRepoToTest]},1)
                 .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\"); ;
         }
-
+        // Currently testing root namespaces, not complete
         [TestMethod]
         public void BenchAllAvailibleData()
         {
-            SolutionBenchmark.RunAllInFolder(
+            var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
+            SolutionBenchmark.RunAllCompletesInFolder(
                 new List<IBenchmarkConfig>
                 {
-                    new WeightedCombinedStaticMojoFm(),
+                    new WeightedCombinedDepOnly(),
                     new WeightedCombinedSymmetricHalfMojoFm(),
                     new WeightedCombinedSepUsage()
                 },
-                _availibleParsedData.Select(x => _repositories[x]).ToList())
+                repositories,
+                35)
                 .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\");
         }
     }

@@ -1,10 +1,42 @@
+  -- MonoGame -- :
+WCAD-Halfcut : 40.567
+WCAS-Halfcut : 50.944
+  -- SignalR -- :
+WCAD-Halfcut : 34.375
+WCAS-Halfcut : 17.167
+  -- fluentmigrator -- :
+WCAD-Halfcut : 24.48
+WCAS-Halfcut : 33.011
+  -- shadowsocks-windows -- :
+WCAD-Halfcut : 53.143
+WCAS-Halfcut : 57.525
+  -- FluentValidation -- :
+WCAD-Halfcut : 45.501
+WCAS-Halfcut : 39.369
+  -- dotnet -- :
+WCAD-Halfcut : 27.31
+WCAS-Halfcut : 29.663
+  -- SparkleShare -- :
+WCAD-Halfcut : 40.371
+WCAS-Halfcut : 51.482
+  -- ShareX -- :
+WCAD-Halfcut : 22.718
+WCAS-Halfcut : 15.107
+  -- Nancy -- :
+WCAD-Halfcut : 32.717
+WCAS-Halfcut : 34.304
+  -- AutoMapper -- :
+WCAD-Halfcut : 56.435
+WCAS-Halfcut : 60.928
+  -- EntityFramework -- :
+WCAD-Halfcut : 44.721
+WCAS-Halfcut : 42.846
+  -- DotNetOpenAuth -- :
+WCAD-Halfcut : 25.051
+WCAS-Halfcut : 21.543
   -- Wox -- :
-WCA-Halfcut-MFM : 14.353
-WCAS-SimCut-MFM(0,1) : 17.795
-WCAS-Halfcut-MFM : 18.311
-WCAUS-Halfcut-MFM : 17.012
+WCAD-Halfcut : 20.599
+WCAS-Halfcut : 19.134
   -- Total averages -- :
-WCA-Halfcut-MFM : 14.353
-WCAS-SimCut-MFM(0,1) : 17.795
-WCAS-Halfcut-MFM : 18.311
-WCAUS-Halfcut-MFM : 17.012
+WCAD-Halfcut : 35.9990769230769
+WCAS-Halfcut : 36.3863846153846

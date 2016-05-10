@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Clustering.SolutionModel;
@@ -7,23 +8,28 @@ namespace Clustering.Hierarchichal
 {
     public class FeatureVector
     {
-        public readonly int Total;
-        private readonly Dictionary<Node, int> _dict;
+        public readonly long Total;
+        public readonly Dictionary<Node, long> _dict;
 
-        public FeatureVector(int total, Dictionary<Node, int> dict)
+        public FeatureVector(long total, Dictionary<Node, long> dict)
         {
             Total = total;
             _dict = dict;
         }
 
+        public IEnumerable<Node> Positives() => 
+            _dict.Where(x => x.Value > 0).Select(x => x.Key);
+
         public FeatureVector(ISet<Node> deps)
         {
             Total = 1;
-            _dict = deps.ToDictionary(x => x, x => 1);
+            _dict = deps.ToDictionary(x => x, x => 1L);
         }
 
-        public int this[Node n] => _dict[n];
-        
+        public long this[Node n] => _dict[n];
+
+        public bool Has(Node n) => _dict.ContainsKey(n);
+
         public ISet<Node> Except(FeatureVector other) =>
             _dict.Keys.Except(other._dict.Keys).ToSet();
 

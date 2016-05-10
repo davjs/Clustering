@@ -5,6 +5,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using Clustering;
 using Clustering.Benchmarking;
 using Clustering.Benchmarking.Results;
@@ -21,8 +22,8 @@ namespace Tests
         private static string RepositoryLocation(Repository repo) =>
             $@"{LocalPathConfig.RepoLocations}\{repo.Name}\{repo.Solution}";
 
-        public static ResultsContainer RunAllInFolder(IReadOnlyCollection<IBenchmarkConfig> benchMarkConfigs,
-            IList<Repository> repos)
+        public static PerProjectResultsContainer RunAllInFolder(IReadOnlyCollection<IBenchmarkConfig> benchMarkConfigs,
+            IList<Repository> repos, int rerunsPerConfig)
         {
 
             var repoScores = new Dictionary<Repository, Dictionary<IBenchmarkConfig, List<BenchMarkResultsEntry>>>();
@@ -35,11 +36,11 @@ namespace Tests
                 var configEntries = new Dictionary<IBenchmarkConfig,List<BenchMarkResultsEntry>>();
                 foreach (var project in projectGraphsInFolder)
                 {
-                    var leafNamespaces = BenchMark.RootNamespaces(project);
+                    var leafNamespaces = BenchMark.GetLeafNamespaces(project);
                     
                     foreach (var config in benchMarkConfigs)
                     {
-                        var results = Enumerable.Range(0, 10).Select(x => BenchMark.Run(config, leafNamespaces)).ToList();
+                        var results = Enumerable.Range(0, rerunsPerConfig).Select(x => BenchMark.Run(config, leafNamespaces)).ToList();
                         var benchMarkResult = new BenchMarkResultsEntry(project.Name, results.Average());
 
                         if(!configEntries.ContainsKey(config))
@@ -50,7 +51,40 @@ namespace Tests
                 repoScores.Add(repository, configEntries);
             }
 
-            return new ResultsContainer(repoScores);
+            return new PerProjectResultsContainer(repoScores);
+        }
+
+        public static PerSolutionResultsContainer RunAllCompletesInFolder(IReadOnlyCollection<IBenchmarkConfig> benchMarkConfigs,
+            IList<Repository> repos,int rerunsPerConfig)
+        {
+
+            var repoScores = new Dictionary<Repository, Dictionary<IBenchmarkConfig,BenchMarkResult>>();
+
+            foreach (var repository in repos.ToList())
+            {
+                var dataFolder = ParsedRepoLocation(repository);
+                var graph = BenchMark.GetCompleteTreeWithDependencies(dataFolder);
+
+                var leafNamespaces = BenchMark.RootNamespaces(graph);
+
+
+                var configEntries = new Dictionary<IBenchmarkConfig, BenchMarkResult>();
+                foreach (var config in benchMarkConfigs)
+                {
+                    var tasks = Enumerable.Range(0, rerunsPerConfig)
+                        .Select(x => Task.Run(() => BenchMark.Run(config, leafNamespaces))).ToList();
+
+                    var results = Task.WhenAll(tasks).Result;
+
+                    BenchMarkResult average = results.Average();
+                    var unknown = new {config, average};
+                    configEntries.Add(unknown.config, unknown.average);
+                }
+
+                repoScores.Add(repository, configEntries);
+            }
+
+            return new PerSolutionResultsContainer(repoScores, rerunsPerConfig);
         }
 
         public static void Prepare(Repository repo)

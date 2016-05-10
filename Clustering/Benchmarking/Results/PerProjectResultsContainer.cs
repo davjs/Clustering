@@ -4,11 +4,52 @@ using System.Linq;
 
 namespace Clustering.Benchmarking.Results
 {
-    public class ResultsContainer
+    public class PerSolutionResultsContainer
+    {
+        private readonly Dictionary<Repository, Dictionary<IBenchmarkConfig, BenchMarkResult>> _repoScores;
+        private readonly int _rerunsPerConfig;
+
+        public PerSolutionResultsContainer(Dictionary<Repository, Dictionary<IBenchmarkConfig, BenchMarkResult>> repoScores, int rerunsPerConfig)
+        {
+            _repoScores = repoScores;
+            _rerunsPerConfig = rerunsPerConfig;
+        }
+
+        public void WriteToFolder(string outputfolder)
+        {
+            outputfolder = outputfolder + "complete\\";
+            Directory.CreateDirectory(outputfolder);
+            // Per repo file
+            foreach (var repositoryBenchMarks in _repoScores)
+            {
+                var repository = repositoryBenchMarks.Key;
+                var benchMarkByConfig = repositoryBenchMarks.Value;
+                new ResultsFile().WithResults(benchMarkByConfig.Select(x => new BenchMarkResultsEntry(x.Key.Name,x.Value)))
+                    .Write(outputfolder + $"{repository.Name}.Results");
+            }
+
+            // Average file
+            var averageFile = new AverageResultsFile();
+
+            var repoLess = _repoScores.Select(x => x.Value);
+
+            var configs = repoLess.SelectMany(x => x.Keys).Distinct();
+
+            var averageByConfig = from config in configs
+                let average = repoLess.Select(x => x[config]).ToList().Average()
+                select new BenchMarkResultsEntry(config.Name,average);
+            
+            averageFile.AddRunsPerConfig(_rerunsPerConfig);
+            averageFile.AddTotalAverages(averageByConfig);
+            averageFile.Write(outputfolder + "Average.Results");
+        }
+    }
+
+    public class PerProjectResultsContainer
     {
         private readonly Dictionary<Repository, Dictionary<IBenchmarkConfig, List<BenchMarkResultsEntry>>> _repoScores;
 
-        public ResultsContainer(
+        public PerProjectResultsContainer(
             Dictionary<Repository, Dictionary<IBenchmarkConfig, List<BenchMarkResultsEntry>>> repoScores)
         {
             _repoScores = repoScores;
@@ -16,6 +57,7 @@ namespace Clustering.Benchmarking.Results
 
         public void WriteToFolder(string outputfolder)
         {
+            Directory.CreateDirectory(outputfolder);
             // Per repo file
             foreach (var repositoryBenchMarks in _repoScores)
             {
@@ -56,6 +98,11 @@ namespace Clustering.Benchmarking.Results
 
     public class AverageResultsFile : ResultsFile
     {
+        public void AddRunsPerConfig(int runsPerConfig)
+        {
+            AddEntry(new BenchMarkResultsEntry("TOTAL RUNS", new BenchMarkResult(runsPerConfig)));
+        }
+
         public void AddRepoPerConfigAverages(string repoName,IEnumerable<BenchMarkResultsEntry> entries)
         {
             AddResultGroup(new BenchmarkResultsGroup(repoName,entries));
@@ -63,38 +110,6 @@ namespace Clustering.Benchmarking.Results
         public void AddTotalAverages(IEnumerable<BenchMarkResultsEntry> entries)
         {
             AddResultGroup(new BenchmarkResultsGroup("Total averages", entries));
-        }
-    }
-
-    public class ResultsFile
-    {
-        private readonly List<string> _lines = new List<string>();
-
-        public void AddResultGroup(BenchmarkResultsGroup group)
-        {
-            AddHeader(group.Header).WithResults(group.Entries);
-        }
-
-        public void AddResultGroups(IEnumerable<BenchmarkResultsGroup> groups)
-        {
-            foreach (var @group in groups)
-                AddResultGroup(group);
-        }
-
-        public void WithResults(IEnumerable<BenchMarkResultsEntry> entries)
-        {
-            _lines.AddRange(entries.Select(x => x.ToString()));
-        }
-
-        public void Write(string path)
-        {
-            File.WriteAllLines(path, _lines);
-        }
-
-        public ResultsFile AddHeader(string name)
-        {
-            _lines.Add($"  -- {name} -- :");
-            return this;
         }
     }
 }

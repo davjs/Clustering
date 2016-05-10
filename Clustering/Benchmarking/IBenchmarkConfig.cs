@@ -10,5 +10,6 @@ namespace Clustering.Benchmarking
         ICuttingAlgorithm CuttingAlgorithm { get; }
         ClusteringAlgorithm ClusteringAlgorithm { get; }
         string Name { get; }
+        IBenchmarkConfig Clone();
     }
 }

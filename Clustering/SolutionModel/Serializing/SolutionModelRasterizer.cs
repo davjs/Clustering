@@ -13,7 +13,8 @@ namespace Clustering.SolutionModel.Serializing
     {
         public static void Write(SolutionNode solutionModel, string path)
         {
-            var projectNodes = solutionModel.Projects().ToList();
+            var projects = solutionModel.Projects();
+            var projectNodes = projects.Where(project => !project.Name.ToLower().Contains("test")).ToList();
             foreach (var projectNode in projectNodes)
             {
                 var dependencies = DependencyResolver.GetDependencies(projectNode.Classes());

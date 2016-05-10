@@ -14,5 +14,6 @@ namespace Clustering.Benchmarking
         public ICuttingAlgorithm CuttingAlgorithm { get; } = new TCuttingAlg();
         public ClusteringAlgorithm ClusteringAlgorithm { get; } = new TClusterAlg();
         public string Name { get; }
+        public IBenchmarkConfig Clone() => new BenchmarkConfig<TClusterAlg, TCuttingAlg, TMetric>(Name);
     }
 }

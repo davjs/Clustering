@@ -8,7 +8,7 @@ using MoreLinq;
 
 namespace Clustering.Hierarchichal
 {
-    public class SiblingLinkWeightedCombinedSepUsage : ClusteringAlgorithm
+    public class SiblingLinkWeightedCombinedSepUsageDirectLink : ClusteringAlgorithm
     {
         private class FeatureVectorContainer
         {
@@ -76,13 +76,13 @@ namespace Clustering.Hierarchichal
         {
             var vecLeft = featureVectors[left];
             var vecRight = featureVectors[right];
-            //if (D(left, right) || D(right,left))
-            //    return 1;
+            if (DirectLink(left, right) || DirectLink(right,left))
+                return 1;
 
             return Similarity(vecLeft, vecRight);
         }
 
-        /*private bool D(Node left, Node right)
+        private bool DirectLink(Node left, Node right)
         {
             var vecLeft = featureVectors[left];
             var vecRight = featureVectors[right];
@@ -97,7 +97,7 @@ namespace Clustering.Hierarchichal
                 return true;
             }
             return false;
-        }*/
+        }
 
         private double Similarity(FeatureVectorContainer left, FeatureVectorContainer right)
             => Similarity(left.DependencyFeatureVectors, right.DependencyFeatureVectors)
