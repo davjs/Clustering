@@ -21,7 +21,7 @@ namespace Tests
         private readonly Dictionary<string, Repository> _repositories = 
             new List<Repository>
             {
-                new Repository("MonoGame", "mono", "MonoGame.Framework.Windows.sln"),
+                new Repository("MonoGame", "Mono", "MonoGame.Framework.Windows.sln"),
                 new Repository("octokit.net", "octokit", "Octokit.sln"),
                 new Repository("DotNetOpenAuth", "DotNetOpenAuth", @"src\DotNetOpenAuth.sln"),
                 new Repository("fluentmigrator", "schambers", "FluentMigrator.sln"),
@@ -39,7 +39,7 @@ namespace Tests
 
             }.ToDictionary(x => x.Name, x => x);
 
-        private string currentRepoToTest = "MonoGame";
+        private string currentRepoToTest = "ShareX";
 
         // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
         private readonly IEnumerable<string> _availibleParsedData = new List<string>
