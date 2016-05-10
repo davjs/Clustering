@@ -31,9 +31,14 @@ namespace Tests
                 new Repository("dotnet", "MiniProfiler", "MiniProfiler.sln"),
                 new Repository("SparkleShare", "hbons", @"SparkleShare\Windows\SparkleShare.sln"),
                 new Repository("ShareX", "ShareX", "ShareX.sln"),
+                new Repository("Nancy", "NancyFX", "Nancy.sln"),
+                new Repository("AutoMapper", "AutoMapper", @"src\AutoMapper.sln"),
+                // new Repository("RestSharp", "restsharp", "RestSharp.sln"), // Missing Xamarin
+                // new Repository("Ninject", "ninject", "Ninject.sln"), // Missing Xamarin
+                new Repository("EntityFramework", "aspnet", @"EntityFramework.sln"),
             }.ToDictionary(x => x.Name, x => x);
 
-        private string currentRepoToTest = "ShareX";
+        private string currentRepoToTest = "EntityFramework";
 
         // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
         private readonly IEnumerable<string> _availibleParsedData = new List<string>()
@@ -47,6 +52,9 @@ namespace Tests
             "dotnet",
             "SparkleShare",
             "ShareX",
+            "Nancy",
+            "AutoMapper",
+            "EntityFramework",
         };
 
         // TESTS
