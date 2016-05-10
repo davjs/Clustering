@@ -21,7 +21,7 @@ namespace Tests
         private readonly Dictionary<string, Repository> _repositories = 
             new List<Repository>
             {
-                new Repository("MonoGame", "Mono", "MonoGame.Framework.Windows.sln"),
+                new Repository("MonoGame", "mono", "MonoGame.Framework.Windows.sln"),
                 new Repository("octokit.net", "octokit", "Octokit.sln"),
                 new Repository("DotNetOpenAuth", "DotNetOpenAuth", @"src\DotNetOpenAuth.sln"),
                 new Repository("fluentmigrator", "schambers", "FluentMigrator.sln"),
@@ -33,18 +33,19 @@ namespace Tests
                 new Repository("ShareX", "ShareX", "ShareX.sln"),
                 new Repository("Nancy", "NancyFX", "Nancy.sln"),
                 new Repository("AutoMapper", "AutoMapper", @"src\AutoMapper.sln"),
-                new Repository("EntityFramework", "aspnet", "EntityFramework.sln"),
-                new Repository("OpenRA", "OpenRA", "OpenRA.sln"),
+                // new Repository("RestSharp", "restsharp", "RestSharp.sln"), // Missing Xamarin
+                // new Repository("Ninject", "ninject", "Ninject.sln"), // Missing Xamarin
+                new Repository("EntityFramework", "aspnet", @"EntityFramework.sln"),
                 new Repository("Wox", "Wox-launcher", "Wox.sln")
-
             }.ToDictionary(x => x.Name, x => x);
 
-        private string currentRepoToTest = "ShareX";
+        private string currentRepoToTest = "EntityFramework";
 
         // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
         private readonly IEnumerable<string> _availibleParsedData = new List<string>
         {
             "MonoGame",
+            "DotNetOpenAuth",
             "SignalR",
             "fluentmigrator",
             "shadowsocks-windows",
