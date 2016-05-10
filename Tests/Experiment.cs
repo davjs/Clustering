@@ -39,7 +39,7 @@ namespace Tests
 
             }.ToDictionary(x => x.Name, x => x);
 
-        private string currentRepoToTest = "Clustering";
+        private string currentRepoToTest = "MonoGame";
 
         // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
         private readonly IEnumerable<string> _availibleParsedData = new List<string>
