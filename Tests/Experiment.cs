@@ -35,10 +35,11 @@ namespace Tests
                 new Repository("AutoMapper", "AutoMapper", @"src\AutoMapper.sln"),
                 // new Repository("RestSharp", "restsharp", "RestSharp.sln"), // Missing Xamarin
                 // new Repository("Ninject", "ninject", "Ninject.sln"), // Missing Xamarin
-                new Repository("EntityFramework", "aspnet", @"EntityFramework.sln"),
+                new Repository("EntityFramework", "aspnet", "EntityFramework.sln"),
+                new Repository("OpenRA", "OpenRA", "OpenRA.sln"),
             }.ToDictionary(x => x.Name, x => x);
 
-        private string currentRepoToTest = "EntityFramework";
+        private string currentRepoToTest = "OpenRA";
 
         // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
         private readonly IEnumerable<string> _availibleParsedData = new List<string>()
