@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using Clustering;
 using Clustering.Benchmarking;
 using Clustering.Benchmarking.Results;
+using Clustering.SolutionModel.Nodes;
 using Clustering.SolutionModel.Serializing;
 using Tests.Building.TestExtensions;
 
@@ -66,6 +68,17 @@ namespace Tests
                 var graph = BenchMark.GetCompleteTreeWithDependencies(dataFolder);
 
                 var leafNamespaces = BenchMark.RootNamespaces(graph);
+
+                /*var newEdges = (from edge in leafNamespaces.Edges
+                    let newDeps = new HashSet<Node>(edge.Skip((int)(edge.Count()/1.3333)))
+                    select new {edge.Key, newDeps })
+                    .ToDictionary(x => x.Key, x => x.newDeps)
+                    .SelectMany(p => p.Value
+                                         .Select(x => new { p.Key, Value = x }))
+                       .ToLookup(pair => pair.Key, pair => pair.Value);*/
+                //leafNamespaces = new NonNestedClusterGraph(leafNamespaces.Clusters, newEdges);
+
+                leafNamespaces = new NonNestedClusterGraph(leafNamespaces.Clusters, leafNamespaces.Edges);
 
 
                 var configEntries = new Dictionary<IBenchmarkConfig, BenchMarkResult>();

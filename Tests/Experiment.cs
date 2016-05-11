@@ -87,12 +87,10 @@ namespace Tests
             SolutionBenchmark.RunAllCompletesInFolder(
                 new List<IBenchmarkConfig>
                 {
-                    new WeightedCombinedDepOnly(),
-                    new WeightedCombinedSymmetricHalfMojoFm(),
-                    new WeightedCombinedSepUsage()
+                    new WeightedCombinedDepOnly()
                 },
                 repositories,
-                40)
+                50)
                 .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\");
         }
     }

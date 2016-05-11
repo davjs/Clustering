@@ -5,8 +5,16 @@ using Clustering.SimilarityMetrics.MojoFM;
 
 namespace Tests
 {
-    public class WeightedCombinedDepOnly : BenchmarkConfig<SiblingLinkWeightedCombinedDepOnlyDirectLink, CutTreeInMidle, MojoFM>{
+    public class WeightedCombinedDepOnly : BenchmarkConfig<SiblingLinkWeightedCombinedDepOnly, CutTreeInMidle, MojoFM>{
         public WeightedCombinedDepOnly() : base("WCAD-Halfcut")
+        {
+        }
+    }
+
+    public class WeightedCombinedUsageOnly :
+        BenchmarkConfig<SiblingLinkWeightedCombinedUsageOnly, CutTreeInMidle, MojoFM>
+    {
+        public WeightedCombinedUsageOnly() : base("WCAUO-Halfcut")
         {
         }
     }

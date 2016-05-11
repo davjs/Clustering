@@ -122,6 +122,7 @@
     <Compile Include="Hierarchichal\FeatureVector.cs" />
     <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />
     <Compile Include="Hierarchichal\ISimilarityMatrix.cs" />
+    <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedUsageOnly.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedSepUsageDirectLink.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedDepOnlyDirectLink.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedDepOnly.cs" />
