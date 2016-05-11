@@ -22,6 +22,19 @@ WCAD-Halfcut: 35.9146969697 12 Runs
 WCAS-Halfcut: 35.8263947164 9 runs
 WCASU.DL-halfcut: 35.17125 8 runs
 
+TOTAL RUNS : 35
+  -- Total averages -- :
+WCAD-Halfcut : 35.6078901098901
+WCAS-Halfcut : 34.3947692307692
+WCASU-Halfcut : 34.556989010989
+
+TOTAL RUNS : 40
+  -- Total averages -- :
+WCAD-Halfcut : 35.1319423076923
+WCAS-Halfcut : 34.3630192307692
+WCASU-Halfcut : 34.1894807692308
+
+
 
 // PER PROJECT, RootNamespaces
 53 min

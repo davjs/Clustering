@@ -92,7 +92,7 @@ namespace Tests
                     new WeightedCombinedSepUsage()
                 },
                 repositories,
-                35)
+                40)
                 .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\");
         }
     }
