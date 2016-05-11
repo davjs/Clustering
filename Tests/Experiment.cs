@@ -57,7 +57,6 @@ namespace Tests
             "Nancy",
             "AutoMapper",
             "EntityFramework",
-            "DotNetOpenAuth",
             "Wox"
         };
 
