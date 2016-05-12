@@ -42,10 +42,12 @@ namespace Tests
 
         private string currentRepoToTest = "OpenRA";
 
-        // Data we now for sure is correct and has been parsed after all parse related bugs where resolved
+
+        // Data we know for sure is correct and has been parsed after all parse-related bugs have been resolved
         private readonly IEnumerable<string> _availibleParsedData = new List<string>
         {
             "MonoGame",
+            "octokit.net",
             "DotNetOpenAuth",
             "SignalR",
             "fluentmigrator",
@@ -57,7 +59,8 @@ namespace Tests
             "Nancy",
             "AutoMapper",
             "EntityFramework",
-            "Wox"
+            "Wox",
+            "OpenRA"
         };
 
         // TESTS
