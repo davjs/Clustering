@@ -91,6 +91,31 @@ namespace Clustering.Benchmarking.Results
 
             return new ResultsTable(scores, runsPerAlg);
         }
+
+        public void Write(string path)
+        {
+            var lines = new List<string>();
+            var algorithmList = Algorithms.OrderBy(x => x.Name).ToList();
+            var columnWidth = Repositories.Max(x => x.Name.Length) + 1;
+            var topLeftTag = "Repo/Algorithm";
+            var topLeftWithIndent = topLeftTag + new string(' ', columnWidth - topLeftTag.Length);
+            var firstLine = topLeftWithIndent + string.Join("\t", algorithmList.Select(x => x.Name));
+
+            var scoreLines = from repo in Repositories
+            let name = repo.Name
+            let repoWithIndent = name + new string(' ', columnWidth - name.Length)
+            select repoWithIndent + string.Join("\t", algorithmList.Select(x => Get(repo, x)));
+
+            var totalRunsTag = "TOTAL-RUNS";
+            var totalRunWithIndent = totalRunsTag + new string(' ', columnWidth - totalRunsTag.Length);
+            var totalRunsLine = totalRunWithIndent + string.Join("\t", algorithmList.Select(x => TotalRuns[x]));
+            
+            lines.Add(firstLine);
+            lines.AddRange(scoreLines);
+            lines.Add(totalRunsLine);
+
+            File.WriteAllLines(path,lines);
+        }
     }
 
     public struct AlgorithmName

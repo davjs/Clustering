@@ -15,6 +15,28 @@ namespace Clustering.Benchmarking.Results
             _rerunsPerConfig = rerunsPerConfig;
         }
 
+        public ResultsTable ToResultsTable()
+        {
+            // The same for every algorithm, only the combination of two results file changes this
+            var runsPerAlg = Configs()
+                .ToDictionary(config => new AlgorithmName(config.Name), config => _rerunsPerConfig);
+
+            var scores = new List<Score>();
+            
+            foreach (var repoScore in _repoScores)
+            {
+                var repo = repoScore.Key;
+                scores.AddRange(repoScore.Value.Select(x => new Score(new RepoName(repo.Name),
+                    new AlgorithmName(x.Key.Name), x.Value._accuracy)));
+            }
+
+            return new ResultsTable(scores, runsPerAlg);
+        }
+
+        public IEnumerable<IBenchmarkConfig> Configs() => 
+            _repoScores.Select(x => x.Value)
+            .SelectMany(x => x.Keys).Distinct();
+
         public void WriteToFolder(string outputfolder)
         {
             outputfolder = outputfolder + "complete\\";
@@ -32,8 +54,7 @@ namespace Clustering.Benchmarking.Results
             var averageFile = new AverageResultsFile();
 
             var repoLess = _repoScores.Select(x => x.Value);
-
-            var configs = repoLess.SelectMany(x => x.Keys).Distinct();
+            var configs = Configs();
 
             var averageByConfig = from config in configs
                 let average = repoLess.Select(x => x[config]).ToList().Average()

@@ -83,7 +83,7 @@ namespace Tests
                 new List<Repository> {_repositories[currentRepoToTest]},1)
                 .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\"); ;
         }
-        // Currently testing root namespaces, not complete
+
         [TestMethod]
         public void BenchAllAvailibleData()
         {
@@ -91,11 +91,13 @@ namespace Tests
             SolutionBenchmark.RunAllCompletesInFolder(
                 new List<IBenchmarkConfig>
                 {
-                    new WeightedCombinedDepOnly()
+                    new WeightedCombinedSymmetricHalfMojoFm(),
+                    new WeightedCombinedSepUsage(),
+                    new WeightedCombinedDepOnly(),
+                    new WeightedCombinedUsageOnly(),
                 },
                 repositories,
-                50)
-                .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\");
+                1).ToResultsTable().Write(Paths.SolutionFolder + "BenchMarkResults\\Complete.results");
         }
     }
 }

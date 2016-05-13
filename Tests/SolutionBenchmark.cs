@@ -69,8 +69,9 @@ namespace Tests
 
                 var leafNamespaces = BenchMark.RootNamespaces(graph);
 
+                //CODE FOR REMOVING DEPENDENCIES
                 /*var newEdges = (from edge in leafNamespaces.Edges
-                    let newDeps = new HashSet<Node>(edge.Skip((int)(edge.Count()/1.3333)))
+                    let newDeps = new HashSet<Node>(edge.Take((int)(edge.Count()*0.25)))
                     select new {edge.Key, newDeps })
                     .ToDictionary(x => x.Key, x => x.newDeps)
                     .SelectMany(p => p.Value
