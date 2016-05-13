@@ -20,10 +20,10 @@ namespace Tests.Benchmarking
                 "REPO2      4    5    6    7",
                 "TOTAL-RUNS:2    2    2    2"
             });
-            table1.Get(new ResultsTable.RepoName("REPO1"),
-                new ResultsTable.AlgorithmName("ALG1")).Should().Be(0);
-            table1.Get(new ResultsTable.RepoName("REPO2"),
-                new ResultsTable.AlgorithmName("ALG4")).Should().Be(7);
+            table1.Get(new RepoName("REPO1"),
+                new AlgorithmName("ALG1")).Should().Be(0);
+            table1.Get(new RepoName("REPO2"),
+                new AlgorithmName("ALG4")).Should().Be(7);
         }
     }
 }
