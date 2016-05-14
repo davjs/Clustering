@@ -97,7 +97,8 @@ namespace Tests
                     new WeightedCombinedUsageOnly(),
                 },
                 repositories,
-                1).ToResultsTable().Write(Paths.SolutionFolder + "BenchMarkResults\\Complete.results");
+                2).ToResultsTable()
+                .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\Complete.results");
         }
     }
 }

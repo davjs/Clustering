@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Clustering.SolutionModel;
@@ -8,6 +10,43 @@ using MoreLinq;
 
 namespace Clustering.Benchmarking.Results
 {
+
+    public class FormattedTable
+    {
+        public readonly List<string> Lines;
+
+        public FormattedTable(List<List<string>> lines)
+        {
+            Lines = ToFormattedLines(lines).ToList();
+        }
+
+        private IEnumerable<string> ToFormattedLines(List<List<string>> lines)
+        {
+            var columns = lines.First().Count;
+            //Same number of columns on each line
+            Debug.Assert(lines.All(x => x.Count == columns));
+            
+            var columnWidths = Enumerable.Range(0, columns)
+                .Select(index => lines.Select(x => x[index]).Max(x => x.Length) + 1).ToList();
+
+            foreach (var line in lines)
+            {
+                var formattedLine = "";
+                for (var i = 0; i < columns; i++)
+                {
+                    var content = line[i];
+                    formattedLine += content;
+                    if(i == columns -1) // dont add space after last column
+                        break;
+                    var spaces = columnWidths[i] - content.Length;
+                    formattedLine += new string(' ', spaces);
+                }
+                yield return formattedLine;
+            }
+
+        } 
+    }
+
     public class ResultsTable
     {
         public readonly ISet<AlgorithmName> Algorithms;
@@ -24,11 +63,11 @@ namespace Clustering.Benchmarking.Results
             TotalRuns = runPerAlgrotithm;
         }
 
-        public double Get(RepoName repo, AlgorithmName alg) => Scores[Tuple.Create(repo, alg)];
+        public double ResultFor(RepoName repo, AlgorithmName alg) => Scores[Tuple.Create(repo, alg)];
 
         public ResultsTable Combine(ResultsTable other)
         {
-            if (Repositories.SetEquals(other.Repositories))
+            if (Repositories == other.Repositories)
                 return null;
             var algorithmsInBoth = Algorithms.Intersect(other.Algorithms).ToSet();
             var onlyInA = Algorithms.Except(other.Algorithms).ToSet();
@@ -92,30 +131,41 @@ namespace Clustering.Benchmarking.Results
             return new ResultsTable(scores, runsPerAlg);
         }
 
-        public void Write(string path)
+        public void MergeAndWriteWith(string path)
         {
-            var lines = new List<string>();
+            var tableToWrite = this;
+            if (File.Exists(path))
+            {
+                var existing = Parse(path);
+                tableToWrite = Combine(existing);
+            }
+            tableToWrite.WriteTo(path);
+        }
+
+        public List<string> FormattedLines()
+        {
+            var matrix = new List<List<string>>();
             var algorithmList = Algorithms.OrderBy(x => x.Name).ToList();
             var columnWidth = Repositories.Max(x => x.Name.Length) + 1;
-            var topLeftTag = "Repo/Algorithm";
-            var topLeftWithIndent = topLeftTag + new string(' ', columnWidth - topLeftTag.Length);
-            var firstLine = topLeftWithIndent + string.Join("\t", algorithmList.Select(x => x.Name));
+
+            var firstLine = new List<string> { "Repo/Algorithm" };
+            firstLine.AddRange(algorithmList.Select(x => x.Name));
 
             var scoreLines = from repo in Repositories
-            let name = repo.Name
-            let repoWithIndent = name + new string(' ', columnWidth - name.Length)
-            select repoWithIndent + string.Join("\t", algorithmList.Select(x => Get(repo, x)));
-
-            var totalRunsTag = "TOTAL-RUNS";
-            var totalRunWithIndent = totalRunsTag + new string(' ', columnWidth - totalRunsTag.Length);
-            var totalRunsLine = totalRunWithIndent + string.Join("\t", algorithmList.Select(x => TotalRuns[x]));
+                             select new List<string> { repo.Name }
+                                .Concat(algorithmList.Select(x => ResultFor(repo, x)
+                                   .ToString(CultureInfo.InvariantCulture))).ToList();
             
-            lines.Add(firstLine);
-            lines.AddRange(scoreLines);
-            lines.Add(totalRunsLine);
+            var totalRunsLine = new List<string> { "TOTAL-RUNS" };
+            totalRunsLine.AddRange(algorithmList.Select(x => TotalRuns[x].ToString()));
 
-            File.WriteAllLines(path,lines);
+            matrix.Add(firstLine);
+            matrix.AddRange(scoreLines);
+            matrix.Add(totalRunsLine);
+            return new FormattedTable(matrix).Lines;
         }
+
+        private void WriteTo(string path) => File.WriteAllLines(path, FormattedLines());
     }
 
     public struct AlgorithmName
