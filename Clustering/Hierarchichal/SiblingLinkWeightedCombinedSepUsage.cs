@@ -33,8 +33,6 @@ namespace Clustering.Hierarchichal
 
         protected override void Setup(ISet<Node> nodes, ILookup<Node, Node> dependencies)
         {
-            var dep2 = dependencies.ToDictionary(x => x.Key, x => new HashSet<Node>(x));
-
             var usages = nodes.ToDictionary(
                 dependency => dependency,
                 dependency => new List<Node>());
@@ -45,8 +43,8 @@ namespace Clustering.Hierarchichal
                 foreach (var dependency in edge)
                 {
                     // TODO: Is this check really needed ?
-                    if (!usages.ContainsKey(dependency))
-                        usages[dependency] = new List<Node>();
+                    //if (!usages.ContainsKey(dependency))
+                    //    usages[dependency] = new List<Node>();
                     usages[dependency].Add(dependent);
                 }
             }

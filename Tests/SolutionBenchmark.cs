@@ -86,7 +86,7 @@ namespace Tests
                 foreach (var config in benchMarkConfigs)
                 {
                     var tasks = Enumerable.Range(0, rerunsPerConfig)
-                        .Select(x => Task.Run(() => BenchMark.Run(config, leafNamespaces))).ToList();
+                        .Select(x => Task.Run(() => BenchMark.Run(config.Clone(), leafNamespaces))).ToList();
 
                     var results = Task.WhenAll(tasks).Result;
 

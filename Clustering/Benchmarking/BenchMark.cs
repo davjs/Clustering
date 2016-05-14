@@ -13,23 +13,16 @@ namespace Clustering.Benchmarking
     {
         public static BenchMarkResult Run(IBenchmarkConfig config,NonNestedClusterGraph leafNamespacesWithDependencies)
         {
-            var configCopy = config.Clone();
             var leafNamespaces = leafNamespacesWithDependencies.Clusters;
-            //if (leafNamespaces.Count < 2)
-            //    return new BenchMarkResult("NOT_ENOUGH_LEAF_NAMESPACES");
+            if (leafNamespaces.Count < 2)
+                return new BenchMarkResult("NOT_ENOUGH_LEAF_NAMESPACES");
 
             var leafNodes = leafNamespaces.SelectMany(x => x.Children).ToImmutableHashSet();
 
-            var clusteredResults = configCopy.ClusteringAlgorithm.Cluster(leafNodes, leafNamespacesWithDependencies.Edges);
-            var cutClusters = configCopy.CuttingAlgorithm.Cut(clusteredResults).ToImmutableHashSet();
+            var clusteredResults = config.ClusteringAlgorithm.Cluster(leafNodes, leafNamespacesWithDependencies.Edges);
+            var cutClusters = config.CuttingAlgorithm.Cut(clusteredResults).ToImmutableHashSet();
 
-#if DEBUG
-            var leafnodes1 = cutClusters.SelectMany(x => x.Children).ToImmutableHashSet();
-            var leafnodes2 = leafNamespaces.SelectMany(x => x.Children).ToImmutableHashSet();
-            Debug.Assert(leafnodes1.SetEquals(leafnodes2));
-#endif
-
-            var accuracy = configCopy.SimilarityMectric.Calc(cutClusters, leafNamespaces);
+            var accuracy = config.SimilarityMectric.Calc(cutClusters, leafNamespaces);
             return new BenchMarkResult(accuracy);
         }
 
@@ -68,12 +61,16 @@ namespace Clustering.Benchmarking
         {
             var roots = treeWithDependencies.Nodes.Where(x => x.Children.Any() && !x.Name.ToLower().Contains("test"));
             var unnestedRoots = roots.Select(x => x.WithChildren(x.LeafNodes())).ToHashSet();
+            var leafNodes = unnestedRoots.SelectMany(x => x.Children);
+
+            // Skip all keys not in leafNodes
             var leafNodeDeps = treeWithDependencies
                 .Edges.Where(x => unnestedRoots.Any(r => r.Children.Contains(x.Key)));
-
-
+            
             var newDependencyLookUp = leafNodeDeps.SelectMany(group => @group,
                 (group, node) => new { @group.Key, node })
+            // Skip all values not in leafNodes
+                .Where(x => leafNodes.Contains(x.node))
                 .ToLookup(x => x.Key, x => x.node);
 
             return new NonNestedClusterGraph(unnestedRoots, newDependencyLookUp);
