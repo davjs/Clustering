@@ -4,6 +4,7 @@ using System.Linq;
 using Clustering.Benchmarking.Results;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tests.Building.TestExtensions;
 
 namespace Tests.Benchmarking
 {
@@ -81,6 +82,12 @@ namespace Tests.Benchmarking
             var table = ResultsTable.Parse(originalLines);
             var formattedLines = table.FormattedLines();
             formattedLines.ShouldBeEquivalentTo(originalLines);
+        }
+
+        [TestMethod]
+        public void ParseTableAtPath()
+        {
+            var table = ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\Complete.results");
         }
     }
 }

@@ -120,7 +120,7 @@ namespace Clustering.Benchmarking.Results
                 var scorePerAlgorithm = line.Skip(1).ToList();
                 Debug.Assert(scorePerAlgorithm.Count == algorithms.Count);
                 scores.AddRange(algorithms.Select((algorithm, i)
-                    => new Score(repo, algorithm, Convert.ToDouble(scorePerAlgorithm[i]))));
+                    => new Score(repo, algorithm, Convert.ToDouble(scorePerAlgorithm[i], CultureInfo.InvariantCulture))));
             }
 
             var runsRow = withoutHeader.Last().Skip(1).ToList();
