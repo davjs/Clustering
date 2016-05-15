@@ -1,2 +1,2 @@
 # Clustering
-Hierarchichal Clustering algorithms to be used in reverse engineering with roslyn
+Benchmarking framework for testing clustering algorithms capability of finding subsystems in software graphs.
