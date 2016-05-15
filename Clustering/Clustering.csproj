@@ -113,9 +113,7 @@
     <Compile Include="Benchmarking\Results\BenchMarkResultsEntry.cs" />
     <Compile Include="Benchmarking\IBenchmarkConfig.cs" />
     <Compile Include="Benchmarking\Repository.cs" />
-    <Compile Include="Benchmarking\Results\BenchmarkResultsGroup.cs" />
     <Compile Include="Benchmarking\Results\PerProjectResultsContainer.cs" />
-    <Compile Include="Benchmarking\Results\ResultsFile.cs" />
     <Compile Include="Benchmarking\Results\ResultsTable.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\CuttingAlgorithm.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\CutTreeInMidle.cs" />

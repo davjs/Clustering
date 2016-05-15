@@ -5,16 +5,16 @@ namespace Clustering.Benchmarking.Results
 {
     public class BenchMarkResultsEntry
     {
-        public readonly string _name;
-        public readonly BenchMarkResult _result;
+        public readonly string Name;
+        public readonly BenchMarkResult Result;
         public BenchMarkResultsEntry(string name, BenchMarkResult result)
         {
-            _name = name;
-            _result = result;
+            Name = name;
+            Result = result;
         }
         
 
-        public override string ToString() => $"{_name} : {_result}";
+        public override string ToString() => $"{Name} : {Result}";
     }
 
     public static class BenchMarkResultsExtensions
@@ -22,19 +22,19 @@ namespace Clustering.Benchmarking.Results
         public static BenchMarkResult Average(this IReadOnlyCollection<BenchMarkResult> scores)
         {
             return scores.Any(x => x.Succeeded) ?
-                new BenchMarkResult(scores.Where(x => x.Succeeded).Select(x => x._accuracy).Average()) :
-                new BenchMarkResult(scores.First()._errorMessage);
+                new BenchMarkResult(scores.Where(x => x.Succeeded).Select(x => x.Accuracy).Average()) :
+                new BenchMarkResult(scores.First().ErrorMessage);
         }
 
-        public static BenchMarkResultsEntry Average(this BenchmarkResultsGroup group) =>
-            new BenchMarkResultsEntry(group.Header, group.Entries.ToList().Average());
+        //public static BenchMarkResultsEntry Average(this BenchmarkResultsGroup group) =>
+        //    new BenchMarkResultsEntry(group.Header, group.Entries.ToList().Average());
 
         public static BenchMarkResult Average(this IReadOnlyCollection<BenchMarkResultsEntry> scores)
         {
-            var sucessScores = scores.Where(x => x._result.Succeeded).ToList();
+            var sucessScores = scores.Where(x => x.Result.Succeeded).ToList();
             if (!sucessScores.Any())
-                return scores.First()._result;
-            return new BenchMarkResult(sucessScores.Select(x => x._result._accuracy).Average());
+                return scores.First().Result;
+            return new BenchMarkResult(sucessScores.Select(x => x.Result.Accuracy).Average());
         }
     }
 }
