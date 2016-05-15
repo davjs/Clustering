@@ -121,11 +121,11 @@
     <Compile Include="Hierarchichal\CuttingAlgorithms\CutTreeInMidle.cs" />
     <Compile Include="Hierarchichal\CuttingAlgorithms\SimilarityThreshold.cs" />
     <Compile Include="Hierarchichal\FeatureVector.cs" />
-    <Compile Include="Hierarchichal\IClusteringAlgorithm.cs" />
+    <Compile Include="Hierarchichal\ClusteringAlgorithm.cs" />
     <Compile Include="Hierarchichal\ISimilarityMatrix.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedUsageOnly.cs" />
-    <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedSepUsageDirectLink.cs" />
-    <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedDepOnlyDirectLink.cs" />
+    <Compile Include="Hierarchichal\DirectLinks\SiblingLinkWeightedCombinedSepUsageDirectLink.cs" />
+    <Compile Include="Hierarchichal\DirectLinks\SiblingLinkWeightedCombinedDepOnlyDirectLink.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedDepOnly.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedSymetric.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedSepUsage.cs" />

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
 using MoreLinq;
 
-namespace Clustering.Hierarchichal
+namespace Clustering.Hierarchichal.DirectLinks
 {
     public class SiblingLinkWeightedCombinedSepUsageDirectLink : ClusteringAlgorithm
     {
@@ -58,21 +56,7 @@ namespace Clustering.Hierarchichal
                     usageFeatureVector: new FeatureVector(usages[node].ToSet())));
         }
 
-        protected override SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)
-        {
-            var simMatrix = new SimilarityMatrix();
-
-            var pairs = nodes.SelectMany((value, index) => nodes.Skip(index + 1),
-                               (left, right) => new { left, right });
-
-            foreach (var pair in pairs)
-                simMatrix.Add(pair.left, pair.right,
-                    Similarity(pair.left, pair.right));
-
-            return simMatrix;
-        }
-
-        private double Similarity(Node left, Node right)
+        protected override double Similarity(Node left, Node right)
         {
             var vecLeft = featureVectors[left];
             var vecRight = featureVectors[right];
@@ -100,8 +84,8 @@ namespace Clustering.Hierarchichal
         }
 
         private double Similarity(FeatureVectorContainer left, FeatureVectorContainer right)
-            => Similarity(left.DependencyFeatureVectors, right.DependencyFeatureVectors)
-               + Similarity(left.UsageFeatureVectors, right.UsageFeatureVectors);
+            => Ellenberg(left.DependencyFeatureVectors, right.DependencyFeatureVectors)
+               + Ellenberg(left.UsageFeatureVectors, right.UsageFeatureVectors);
 
 
         protected override void UpdateSimilarityMatrix(Node item1, Node item2, ClusterNode clusterNode,
@@ -110,7 +94,7 @@ namespace Clustering.Hierarchichal
             featureVectors.Add(clusterNode, featureVectors[item1]
                 .Merge(featureVectors[item2]));
 
-            foreach (var node in _nodes.Where(node => node != item1 && node != item2))
+            foreach (var node in Nodes.Where(node => node != item1 && node != item2))
             {
                 matrix.Add(node, clusterNode, Similarity(node, clusterNode));
                 matrix.Remove(node, item1);
@@ -121,23 +105,6 @@ namespace Clustering.Hierarchichal
 
             featureVectors.Remove(item1);
             featureVectors.Remove(item2);
-        }
-
-        public override double Similarity(FeatureVector a, FeatureVector b)
-        {
-            var both = a.Intersect(b);
-            var onlyA = a.Except(b);
-            var onlyB = b.Except(a);
-
-            var MaHalf = both.Sum(x => a[x]/a.Total
-                                       + b[x]/b.Total)*0.5;
-
-            var Mb = onlyA.Sum(x => a[x])/a.Total;
-            var Mc = onlyB.Sum(x => b[x])/b.Total;
-
-            if (MaHalf + Mb + Mc <= 0) return 0;
-            // MaHalf + Mb + Mc > 0
-            return MaHalf/(MaHalf + Mb + Mc);
         }
     }
 }

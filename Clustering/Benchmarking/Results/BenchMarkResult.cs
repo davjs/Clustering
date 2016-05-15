@@ -1,4 +1,4 @@
-namespace Clustering.Benchmarking
+namespace Clustering.Benchmarking.Results
 {
     public class BenchMarkResult
     {

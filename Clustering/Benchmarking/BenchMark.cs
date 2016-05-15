@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Clustering.Benchmarking.Results;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Serializing;
 using MoreLinq;
@@ -65,7 +66,7 @@ namespace Clustering.Benchmarking
 
             // Skip all keys not in leafNodes
             var leafNodeDeps = treeWithDependencies
-                .Edges.Where(x => unnestedRoots.Any(r => r.Children.Contains(x.Key)));
+                .Edges.Where(x => leafNodes.Contains(x.Key));
             
             var newDependencyLookUp = leafNodeDeps.SelectMany(group => @group,
                 (group, node) => new { @group.Key, node })
@@ -84,6 +85,8 @@ namespace Clustering.Benchmarking
 
             var newDependencyLookUp = leafNodeDeps.SelectMany(group => @group, 
                 (group, node) => new {@group.Key,node})
+            // Skip all values not in leafNodes
+                .Where(x => leafNodes.Contains(x.node))
                 .ToLookup(x => x.Key,x => x.node);
 
             return new NonNestedClusterGraph(leafNamespaces, newDependencyLookUp);

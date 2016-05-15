@@ -9,7 +9,7 @@ namespace Clustering.Benchmarking
         ISimilarityMectric SimilarityMectric { get; }
         ICuttingAlgorithm CuttingAlgorithm { get; }
         ClusteringAlgorithm ClusteringAlgorithm { get; }
-        string Name { get; }
+        string Name { get; set; }
         IBenchmarkConfig Clone();
     }
 }

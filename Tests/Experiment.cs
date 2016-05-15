@@ -71,30 +71,32 @@ namespace Tests
         }
 
         [TestMethod]
-        public void RunSpecificBenchmark()
+        public void BenchNamespaceRecovery()
         {
-            SolutionBenchmark.RunAllInFolder(new List<IBenchmarkConfig>
+            var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
+            SolutionBenchmark.BenchNamespaceRecovery(new List<IBenchmarkConfig>
             {
-                new WeightedCombinedDepOnly(),
-                new WeightedCombinedSymmetricThreshMojoFm(0.1),
-                new WeightedCombinedSymmetricHalfMojoFm(),
-                new WeightedCombinedSepUsage()
+                    new WeightedCombinedSymmetricHalfMojoFm(),
+                    new WeightedCombinedSepUsage(),
+                    new WeightedCombinedDepOnly(),
+                    new WeightedCombinedUsageOnly()
             },
-                new List<Repository> {_repositories[currentRepoToTest]},1)
-                .WriteToFolder(Paths.SolutionFolder + "BenchMarkResults\\"); ;
+                repositories, 3).ToResultsTable()
+                .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\namespace-recovery.results"); ;
         }
 
         [TestMethod]
-        public void BenchAllAvailibleData()
+        public void BenchProjectRecovery(
+            )
         {
             var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
-            SolutionBenchmark.RunAllCompletesInFolder(
+            SolutionBenchmark.BenchMarkProjectRecovery(
                 new List<IBenchmarkConfig>
                 {
                     new WeightedCombinedSymmetricHalfMojoFm(),
                     new WeightedCombinedSepUsage(),
                     new WeightedCombinedDepOnly(),
-                    new WeightedCombinedUsageOnly(),
+                    new WeightedCombinedUsageOnly()
                 },
                 repositories,
                 1).ToResultsTable()

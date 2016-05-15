@@ -66,49 +66,6 @@ namespace Clustering.Benchmarking.Results
         }
     }
 
-    public class PerProjectResultsContainer
-    {
-        private readonly Dictionary<Repository, Dictionary<IBenchmarkConfig, List<BenchMarkResultsEntry>>> _repoScores;
-
-        public PerProjectResultsContainer(
-            Dictionary<Repository, Dictionary<IBenchmarkConfig, List<BenchMarkResultsEntry>>> repoScores)
-        {
-            _repoScores = repoScores;
-        }
-
-        public void WriteToFolder(string outputfolder)
-        {
-            Directory.CreateDirectory(outputfolder);
-            // Per repo file
-            foreach (var repositoryBenchMarks in _repoScores)
-            {
-                var repository = repositoryBenchMarks.Key;
-                var benchMarkByConfig = repositoryBenchMarks.Value;
-                new RepoResultsFile(benchMarkByConfig)
-                    .Write(outputfolder + $"{repository.Name}.Results");
-            }
-
-            // Average file
-            var averageFile = new AverageResultsFile();
-            foreach (var repositoryBenchMarks in _repoScores)
-            {
-                var repository = repositoryBenchMarks.Key;
-                var perConfigBench = repositoryBenchMarks.Value;
-                var averagePerConfigResults =
-                    perConfigBench.Select(bench => new BenchMarkResultsEntry(bench.Key.Name, bench.Value.Average()));
-                averageFile.AddRepoPerConfigAverages(repository.Name, averagePerConfigResults);
-            }
-
-            // Total averages
-            var allPerConfigResults = _repoScores.SelectMany(x => x.Value);
-            var byConfig = allPerConfigResults.ToLookup(x => x.Key, x => x.Value);
-            var flattenedByConfig = byConfig.ToDictionary(x => x.Key, x => x.SelectMany(y => y));
-            var averageByConfig = flattenedByConfig.Select(x => new BenchMarkResultsEntry(x.Key.Name, x.Value.Average()));
-            averageFile.AddTotalAverages(averageByConfig);
-            averageFile.Write(outputfolder + "Average.Results");
-        }
-    }
-
     public class RepoResultsFile : ResultsFile
     {
         public RepoResultsFile(IDictionary<IBenchmarkConfig, List<BenchMarkResultsEntry>> perConfigEntry)

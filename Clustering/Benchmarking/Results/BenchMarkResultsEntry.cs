@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Clustering.Benchmarking.Results;
 
-namespace Clustering.Benchmarking
+namespace Clustering.Benchmarking.Results
 {
     public class BenchMarkResultsEntry
     {
@@ -28,9 +27,14 @@ namespace Clustering.Benchmarking
         }
 
         public static BenchMarkResultsEntry Average(this BenchmarkResultsGroup group) =>
-            new BenchMarkResultsEntry(group.Header, group.Entries.Average());
+            new BenchMarkResultsEntry(group.Header, group.Entries.ToList().Average());
 
-        public static BenchMarkResult Average(this IEnumerable<BenchMarkResultsEntry> scores) =>
-            new BenchMarkResult(scores.Where(x => x._result.Succeeded).Select(x => x._result._accuracy).Average());
+        public static BenchMarkResult Average(this IReadOnlyCollection<BenchMarkResultsEntry> scores)
+        {
+            var sucessScores = scores.Where(x => x._result.Succeeded).ToList();
+            if (!sucessScores.Any())
+                return scores.First()._result;
+            return new BenchMarkResult(sucessScores.Select(x => x._result._accuracy).Average());
+        }
     }
 }

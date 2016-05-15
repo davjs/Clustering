@@ -1,6 +1,7 @@
 ﻿using Clustering.Benchmarking;
 using Clustering.Hierarchichal;
 using Clustering.Hierarchichal.CuttingAlgorithms;
+using Clustering.Hierarchichal.DirectLinks;
 using Clustering.SimilarityMetrics.MojoFM;
 
 namespace Tests

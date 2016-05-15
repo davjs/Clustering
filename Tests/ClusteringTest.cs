@@ -1,8 +1,6 @@
 ﻿using Clustering.Hierarchichal;
-using Clustering.SolutionModel.Nodes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tests.Building;
 using Tests.Building.TestExtensions;
 
 namespace Tests
@@ -20,7 +18,7 @@ namespace Tests
                 B -> C");
 
             // Act
-            var newTree = new SiblingLinkWeightedCombinedDepOnlyDirectLink()
+            var newTree = new SiblingLinkWeightedCombinedDepOnly()
                 .Cluster(model.Nodes,model.Edges);
 
             // Assert

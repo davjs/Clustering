@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using Clustering.SolutionModel;
 using Clustering.SolutionModel.Nodes;
 using MoreLinq;
 
-namespace Clustering.Hierarchichal
+namespace Clustering.Hierarchichal.DirectLinks
 {
     public class SimilarityMatrix : UnorderedMultiKeyDict<Node, double>, ISimilarityMatrix
     {
@@ -44,26 +42,11 @@ namespace Clustering.Hierarchichal
                 dependor => new FeatureVector(_dependencies[dependor]));
         }
 
-        protected override SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)
-        {
-            var simMatrix = new SimilarityMatrix();
-
-            var pairs = from left in nodes
-                from right in nodes
-                where left.GetHashCode() < right.GetHashCode()
-                select new {left, right};
-
-            foreach (var pair in pairs)
-                simMatrix.Add(pair.left, pair.right, Similarity(pair.left, pair.right));
-
-            return simMatrix;
-        }
-
-        private double Similarity(Node left, Node right)
+        protected override double Similarity(Node left, Node right)
         {
             if (D(left, right) || D(right,left))
                 return 1;
-            return Similarity(_featureVectors[left], _featureVectors[right]);
+            return Ellenberg(_featureVectors[left], _featureVectors[right]);
         }
 
         private bool D(Node left, Node right)
@@ -86,7 +69,7 @@ namespace Clustering.Hierarchichal
             _usages.Add(clusterNode, _usages[item1].Union(_usages[item2]).ToHashSet());
             _dependencies.Add(clusterNode, _dependencies[item1].Union(_dependencies[item2]).ToHashSet());
 
-            foreach (var node in _nodes.Where(node => node != item1 && node != item2))
+            foreach (var node in Nodes.Where(node => node != item1 && node != item2))
             {
                 matrix.Add(node, clusterNode, Similarity(node,
                     clusterNode));
@@ -103,23 +86,6 @@ namespace Clustering.Hierarchichal
             _usages.Remove(item2);
             _dependencies.Remove(item1);
             _dependencies.Remove(item2);
-        }
-
-        public override double Similarity(FeatureVector a, FeatureVector b)
-        {
-            var both = a.Intersect(b);
-            var onlyA = a.Except(b);
-            var onlyB = b.Except(a);
-
-            var MaHalf = both.Sum(x => a[x]/a.Total
-                                       + b[x]/b.Total)*0.5;
-
-            var Mb = onlyA.Sum(x => a[x])/a.Total;
-            var Mc = onlyB.Sum(x => b[x])/b.Total;
-
-            if (MaHalf + Mb + Mc <= 0) return 0;
-            // MaHalf + Mb + Mc > 0
-            return MaHalf / (MaHalf + Mb + Mc);
         }
     }
 }

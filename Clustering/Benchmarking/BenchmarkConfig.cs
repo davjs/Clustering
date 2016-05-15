@@ -13,7 +13,7 @@ namespace Clustering.Benchmarking
         public ISimilarityMectric SimilarityMectric { get; } = new TMetric();
         public ICuttingAlgorithm CuttingAlgorithm { get; } = new TCuttingAlg();
         public ClusteringAlgorithm ClusteringAlgorithm { get; } = new TClusterAlg();
-        public string Name { get; }
+        public string Name { get; set; }
         public IBenchmarkConfig Clone() => new BenchmarkConfig<TClusterAlg, TCuttingAlg, TMetric>(Name);
     }
 }
