@@ -166,6 +166,36 @@ namespace Clustering.Benchmarking.Results
         }
 
         private void WriteTo(string path) => File.WriteAllLines(path, FormattedLines());
+
+        public void WriteLatex(string path)
+        {
+            var lines = new List<string>();
+            var algorithms = new List<string> { "WCAS-Halfcut", "WCASU-Halfcut", "WCAD-Halfcut", "WCAUO-Halfcut" };
+            var algorithmList = algorithms.Select(t => Algorithms.First(x => x.Name == t)).ToList();
+            var results = algorithmList.Select(algorithm => new List<double>()).ToList();
+
+            lines.Add(@"\textbf{System} & \textbf{Original WCA} & \textbf{Separate WCA} & \textbf{Dependencies Only} & \textbf{Usage Only} \\ \hline");
+
+            foreach (var repo in Repositories)
+            {
+                for(int i = 0; i < algorithmList.Count ; i++)
+                    results[i].Add(ResultFor(repo, algorithmList[i]));
+                lines.Add(string.Format(@"\resitem{{{0}}}{{{1}}}{{{2}}}{{{3}}}{{{4}}}",
+                    repo.Name,
+                    results[0].Last().ToString("F1", CultureInfo.InvariantCulture),
+                    results[1].Last().ToString("F1", CultureInfo.InvariantCulture),
+                    results[2].Last().ToString("F1", CultureInfo.InvariantCulture),
+                    results[3].Last().ToString("F1", CultureInfo.InvariantCulture)));
+            }
+            
+            lines.Add(string.Format(CultureInfo.InvariantCulture, @"\textbf{{Average}} & \textbf{{{0:F1}\%}} & \textbf{{{1:F1}\%}} & \textbf{{{2:F1}\%}} & \textbf{{{3:F1}\%}} \\ \hline",
+                results[0].Average(),
+                results[1].Average(),
+                results[2].Average(),
+                results[3].Average()));
+
+            File.WriteAllLines(path, lines);
+        }
     }
 
     public struct AlgorithmName

@@ -89,5 +89,12 @@ namespace Tests.Benchmarking
         {
             var table = ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\Complete.results");
         }
+
+        [TestMethod]
+        public void ConvertTableToLatex()
+        {
+            ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\Complete.results")
+                .WriteLatex(Paths.SolutionFolder + "latex.txt");
+        }
     }
 }
