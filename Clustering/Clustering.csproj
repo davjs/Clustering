@@ -128,6 +128,10 @@
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedSymetric.cs" />
     <Compile Include="Hierarchichal\SiblingLinkWeightedCombinedSepUsage.cs" />
     <Compile Include="Hierarchichal\SimilarityMatrix.cs" />
+    <Compile Include="Hierarchichal\UnbiasedEllenberg\DepOnlyUnbiased.cs" />
+    <Compile Include="Hierarchichal\UnbiasedEllenberg\SepUsageUnbiased.cs" />
+    <Compile Include="Hierarchichal\UnbiasedEllenberg\SymetricUnbiased.cs" />
+    <Compile Include="Hierarchichal\UnbiasedEllenberg\UsageOnlyUnbiased.cs" />
     <Compile Include="Hierarchichal\UnorderedMultiKeyDict.cs" />
     <Compile Include="SimilarityMetrics\ISimilarityMectric.cs" />
     <Compile Include="SimilarityMetrics\MojoFM\BipartiteGraph.cs" />

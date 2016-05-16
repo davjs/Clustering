@@ -66,18 +66,36 @@ namespace Clustering.Hierarchichal
         protected static double Ellenberg(FeatureVector left, FeatureVector right)
         {
             var both = left.Intersect(right);
-            var onlyA = left.Except(right);
-            var onlyB = right.Except(left);
+            var onlyLeft = left.Except(right);
+            var onlyRight = right.Except(left);
 
             var maHalf = both.Sum(x => left[x]/left.Total
                                        + right[x]/right.Total)*0.5;
 
-            var mb = onlyA.Sum(x => left[x])/left.Total;
-            var mc = onlyB.Sum(x => right[x])/right.Total;
+            var mb = onlyLeft.Sum(x => left[x])/left.Total;
+            var mc = onlyRight.Sum(x => right[x])/right.Total;
 
             if (maHalf + mb + mc <= 0) return 0;
             // MaHalf + Mb + Mc > 0
             return maHalf/(maHalf + mb + mc);
+        }
+
+
+        protected static double UnbiasedEllenberg(FeatureVector left, FeatureVector right)
+        {
+            var both = left.Intersect(right);
+            var onlyLeft = left.Except(right);
+            var onlyRight = right.Except(left);
+
+            var maHalf = both.Sum(x => left[x] / left.Total
+                                       + right[x] / right.Total) * 0.5;
+
+            var mb = onlyLeft.Count;//onlyLeft.Sum(x => left[x])/left.Total;
+            var mc = onlyRight.Count;//onlyRight.Sum(x => right[x])/right.Total;
+
+            if (maHalf + mb + mc <= 0) return 0;
+            // MaHalf + Mb + Mc > 0
+            return maHalf / (maHalf + mb + mc);
         }
     }
 }

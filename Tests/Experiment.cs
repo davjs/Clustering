@@ -102,5 +102,23 @@ namespace Tests
                 1).ToResultsTable()
                 .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\Complete.results");
         }
+
+        [TestMethod]
+        public void BenchProjectRecoveryUnbiased(
+            )
+        {
+            var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
+            SolutionBenchmark.BenchMarkProjectRecovery(
+                new List<IBenchmarkConfig>
+                {
+                    new MojoHalfBenchmark<SymetricUnbiased>("WCAS-Unbiased"),
+                    new MojoHalfBenchmark<SepUsageUnbiased>("WCASep-Unbiased"),
+                    new MojoHalfBenchmark<DepOnlyUnbiased>("WCADepOnly-Unbiased"),
+                    new MojoHalfBenchmark<UsageOnlyUnbiased>("WCAUsageOnly-Unbiased")
+                },
+                repositories,
+                1).ToResultsTable()
+                .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\UnbiasedEllenberg.results");
+        }
     }
 }

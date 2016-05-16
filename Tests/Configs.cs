@@ -6,27 +6,26 @@ using Clustering.SimilarityMetrics.MojoFM;
 
 namespace Tests
 {
-    public class WeightedCombinedDepOnly : BenchmarkConfig<SiblingLinkWeightedCombinedDepOnly, CutTreeInMidle, MojoFM>{
+    public class WeightedCombinedDepOnly : MojoHalfBenchmark<SiblingLinkWeightedCombinedDepOnly>{
         public WeightedCombinedDepOnly() : base("WCAD-Halfcut")
         {
         }
     }
 
-    public class WeightedCombinedUsageOnly :
-        BenchmarkConfig<SiblingLinkWeightedCombinedUsageOnly, CutTreeInMidle, MojoFM>
+    public class WeightedCombinedUsageOnly : MojoHalfBenchmark<SiblingLinkWeightedCombinedUsageOnly>
     {
         public WeightedCombinedUsageOnly() : base("WCAUO-Halfcut")
         {
         }
     }
 
-    public class WeightedCombinedSymmetricHalfMojoFm : BenchmarkConfig<SiblingLinkWeightedCombinedSymetric, CutTreeInMidle, MojoFM>
+    public class WeightedCombinedSymmetricHalfMojoFm : MojoHalfBenchmark<SiblingLinkWeightedCombinedSymetric>
     {
         public WeightedCombinedSymmetricHalfMojoFm() : base("WCAS-Halfcut")
         {
         }
     }
-    public class WeightedCombinedSepUsage : BenchmarkConfig<SiblingLinkWeightedCombinedSepUsage, CutTreeInMidle, MojoFM>
+    public class WeightedCombinedSepUsage : MojoHalfBenchmark<SiblingLinkWeightedCombinedSepUsage>
     {
         public WeightedCombinedSepUsage() : base("WCASU-Halfcut")
         {
@@ -34,7 +33,7 @@ namespace Tests
     }
 
 
-    public class WeightedCombinedSymmetricThreshMojoFm : BenchmarkConfig<SiblingLinkWeightedCombinedSymetric, CutTreeInMidle, MojoFM>
+    public class WeightedCombinedSymmetricThreshMojoFm : MojoHalfBenchmark<SiblingLinkWeightedCombinedSymetric>
     {
         public WeightedCombinedSymmetricThreshMojoFm(double thresh) : base($"WCAS-SimCut({thresh})")
         {
@@ -42,7 +41,7 @@ namespace Tests
     }
 
     public class WeightedCombinedDepOnlyWithDirectLink :
-        BenchmarkConfig<SiblingLinkWeightedCombinedDepOnlyDirectLink, CutTreeInMidle, MojoFM>
+        MojoHalfBenchmark<SiblingLinkWeightedCombinedDepOnlyDirectLink>
     {
         public WeightedCombinedDepOnlyWithDirectLink() : base("WCAD.DL-Halfcut")
         {
