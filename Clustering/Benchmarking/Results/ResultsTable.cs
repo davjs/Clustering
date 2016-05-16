@@ -176,7 +176,7 @@ namespace Clustering.Benchmarking.Results
 
             lines.Add(@"\textbf{System} & \textbf{Original WCA} & \textbf{Separate WCA} & \textbf{Dependencies Only} & \textbf{Usage Only} \\ \hline");
 
-            foreach (var repo in Repositories)
+            foreach (var repo in Repositories.OrderBy(x => x.Name))
             {
                 for(int i = 0; i < algorithmList.Count ; i++)
                     results[i].Add(ResultFor(repo, algorithmList[i]));
@@ -193,7 +193,7 @@ namespace Clustering.Benchmarking.Results
                 results[1].Average(),
                 results[2].Average(),
                 results[3].Average()));
-
+            
             File.WriteAllLines(path, lines);
         }
     }
