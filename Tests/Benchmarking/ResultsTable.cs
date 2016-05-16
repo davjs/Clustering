@@ -5,6 +5,7 @@ using Clustering.Benchmarking.Results;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tests.Building.TestExtensions;
+using System.IO;
 
 namespace Tests.Benchmarking
 {
@@ -95,6 +96,15 @@ namespace Tests.Benchmarking
         {
             ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\Complete.results")
                 .WriteLatex(Paths.SolutionFolder + "latex.txt");
+        }
+
+        [TestMethod]
+        public void CombineTables()
+        {
+            var t1 = ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\1.results)");
+            var t2 = ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\2.results)");
+            var combined = t1.Combine(t2);
+            File.WriteAllLines(Paths.SolutionFolder + "BenchMarkResults\\Combined.results", combined.FormattedLines());
         }
     }
 }
