@@ -101,8 +101,8 @@ namespace Tests.Benchmarking
         [TestMethod]
         public void CombineTables()
         {
-            var t1 = ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\1.results)");
-            var t2 = ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\2.results)");
+            var t1 = ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\1.results");
+            var t2 = ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\2.results");
             var combined = t1.Combine(t2);
             File.WriteAllLines(Paths.SolutionFolder + "BenchMarkResults\\Combined.results", combined.FormattedLines());
         }
