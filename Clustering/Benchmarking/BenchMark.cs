@@ -18,10 +18,10 @@ namespace Clustering.Benchmarking
             if (leafNamespaces.Count < 2)
                 return new BenchMarkResult("NOT_ENOUGH_LEAF_NAMESPACES");
 
-            var leafNodes = leafNamespaces.SelectMany(x => x.Children).ToImmutableHashSet();
+            var leafNodes = leafNamespaces.SelectMany(x => x.Children).ToSet();
 
             var clusteredResults = config.ClusteringAlgorithm.Cluster(leafNodes, leafNamespacesWithDependencies.Edges);
-            var cutClusters = config.CuttingAlgorithm.Cut(clusteredResults).ToImmutableHashSet();
+            var cutClusters = config.CuttingAlgorithm.Cut(clusteredResults).ToSet();
 
             var accuracy = config.SimilarityMectric.Calc(cutClusters, leafNamespaces);
             return new BenchMarkResult(accuracy);

@@ -52,10 +52,8 @@ namespace Clustering.Hierarchichal
         {
             var simMatrix = new SimilarityMatrix();
 
-            var pairs = from left in nodes
-                from right in nodes
-                where left.GetHashCode() < right.GetHashCode()
-                select new {left, right};
+            var pairs = nodes.SelectMany((value, index) => nodes.Skip(index + 1),
+                               (left, right) => new { left, right });
 
             foreach (var pair in pairs)
                 simMatrix.Add(pair.left, pair.right, Similarity(pair.left, pair.right));
