@@ -1,0 +1,17 @@
+Repo/Algorithm      WCADepOnly-Unbiased WCASep-Unbiased WCAS-Unbiased WCAUsageOnly-Unbiased
+MonoGame            46.4626             42.5004         40.7656       49.462
+octokit.net         48.7374             38.683          45.665        46.7092
+DotNetOpenAuth      23.0544             23.17           22.3086       22.8456
+SignalR             21.834              22.314          23.1508       23.0168
+fluentmigrator      40.8032             41.749          45.8066       37.6624
+shadowsocks-windows 0                   0               0             0
+FluentValidation    35.9944             37.1412         36.0284       33.6498
+dotnet              32.3032             29.7816         30.9914       31.5458
+SparkleShare        42.4824             40.9262         49.0372       45.1854
+ShareX              28.5434             24.6006         26.0774       25.0212
+Nancy               40.106              40.688          42.0634       36.5402
+AutoMapper          44.4124             46.7716         46.8466       41.8202
+EntityFramework     39.1178             41.6536         44.076        34.3584
+Wox                 15.907              21.8666         22.9198       17.2798
+OpenRA              48.3674             45.7054         43.7396       40.6878
+TOTAL-RUNS          50                  50              50            50
