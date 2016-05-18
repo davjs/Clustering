@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Clustering.Hierarchichal.DirectLinks;
 using Clustering.SolutionModel;
@@ -51,8 +52,8 @@ namespace Clustering.Hierarchichal
         private SimilarityMatrix CreateSimilarityMatrix(ISet<Node> nodes)
         {
             var simMatrix = new SimilarityMatrix();
-
-            var pairs = nodes.SelectMany((value, index) => nodes.Skip(index + 1),
+            var nodesList = nodes.ToList();
+            var pairs = nodesList.SelectMany((value, index) => nodesList.Skip(index + 1),
                                (left, right) => new { left, right });
 
             foreach (var pair in pairs)
