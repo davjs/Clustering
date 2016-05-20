@@ -120,5 +120,18 @@ namespace Tests
                 1).ToResultsTable()
                 .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\UnbiasedEllenberg.results");
         }
+
+        [TestMethod]
+        public void BenchProjectRecoveryRemovedData(
+    )
+        {
+            var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
+            SolutionBenchmark.BenchMarkProjectRecoveryWithRemovedData(
+                    new MojoHalfBenchmark<DepOnlyUnbiased>("WCADepOnly-Unbiased")
+                    ,
+                repositories,
+                12,0.5).ToResultsTable()
+                .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\UnbiasedEllenbergRemovedData.results");
+        }
     }
 }

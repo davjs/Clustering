@@ -97,7 +97,7 @@ namespace Tests
             IList<Repository> repos, int rerunsPerConfig, double dependencyMultiplier)
         {
             var repoScores = new Dictionary<Repository, Dictionary<IBenchmarkConfig, BenchMarkResult>>();
-            config.Name = config.Name + $" {dependencyMultiplier}%";
+            config.Name = config.Name + $"-{dependencyMultiplier*100}%";
             foreach (var repository in repos.ToList())
             {
                 var dataFolder = ParsedRepoLocation(repository);
