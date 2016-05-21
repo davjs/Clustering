@@ -104,8 +104,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void BenchProjectRecoveryUnbiased(
-            )
+        public void BenchProjectRecoveryUnbiased()
         {
             var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
             SolutionBenchmark.BenchMarkProjectRecovery(
@@ -122,15 +121,14 @@ namespace Tests
         }
 
         [TestMethod]
-        public void BenchProjectRecoveryRemovedData(
-    )
+        public void BenchProjectRecoveryRemovedData()
         {
             var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
             SolutionBenchmark.BenchMarkProjectRecoveryWithRemovedData(
                     new MojoHalfBenchmark<DepOnlyUnbiased>("WCADepOnly-Unbiased")
                     ,
                 repositories,
-                12,0.5).ToResultsTable()
+                5,0.25).ToResultsTable()
                 .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\UnbiasedEllenbergRemovedData.results");
         }
     }
