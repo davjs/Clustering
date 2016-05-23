@@ -170,7 +170,8 @@ namespace Clustering.Benchmarking.Results
         public void WriteLatex(string path)
         {
             var lines = new List<string>();
-            var algorithms = new List<string> { "WCAS-Halfcut", "WCASU-Halfcut", "WCAD-Halfcut", "WCAUO-Halfcut" };
+            //var algorithms = new List<string> { "WCAS-Halfcut", "WCASU-Halfcut", "WCAD-Halfcut", "WCAUO-Halfcut" };
+            var algorithms = new List<string> { "WCAS-Unbiased", "WCASep-Unbiased", "WCADepOnly-Unbiased", "WCAUsageOnly-Unbiased" };
             var algorithmList = algorithms.Select(t => Algorithms.First(x => x.Name == t)).ToList();
             var results = algorithmList.Select(algorithm => new List<double>()).ToList();
 
@@ -194,6 +195,38 @@ namespace Clustering.Benchmarking.Results
                 results[2].Average(),
                 results[3].Average()));
             
+            File.WriteAllLines(path, lines);
+        }
+
+        public void WriteLatexDependencies(string path)
+        {
+            var lines = new List<string>();
+            var algorithms = new List<string> { "WCADepOnly-Unbiased", "WCADepOnly-Unbiased-50%", "WCADepOnly-Unbiased-25%" };
+            var algorithmList = algorithms.Select(t => Algorithms.First(x => x.Name == t)).ToList();
+            var results = algorithmList.Select(algorithm => new List<double>()).ToList();
+
+            lines.Add(@"\textbf{System} & \textbf{100\%} & \textbf{50\%} & \textbf{25\%} \\");
+            lines.Add(@"\midrule");
+
+            foreach (var repo in Repositories.OrderBy(x => x.Name))
+            {
+                for (int i = 0; i < algorithmList.Count; i++)
+                    results[i].Add(ResultFor(repo, algorithmList[i]));
+                lines.Add(string.Format(CultureInfo.InvariantCulture,
+                    @"{0} & {1:F1}\% & {2:F1}\% & {3:F1}\% \\",
+                    repo.Name,
+                    results[0].Last(),
+                    results[1].Last(),
+                    results[2].Last()));
+            }
+
+            lines.Add(@"\midrule");
+            lines.Add(string.Format(CultureInfo.InvariantCulture,
+                @"\textbf{{Average}} & \textbf{{{0:F1}\%}} & \textbf{{{1:F1}\%}} & \textbf{{{2:F1}\%}} \\",
+                results[0].Average(),
+                results[1].Average(),
+                results[2].Average()));
+
             File.WriteAllLines(path, lines);
         }
     }

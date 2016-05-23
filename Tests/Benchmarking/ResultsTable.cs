@@ -94,8 +94,15 @@ namespace Tests.Benchmarking
         [TestMethod]
         public void ConvertTableToLatex()
         {
-            ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\Complete.results")
+            ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\UnbiasedEllenberg.results")
                 .WriteLatex(Paths.SolutionFolder + "latex.txt");
+        }
+
+        [TestMethod]
+        public void ConvertDependencyTableToLatex()
+        {
+            ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\UnbiasedEllenbergRemovedData.results")
+                .WriteLatexDependencies(Paths.SolutionFolder + "latex-removed.txt");
         }
 
         [TestMethod]
