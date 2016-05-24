@@ -131,5 +131,17 @@ namespace Tests
                 5,0.25).ToResultsTable()
                 .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\UnbiasedEllenbergRemovedData.results");
         }
+
+        [TestMethod]
+        public void CompareDepWithUsage()
+        {
+            var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
+            SolutionBenchmark.CompareProjectRecovery(
+                new MojoHalfBenchmark<DepOnlyUnbiased>("WCADepOnly-Unbiased"),
+                new MojoHalfBenchmark<UsageOnlyUnbiased>("WCAUsageOnly-Unbiased"),
+                repositories,
+                5).ToResultsTable()
+                .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\UsageDepCompare.results");
+        }
     }
 }

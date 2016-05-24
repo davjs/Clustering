@@ -146,7 +146,6 @@ namespace Clustering.Benchmarking.Results
         {
             var matrix = new List<List<string>>();
             var algorithmList = Algorithms.OrderBy(x => x.Name).ToList();
-            var columnWidth = Repositories.Max(x => x.Name.Length) + 1;
 
             var firstLine = new List<string> { "Repo/Algorithm" };
             firstLine.AddRange(algorithmList.Select(x => x.Name));

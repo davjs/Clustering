@@ -128,6 +128,39 @@ namespace Tests
             return new PerSolutionResultsContainer(repoScores, rerunsPerConfig);
         }
 
+        public static PerSolutionResultsContainer CompareProjectRecovery(
+            IBenchmarkConfig config1,IBenchmarkConfig config2,
+            IList<Repository> repos, int rerunsPerConfig)
+        {
+            var repoScores = new Dictionary<Repository, Dictionary<IBenchmarkConfig, BenchMarkResult>>();
+
+            foreach (var repository in repos.ToList())
+            {
+                var dataFolder = ParsedRepoLocation(repository);
+                var graph = BenchMark.GetCompleteTreeWithDependencies(dataFolder);
+
+                var leafNamespaces = BenchMark.RootNamespaces(graph);
+
+                leafNamespaces = new NonNestedClusterGraph(leafNamespaces.Clusters, leafNamespaces.Edges);
+
+                var tasks =
+                    Enumerable.Range(0, rerunsPerConfig)
+                        .Select(x => Task.Run(() => BenchMark.CompareResultsOf2Algs(
+                            config1.Clone().ClusteringAlgorithm,
+                            config2.Clone().ClusteringAlgorithm,
+                            config1.Clone().CuttingAlgorithm,
+                            config1.Clone().SimilarityMectric
+                            , leafNamespaces)));
+
+                var average = Task.WhenAll(tasks).Result.Average();
+                config1.Name = "Dep->Usage-Equallity";
+                var configEntries = new Dictionary<IBenchmarkConfig, BenchMarkResult> { {config1, average}};
+                repoScores.Add(repository, configEntries);
+            }
+
+            return new PerSolutionResultsContainer(repoScores, rerunsPerConfig);
+        }
+
         public static void Prepare(Repository repo)
         {
             BenchMark.Prepare(RepositoryLocation(repo), ParsedRepoLocation(repo));

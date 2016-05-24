@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Clustering.Benchmarking.Results;
+using Clustering.Hierarchichal;
+using Clustering.Hierarchichal.CuttingAlgorithms;
 using Clustering.SolutionModel;
 using Clustering.SolutionModel.Serializing;
 using MoreLinq;
@@ -24,6 +26,27 @@ namespace Clustering.Benchmarking
             var cutClusters = config.CuttingAlgorithm.Cut(clusteredResults).ToSet();
 
             var accuracy = config.SimilarityMectric.Calc(cutClusters, leafNamespaces);
+            return new BenchMarkResult(accuracy);
+        }
+
+        public static BenchMarkResult CompareResultsOf2Algs(
+            ClusteringAlgorithm alg1, ClusteringAlgorithm alg2,
+            ICuttingAlgorithm cuttingAlgorithm,
+            SimilarityMetrics.ISimilarityMectric metric, 
+            NonNestedClusterGraph leafNamespacesWithDependencies)
+        {
+            var leafNamespaces = leafNamespacesWithDependencies.Clusters;
+            if (leafNamespaces.Count < 2)
+                return new BenchMarkResult("NOT_ENOUGH_LEAF_NAMESPACES");
+
+            var leafNodes = leafNamespaces.SelectMany(x => x.Children).ToSet();
+
+            var clusteredResults1 = alg1.Cluster(leafNodes, leafNamespacesWithDependencies.Edges);
+            var clusteredResults2 = alg2.Cluster(leafNodes, leafNamespacesWithDependencies.Edges);
+            var cutResults1 = cuttingAlgorithm.Cut(clusteredResults1);
+            var cutResults2 = cuttingAlgorithm.Cut(clusteredResults2);
+
+            var accuracy = metric.Calc(cutResults1, cutResults2);
             return new BenchMarkResult(accuracy);
         }
 
