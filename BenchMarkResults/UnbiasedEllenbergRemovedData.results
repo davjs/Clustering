@@ -1,17 +1,16 @@
-Repo/Algorithm      WCADepOnly-Unbiased-25% WCADepOnly-Unbiased-50%
-MonoGame            35.7732710280374        41.0463999999999
-octokit.net         25.3161682242991        25.7305
-DotNetOpenAuth      20.7878504672897        11.5121
-SignalR             10.1407476635514        13.0866
-fluentmigrator      52.792429906542         49.9713
-shadowsocks-windows 0                       0
-FluentValidation    24.2601869158879        34.3468
-dotnet              10.6960747663551        5.88
-SparkleShare        41.4324299065421        55.3696
-ShareX              33.7878504672897        35.7457999999999
-Nancy               44.7057943925234        49.488
-AutoMapper          35.2976635514019        35.1976
-EntityFramework     29.5780373831775        32.3751
-Wox                 18.1673831775702        16.6735
-OpenRA              27.8674766355141        19.1479999999999
-TOTAL-RUNS          107                     100
+Repo/Algorithm      WCADepOnly-Unbiased-25% WCADepOnly-Unbiased-50% WCADepOnly-Unbiased
+MonoGame            35.7732710280374        41.0464                 48.4924            
+octokit.net         25.3161682242991        25.7305                 52.4863            
+DotNetOpenAuth      20.7878504672897        11.5121                 22.1396            
+SignalR             10.1407476635514        13.0866                 20.36              
+fluentmigrator      52.792429906542         49.9713                 39.8817            
+FluentValidation    24.2601869158879        34.3468                 37.0404            
+dotnet              10.6960747663551        5.88                    29.0093            
+SparkleShare        41.4324299065421        55.3696                 47.1108            
+ShareX              33.7878504672897        35.7458                 26.9189            
+Nancy               44.7057943925234        49.488                  41.7425            
+AutoMapper          35.2976635514019        35.1976                 46.9104            
+EntityFramework     29.5780373831775        32.3751                 42.9973            
+Wox                 18.1673831775702        16.6735                 16.0604            
+OpenRA              27.8674766355141        19.148                  47.6271            
+TOTAL-RUNS          107                     100                     100                

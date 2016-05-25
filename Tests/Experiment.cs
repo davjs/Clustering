@@ -38,9 +38,10 @@ namespace Tests
                 new Repository("EntityFramework", "aspnet", @"EntityFramework.sln"),
                 new Repository("Wox", "Wox-launcher", "Wox.sln"),
                 new Repository("OpenRA", "OpenRA", "OpenRA.sln"),
+                new Repository("roslyn", "dotnet", "Roslyn.sln"),
             }.ToDictionary(x => x.Name, x => x);
 
-        private string currentRepoToTest = "OpenRA";
+        private string currentRepoToTest = "roslyn";
 
 
         // Data we know for sure is correct and has been parsed after all parse-related bugs have been resolved
@@ -51,7 +52,6 @@ namespace Tests
             "DotNetOpenAuth",
             "SignalR",
             "fluentmigrator",
-            "shadowsocks-windows",
             "FluentValidation",
             "dotnet",
             "SparkleShare",
@@ -86,8 +86,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void BenchProjectRecovery(
-            )
+        public void BenchProjectRecovery()
         {
             var repositories = _availibleParsedData.Select(x => _repositories[x]).ToList();
             SolutionBenchmark.BenchMarkProjectRecovery(
