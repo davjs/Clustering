@@ -105,6 +105,14 @@ namespace Tests.Benchmarking
                 .WriteLatexDependencies(Paths.SolutionFolder + "latex-removed.txt");
         }
 
+
+        [TestMethod]
+        public void CreateLatexFromCompareTable()
+        {
+            ResultsTable.Parse(Paths.SolutionFolder + "BenchMarkResults\\UsageDepCompare.results")
+                .WriteLatexDepCompare(Paths.SolutionFolder + "latex-compare.txt");
+        }
+
         [TestMethod]
         public void CombineTables()
         {

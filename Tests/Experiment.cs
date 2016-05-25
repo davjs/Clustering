@@ -127,7 +127,7 @@ namespace Tests
                     new MojoHalfBenchmark<DepOnlyUnbiased>("WCADepOnly-Unbiased")
                     ,
                 repositories,
-                5,0.25).ToResultsTable()
+                1,0.25).ToResultsTable()
                 .MergeAndWriteWith(Paths.SolutionFolder + "BenchMarkResults\\UnbiasedEllenbergRemovedData.results");
         }
 

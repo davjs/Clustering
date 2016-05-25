@@ -228,6 +228,34 @@ namespace Clustering.Benchmarking.Results
 
             File.WriteAllLines(path, lines);
         }
+
+        public void WriteLatexDepCompare(string path)
+        {
+            var lines = new List<string>();
+            var algorithms = new List<string> { "Dep->Usage-Equallity" };
+            var algorithmList = algorithms.Select(t => Algorithms.First(x => x.Name == t)).ToList();
+            var results = algorithmList.Select(algorithm => new List<double>()).ToList();
+
+            lines.Add(@"\textbf{System} & \textbf{100\%} \\");
+            lines.Add(@"\midrule");
+
+            foreach (var repo in Repositories.OrderBy(x => x.Name))
+            {
+                for (int i = 0; i < algorithmList.Count; i++)
+                    results[i].Add(ResultFor(repo, algorithmList[i]));
+                lines.Add(string.Format(CultureInfo.InvariantCulture,
+                    @"{0} & {1:F1}\% \\",
+                    repo.Name,
+                    results[0].Last()));
+            }
+
+            lines.Add(@"\midrule");
+            lines.Add(string.Format(CultureInfo.InvariantCulture,
+                @"\textbf{{Average}} & \textbf{{{0:F1}\%}}\\",
+                results[0].Average()));
+
+            File.WriteAllLines(path, lines);
+        }
     }
 
     public struct AlgorithmName
